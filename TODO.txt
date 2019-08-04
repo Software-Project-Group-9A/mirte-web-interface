@@ -1,6 +1,7 @@
-- add getSensordata
+- symlink robot.py instead of copying (so i can edit it on the fly)
+
 - add waint unitl (sensrodata)
-- add onsart (with a hat) en callback sensor data (this is also later in the curriculmu)
+
 
 - add gazebo from josie et al
 3 add grav
@@ -10,13 +11,15 @@
 - add pdb (step pause etc, and stop with ^c)
 - create windows and mac compatible 
 - add move page and do play record (with qr-code)
+- add onsart (with a hat) en callback sensor data (this is also later in the curriculmu)
 - add webots?
 - save xml and python files
 - add moveit examples
-
+- save custom functions in blockyl
 
 
 known issues:
+- move forward and turn should be green
 - include bloxkly xml in some way
 - HTML, CSS and JS checks 
 - use correct environment (singulairyt clean environment)

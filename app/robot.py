@@ -2,6 +2,7 @@
 
 import rospy
 from geometry_msgs.msg import Twist 
+from std_msgs.msg import Int32
 
 PI = 3.1415926535897
 
@@ -9,6 +10,21 @@ PI = 3.1415926535897
 
 # Define a function
 my_name = ""
+
+
+distance = ""
+
+def getDistance():
+    return distance;
+
+def callback(data):
+    global distance
+    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
+    distance = data.data
+
+rospy.Subscriber("distance", Int32, callback)
+
+
 
 def set_name(name):
     global my_name

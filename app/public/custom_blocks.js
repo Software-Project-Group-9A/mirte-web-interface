@@ -61,6 +61,28 @@ Blockly.Blocks['wait'] = {
 // Blockly generator
 Blockly.Python['wait'] = function(block) {
   var value_wait = Blockly.Python.valueToCode(block, 'wait', Blockly.Python.ORDER_ATOMIC);
-  var code = 'time.sleep(' + value_wait + ')';
+  var code = 'time.sleep(' + value_wait + ')\n';
   return code;
+};
+
+
+
+// Blockly generator
+Blockly.Blocks['get_distance'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get distance");
+    this.setOutput(true, null);
+    this.setColour(160);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+
+Blockly.Python['get_distance'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = 'robot.getDistance()';
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
 };
