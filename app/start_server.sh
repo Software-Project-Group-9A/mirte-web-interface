@@ -2,7 +2,7 @@
 
 trap 'echo $BGPIDS; kill $BGPIDS; kill $BGPIDS2; exit' SIGINT
 
-cp /app/my_app/robot.py /tmp
+ln -s /app/my_app/robot.py /tmp
 #export PYTHONPATH="${PYTHONPATH}:/my_scripts/robot_script"
 
 #start shell_ide listener

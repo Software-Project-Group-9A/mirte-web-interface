@@ -1,5 +1,3 @@
-- symlink robot.py instead of copying (so i can edit it on the fly)
-
 - add waint unitl (sensrodata)
 
 
@@ -16,6 +14,7 @@
 - save xml and python files
 - add moveit examples
 - save custom functions in blockyl
+- make sensors etc plugins
 
 
 known issues:
