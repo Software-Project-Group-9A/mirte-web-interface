@@ -55,11 +55,13 @@
   <button onclick="stopButton()" id="stopButton" disabled>Stop</button>
 -->
 
+
 <div class="row">
   <div class="column">
-   <div id="blocklyDiv" style="height: 600px; width: 800px;"></div>
-
+    <div id="blocklyArea" style="height: 100%; width: 100%;"></div>
+   <div id="blocklyDiv" style="position: absolute;"></div>
   </div>
+
   <div class="column">
    <form id="theForm" name="theForm">
 <textarea id='editor' class="myClass" name='source'>
@@ -68,7 +70,6 @@
     <div id="terminal"></div>
   </div>
 </div>
-
 
 
 
@@ -257,10 +258,10 @@
 
   <!-- own includes TODO: import in header-->
   <link rel="stylesheet" href="robotlearning.css" />
-  <script src="blockly.js"></script>
   <script src="custom_blocks.js"></script>
   <script src="xterm.js"></script>
   <script src="codemirror.js"></script>
+  <script src="blockly.js"></script>
   <script src="robotlearning.js"></script>
 
 
