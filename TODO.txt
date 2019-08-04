@@ -1,6 +1,6 @@
-- add getSensordata, both as getData, and as callback!
+- add getSensordata
 - add waint unitl (sensrodata)
-- add onsart (with a hat)
+- add onsart (with a hat) en callback sensor data (this is also later in the curriculmu)
 
 - add gazebo from josie et al
 3 add grav
@@ -18,7 +18,6 @@
 
 known issues:
 - save xml and python in localstorage
-- after drag drop keep menu open
 - include bloxkly xml in some way
 - HTML, CSS and JS checks 
 - use correct environment (singulairyt clean environment)

@@ -143,3 +143,7 @@ Blockly.Python.finish = function(code) {
     Blockly.svgResize(demoWorkspace);
 
 
+
+// Keep menu open after drop
+demoWorkspace.toolbox_.flyout_.autoClose = false
+
