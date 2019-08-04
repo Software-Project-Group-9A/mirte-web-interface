@@ -98,7 +98,8 @@ Blockly.Python.finish = function(code) {
     // Load the interpreter now, and upon future changes.
     //generateCodeAndLoadIntoInterpreter();
     demoWorkspace.addChangeListener(function(event) {
-        if (!(event instanceof Blockly.Events.Ui)) {
+
+        if (event instanceof Blockly.Events.Move) {
         // Something changed. Parser needs to be reloaded.
     
           var code = Blockly.Python.workspaceToCode(demoWorkspace);

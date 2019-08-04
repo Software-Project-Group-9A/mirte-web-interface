@@ -17,7 +17,6 @@
 
 
 known issues:
-2 python generated on drag (shouldbe on drop)
 - save xml and python in localstorage
 - after drag drop keep menu open
 - include bloxkly xml in some way
