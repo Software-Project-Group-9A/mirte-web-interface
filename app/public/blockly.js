@@ -23,7 +23,7 @@ Blockly.Python.finish = function(code) {
 
 //  recolor(Blockly.Blocks['keyispressed'], 10); 
 //  recolor(Blockly.Blocks['onclick'], 10);
-//  recolor(Blockly.Blocks['distance_changed'], 10);
+  recolor(Blockly.Blocks['get_distance'], 10);
 
 
   recolor(Blockly.Blocks['controls_repeat_ext'], 60); 
@@ -32,8 +32,8 @@ Blockly.Python.finish = function(code) {
   recolor(Blockly.Blocks['controls_forEach'], 60);
   recolor(Blockly.Blocks['controls_flow_statements'], 60);
 
-//  recolor(Blockly.Blocks['wait'], 60);
-//  recolor(Blockly.Blocks['wait_until'], 60);
+  recolor(Blockly.Blocks['wait'], 60);
+  recolor(Blockly.Blocks['wait_until'], 60);
 
   recolor(Blockly.Blocks['controls_if'], 60);
 
@@ -73,8 +73,8 @@ Blockly.Python.finish = function(code) {
 
   recolor(Blockly.Blocks['text'], 120);
   recolor(Blockly.Blocks['text_print'], 120);
-//  recolor(Blockly.Blocks['turn'], 120);
-//  recolor(Blockly.Blocks['move'], 120);
+  recolor(Blockly.Blocks['turn'], 120);
+  recolor(Blockly.Blocks['move'], 120);
 //  recolor(Blockly.Blocks['move_with_speed'], 120);
 
   
