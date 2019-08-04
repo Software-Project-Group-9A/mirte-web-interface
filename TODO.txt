@@ -1,10 +1,16 @@
-2 add sleep (and other timing things)
+- add getSensordata
+- add waint unitl (sensrodata)
+- add onsart (with a hat)
+
+- add gazebo (and check size)
 3 add grav
 4 email arnoud + josie
 5 add stuff to run on my robot + create movie
 6 email team
+- create windows and mac compatible 
 - add move page and do play record (with qr-code)
-- add gazebo (or webots)
+- add webots?
+- save xml and python files
 - add moveit examples
 - add pdb (step pause etc, and stop with ^c)
 
@@ -12,6 +18,7 @@
 known issues:
 2 size of blokcly div
 2 python generated on drag (shouldbe on drop)
+- save xml and python in localstorage
 - after drag drop keep menu open
 - include bloxkly xml in some way
 - HTML, CSS and JS checks 

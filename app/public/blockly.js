@@ -1,7 +1,7 @@
 
 // TODO: make more flexible, dependant on used blocks
 Blockly.Python.finish = function(code) { 
-   return "import robot\n\n" + code;
+   return "import robot\nimport time\n\n" + code;
 };
 
 

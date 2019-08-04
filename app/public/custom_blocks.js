@@ -40,3 +40,27 @@ Blockly.Python['turn'] = function(block) {
   return code;
 };
 
+
+// Blockly block definition
+Blockly.Blocks['wait'] = {
+  init: function() {
+    this.appendValueInput("wait")
+        .setCheck("Number")
+        .appendField("Wait ");
+    this.appendDummyInput()
+        .appendField("second(s)");
+    this.setInputsInline(true);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+// Blockly generator
+Blockly.Python['wait'] = function(block) {
+  var value_wait = Blockly.Python.valueToCode(block, 'wait', Blockly.Python.ORDER_ATOMIC);
+  var code = 'time.sleep(' + value_wait + ');';
+  return code;
+};
