@@ -86,3 +86,30 @@ Blockly.Python['get_distance'] = function(block) {
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };
+
+
+
+
+
+
+Blockly.Blocks['wait_until'] = {
+  init: function() {
+    this.appendValueInput("condition")
+        .setCheck("Boolean")
+        .appendField("Wait until");
+    this.setInputsInline(false);
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(230);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+
+// Blockly generator
+Blockly.Python['wait_until'] = function(block) {
+  var value_condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
+  var code = "cond = " + value_condition + "\nwhile not(cond):\n\ttime.sleep(.1)\n\tcond = " + value_condition + "\n";
+  return code;
+};

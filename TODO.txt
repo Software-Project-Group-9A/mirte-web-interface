@@ -1,6 +1,3 @@
-- add waint unitl (sensrodata)
-
-
 - add gazebo from josie et al
 3 add grav
 4 email arnoud + josie
