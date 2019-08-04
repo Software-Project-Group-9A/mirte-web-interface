@@ -61,6 +61,6 @@ Blockly.Blocks['wait'] = {
 // Blockly generator
 Blockly.Python['wait'] = function(block) {
   var value_wait = Blockly.Python.valueToCode(block, 'wait', Blockly.Python.ORDER_ATOMIC);
-  var code = 'time.sleep(' + value_wait + ');';
+  var code = 'time.sleep(' + value_wait + ')';
   return code;
 };

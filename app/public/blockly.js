@@ -77,14 +77,19 @@ Blockly.Python.finish = function(code) {
 //  recolor(Blockly.Blocks['move'], 120);
 //  recolor(Blockly.Blocks['move_with_speed'], 120);
 
-  //var xml = Blockly.Xml.textToDom(localStorage.getItem("blockly"));
+  
   var demoWorkspace = Blockly.inject('blocklyDiv',
         {
          toolbox: document.getElementById('toolbox')
         });
 
-    // if xml
-    //Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+
+    // Load xml from previous session
+    var storage = localStorage.getItem("blockly");
+    if (storage !== null) {
+        var xml = Blockly.Xml.textToDom(storage);
+        Blockly.Xml.domToWorkspace(xml, demoWorkspace);
+    }
 
     var highlightPause = false;
     var latestCode = '';
@@ -98,8 +103,7 @@ Blockly.Python.finish = function(code) {
     // Load the interpreter now, and upon future changes.
     //generateCodeAndLoadIntoInterpreter();
     demoWorkspace.addChangeListener(function(event) {
-
-        if (event instanceof Blockly.Events.Move) {
+        if (event instanceof Blockly.Events.Move || event instanceof Blockly.Events.Delete) {
         // Something changed. Parser needs to be reloaded.
     
           var code = Blockly.Python.workspaceToCode(demoWorkspace);

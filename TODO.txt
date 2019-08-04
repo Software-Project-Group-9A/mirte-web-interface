@@ -17,7 +17,6 @@
 
 
 known issues:
-- save xml and python in localstorage
 - include bloxkly xml in some way
 - HTML, CSS and JS checks 
 - use correct environment (singulairyt clean environment)
