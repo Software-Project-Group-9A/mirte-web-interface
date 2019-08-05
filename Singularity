@@ -40,4 +40,4 @@ From: ubuntu:bionic
     git clone https://github.com/google/blockly.git /app/thirdparty/blockly
 
     # Only as test
-    apt install -y ros-melodic-turtlesim
+    apt install -y ros-melodic-turtlesim nano

@@ -110,6 +110,7 @@ Blockly.Blocks['wait_until'] = {
 // Blockly generator
 Blockly.Python['wait_until'] = function(block) {
   var value_condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
-  var code = "cond = " + value_condition + "\nwhile not(cond):\n\ttime.sleep(.1)\n\tcond = " + value_condition + "\n";
+  var code = "wait_cond = " + value_condition + "\nwhile not(wait_cond):\n\ttime.sleep(.1)\n\twait_cond = " + value_condition + "\n";
+  // TODO: make sleep depend on frequency of topic
   return code;
 };

@@ -1,20 +1,33 @@
-- add gazebo from josie et al
-3 add grav
+- fix ctrl c (and add stop button)
 4 email arnoud + josie
 5 add stuff to run on my robot + create movie
 6 email team
-- add pdb (step pause etc, and stop with ^c)
-- create windows and mac compatible 
-- add move page and do play record (with qr-code)
+- add pdb (step pause etc and highlight)
+- autocomplete with codemirror
 - add onsart (with a hat) en callback sensor data (this is also later in the curriculmu)
+- create windows and mac compatible 
+- add grav
+- add gazebo (from josie et al?)
+- add move page and do play record (with qr-code)
 - add webots?
 - save xml and python files
 - add moveit examples
 - save custom functions in blockyl
 - make sensors etc plugins
 
-
 known issues:
 - include bloxkly xml in some way
 - HTML, CSS and JS checks 
 - use correct environment (singulairyt clean environment)
+- suppress ROS messages + pdb msg
+- fix websockets
+- /app folder is on host!
+- test if robot.py also works fine when started with rosrun in a package
+- make robot.py a class?
+
+
+curriculum:
+- cyberbotics robot curriculum wiki book
+- braitenberg and flocking behavior
+- fsm to behaviours
+
