@@ -23,12 +23,7 @@ From: ubuntu:bionic
 
     # install dependecies for own script
     npm install express body-parser child-process
-
-    # install web-shell
-    npm install xterm@3.8.0
-    git clone https://github.com/experimental-dustbin/web-shell.git /app/thirdparty/web-shell
-    cd /app/thirdparty/web-shell
-    npm i && ./node_modules/.bin/tsc ./app.ts
+    npm install node-pty express-ws
 
     echo "Installing ROS Melodic base"
     sh -c 'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list'

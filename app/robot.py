@@ -6,13 +6,18 @@ from std_msgs.msg import Int32
 
 PI = 3.1415926535897
 
+import signal
+import sys
+def signal_handler(sig, frame):
+        sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
 
 
 # Define a function
 my_name = ""
 
 
-distance = ""
+distance = 0
 
 def getDistance():
     return distance;

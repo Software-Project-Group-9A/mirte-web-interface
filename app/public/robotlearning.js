@@ -1,11 +1,12 @@
     
 $( "#run" ).click(function( event ) {
-  event.preventDefault();
-
+    event.preventDefault();
     $.post( "/api/python", {source: editor.getValue() } ,  function( data ) {
-        console.log("file senr");
          socket.send("python /tmp/test.py\n");
     });
+});
 
 
+$( "#stop" ).click(function( event ) {
+    socket.send("\x03"); // CTRL-C
 });

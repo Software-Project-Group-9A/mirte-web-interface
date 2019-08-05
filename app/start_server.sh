@@ -6,7 +6,7 @@ ln -s /app/my_app/robot.py /tmp
 #export PYTHONPATH="${PYTHONPATH}:/my_scripts/robot_script"
 
 #start shell_ide listener
-nodejs /app/thirdparty/web-shell/app.js &
+nodejs /app/my_app/web-shell.js &
 BGPIDS=$!
 
 #start own ui server

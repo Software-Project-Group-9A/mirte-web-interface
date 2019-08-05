@@ -1,4 +1,3 @@
-- fix ctrl c (and add stop button)
 4 email arnoud + josie
 5 add stuff to run on my robot + create movie
 6 email team
@@ -16,6 +15,7 @@
 - make sensors etc plugins
 
 known issues:
+
 - include bloxkly xml in some way
 - HTML, CSS and JS checks 
 - use correct environment (singulairyt clean environment)
@@ -24,10 +24,10 @@ known issues:
 - /app folder is on host!
 - test if robot.py also works fine when started with rosrun in a package
 - make robot.py a class?
-
+- update xterm
+- move to python3?
 
 curriculum:
 - cyberbotics robot curriculum wiki book
 - braitenberg and flocking behavior
 - fsm to behaviours
-
