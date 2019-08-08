@@ -12,7 +12,7 @@ From: ubuntu:bionic
 %post
     echo "Updating system"
     apt update
-    apt upgrade
+    apt upgrade -y
 
     echo "Install basics"
     apt install git -y
