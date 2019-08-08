@@ -29,14 +29,15 @@ def callback(data):
 
 rospy.Subscriber("distance", Int32, callback)
 
-
-
 def set_name(name):
     global my_name
     my_name=name
 
 def get_name():
     return my_name
+
+def move_with_speed(distance=1, speed=1):
+    move(distance, speed)
 
 
 def move(distance=1, speed=1):
@@ -74,7 +75,7 @@ def turn(angle=90):
 
     # Receiveing the user's input
     #print("Let's rotate your robot")
-    speed = 15#input("Input your speed (degrees/sec):")
+    speed = 90#input("Input your speed (degrees/sec):")
     angle = angle#input("Type your distance (degrees):")
     clockwise = True;#input("Clockwise?: ") #True or false
 

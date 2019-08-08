@@ -3,6 +3,11 @@ body {
   font-family: sans-serif;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 h1 {
   font-weight: normal;
   font-size: 140%;
@@ -25,7 +30,6 @@ h1 {
 #blocklyArea {
   height: 50%;
   background: #fc9;
-  text-align: center;
   width: 100%;
 }
 
