@@ -1,11 +1,12 @@
-    body {
-      background-color: #fff;
-      font-family: sans-serif;
-    }
-    h1 {
-      font-weight: normal;
-      font-size: 140%;
-    }
+body {
+  background-color: #fff;
+  font-family: sans-serif;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 140%;
+}
 
 * {
   box-sizing: border-box;
@@ -19,4 +20,15 @@
 .column {
   flex: 50%;
   padding: 10px;
+}
+
+#blocklyArea {
+  height: 50%;
+  background: #fc9;
+  text-align: center;
+  width: 100%;
+}
+
+.CodeMirror{
+  height: 100%;
 }
