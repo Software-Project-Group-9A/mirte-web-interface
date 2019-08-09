@@ -7,7 +7,7 @@ From: ubuntu:bionic
     mkdir -p ${SINGULARITY_ROOTFS}/app/my_app
 
 %files
-    app app/my_app
+    app/* app/my_app
 
 %post
     echo "Updating system"
@@ -42,3 +42,6 @@ From: ubuntu:bionic
 
     # set environment on startup
     echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+
+%runscript
+    exec /app/my_app/start_server.sh

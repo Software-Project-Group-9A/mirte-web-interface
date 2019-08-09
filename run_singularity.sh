@@ -14,7 +14,7 @@ fi
 if test "$1" == "run"
 then
     echo "running as a user"
-    singularity exec -B app:/app/my_app ubuntu /app/my_app/start_server.sh
+    singularity run image.img
 fi
 if test "$1" == "init"
 then
