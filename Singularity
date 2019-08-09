@@ -35,7 +35,7 @@ From: ubuntu:bionic
     git clone https://github.com/google/blockly.git /app/thirdparty/blockly
 
     echo "installing rosserial"
-    apt install ros-melodic-rosserial ros-melodic-rosserial-adruino -y
+    apt install ros-melodic-rosserial ros-melodic-rosserial-arduino -y
 
     # Only as test
     apt install ros-melodic-turtlesim nano -y
