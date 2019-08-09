@@ -41,6 +41,28 @@ Blockly.Python['move_with_speed'] = function(block) {
 
 
 // Blockly block definition
+Blockly.Blocks['display_text'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Display text")
+        .appendField(new Blockly.FieldTextInput("Hello, World!"), "text");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(130);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+// Blockly generator
+Blockly.Python['display_text'] = function(block) {
+  let text = block.getFieldValue('text');
+  let code = `robot.display_text("${text}")\n`;
+  return code;
+};
+
+
+// Blockly block definition
 Blockly.Blocks['turn'] = {
   init: function() {
     this.appendDummyInput()

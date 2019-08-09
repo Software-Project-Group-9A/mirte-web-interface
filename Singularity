@@ -34,5 +34,11 @@ From: ubuntu:bionic
     echo "Installing blockly"
     git clone https://github.com/google/blockly.git /app/thirdparty/blockly
 
+    echo "installing rosserial"
+    apt install ros-melodic-rosserial ros-melodic-rosserial-adruino -y
+
     # Only as test
-    apt install -y ros-melodic-turtlesim nano
+    apt install ros-melodic-turtlesim nano -y
+
+    # set environment on startup
+    echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc

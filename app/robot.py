@@ -3,6 +3,7 @@
 import rospy
 from geometry_msgs.msg import Twist 
 from std_msgs.msg import Int32
+from std_msgs.msg import String
 
 PI = 3.1415926535897
 
@@ -12,10 +13,8 @@ def signal_handler(sig, frame):
         sys.exit(0)
 signal.signal(signal.SIGINT, signal_handler)
 
-
 # Define a function
 my_name = ""
-
 
 distance = 0
 
@@ -27,7 +26,14 @@ def callback(data):
     rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
     distance = data.data
 
+
 rospy.Subscriber("distance", Int32, callback)
+
+def display_text(text):
+    text_publisher = rospy.Publisher('display_text', String, queue_size=10)
+    rospy.init_node('robot_api', anonymous=True)
+    rospy.loginfo(text)
+    text_publisher.publish(text)
 
 def set_name(name):
     global my_name

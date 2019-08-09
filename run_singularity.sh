@@ -3,7 +3,7 @@
 echo 
 if test -z $1 
 then
-    echo "run development"	
+    echo "attach"	
     sudo singularity shell -w -B app:/app/my_app ubuntu
 fi 
 if test "$1" == "build"
