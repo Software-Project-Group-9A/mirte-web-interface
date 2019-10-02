@@ -4,7 +4,7 @@ echo
 if test -z $1 
 then
     echo "attach"	
-    singularity shell -w -B app:app/my_app ubuntu
+    singularity shell -w -B app:/app/my_app ubuntu
 fi 
 if test "$1" == "build"
 then
