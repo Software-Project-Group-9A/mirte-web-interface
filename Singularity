@@ -14,6 +14,9 @@ From: ubuntu:bionic
     apt update
     apt upgrade -y
 
+    # tzdata bug
+    export DEBIAN_FRONTEND=noninteractive
+
     echo "Install basics"
     apt install git -y
 
