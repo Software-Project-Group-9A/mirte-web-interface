@@ -4,7 +4,7 @@ echo
 if test -z $1 
 then
     echo "attach"	
-    sudo singularity shell -w -B app:/app/my_app ubuntu
+    singularity shell -w -B app:app/my_app ubuntu
 fi 
 if test "$1" == "build"
 then
@@ -23,5 +23,5 @@ then
 fi
 if test "$1" == "clean"
 then
-    sudo rm -rf ubuntu
+    sudo rm -rf ubuntu image.img
 fi
