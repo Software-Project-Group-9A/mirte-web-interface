@@ -1,28 +1,15 @@
+
+
 // Blockly block definition
 Blockly.Blocks['move'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Move forward")
-        .appendField(new Blockly.FieldImage("https://www.gstatic.com/codesite/ph/images/star_on.gif", 15, 15, "*"));
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(130);
- this.setTooltip("");
- this.setHelpUrl("");
-  }
-};
-
-// Blockly generator
-Blockly.Python['move'] = function(block) {
-  let code = 'robot.move()\n';
-  return code;
-};
-
-// Blockly block definition
-Blockly.Blocks['move_with_speed'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("Move forward with speed")
+        .appendField("Move ")
+        .appendField(new Blockly.FieldDropdown([
+          ['forward', 'forward'],
+          ['backward', 'backward']
+        ]), 'direction')
+        .appendField("with speed")
         .appendField(new Blockly.FieldNumber(1), "speed");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -33,9 +20,37 @@ Blockly.Blocks['move_with_speed'] = {
 };
 
 // Blockly generator
-Blockly.Python['move_with_speed'] = function(block) {
+Blockly.Python['move'] = function(block) {
+  let direction = block.getFieldValue('direction');
   let speed = block.getFieldValue('speed');
-  let code = `robot.move_with_speed(speed=${speed})\n`;
+  let code = `robot.move('${direction}', ${speed})\n`;
+  return code;
+};
+
+// Blockly block definition
+Blockly.Blocks['turn'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Turn ")
+        .appendField(new Blockly.FieldDropdown([
+          ['left', 'left'],
+          ['right', 'right']
+        ]), 'direction')
+        .appendField("speed")
+        .appendField(new Blockly.FieldNumber(1), "speed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(130);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+// Blockly generator
+Blockly.Python['turn'] = function(block) {
+  let direction = block.getFieldValue('direction');
+  let speed = block.getFieldValue('speed');
+  let code = 'robot.turn(\'' + direction + '\', ' + speed + ')\n';
   return code;
 };
 
@@ -63,10 +78,10 @@ Blockly.Python['display_text'] = function(block) {
 
 
 // Blockly block definition
-Blockly.Blocks['turn'] = {
+Blockly.Blocks['turnAngle'] = {
   init: function() {
     this.appendDummyInput()
-        .appendField("Turn ")
+        .appendField("Turn with angle ")
         .appendField(new Blockly.FieldAngle(90), "angle");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -77,9 +92,9 @@ Blockly.Blocks['turn'] = {
 };
 
 // Blockly generator
-Blockly.Python['turn'] = function(block) {
+Blockly.Python['turnAngle'] = function(block) {
   let angle_angle = block.getFieldValue('angle');
-  let code = 'robot.turn(' + angle_angle + ')\n';
+  let code = 'robot.turnAngle(' + angle_angle + ')\n';
   return code;
 };
 

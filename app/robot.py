@@ -42,18 +42,34 @@ def set_name(name):
 def get_name():
     return my_name
 
-def move_with_speed(distance=1, speed=1):
-    move(distance, speed)
+def turn(direction, speed):
+    #Starts a new node
+    rospy.init_node('robot_api', anonymous=True)
+    velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
+    vel_msg = Twist()
 
+    #We wont use linear components
+    vel_msg.linear.x=0
+    vel_msg.linear.y=0
+    vel_msg.linear.z=0
+    vel_msg.angular.x = 0
+    vel_msg.angular.y = 0
 
-def move(distance=1, speed=1):
+    if direction == 'right':
+        vel_msg.angular.z = -speed
+    else:
+        vel_msg.angular.z = speed
+
+    velocity_publisher.publish(vel_msg)
+
+def move(direction, speed):
+    if direction == 'backward':
+        speed = -speed
+        
     #Starts a new node
     velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
     rospy.init_node('robot_api', anonymous=True)
     vel_msg = Twist()
-
-    direction = distance / abs(distance)
-    speed = speed * direction
 
     vel_msg.linear.x=speed
     vel_msg.linear.y=0
@@ -62,18 +78,9 @@ def move(distance=1, speed=1):
     vel_msg.angular.y = 0
     vel_msg.angular.z = 0
 
-    t0 = rospy.Time.now().to_sec()
-    current_dist = 0.0
-
-    while(current_dist < distance * direction):
-        velocity_publisher.publish(vel_msg)
-        t1 = rospy.Time.now().to_sec()
-        current_dist = speed*(t1-t0) * direction
-
-    vel_msg.linear.x=0
     velocity_publisher.publish(vel_msg)
 
-def turn(angle=90):
+def turnAngle(angle=90):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
     velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)

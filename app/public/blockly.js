@@ -70,7 +70,6 @@ recolor(Blockly.Blocks['text'], 120);
 recolor(Blockly.Blocks['text_print'], 120);
 recolor(Blockly.Blocks['turn'], 120);
 recolor(Blockly.Blocks['move'], 120);
-//  recolor(Blockly.Blocks['move_with_speed'], 120);
 
   
 var blocklyArea = document.getElementById('blocklyArea');
