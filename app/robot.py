@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-
+import time
 import rospy
+
 from geometry_msgs.msg import Twist 
 from std_msgs.msg import Int32
 from std_msgs.msg import String
+from std_msgs.msg import Empty
 
 PI = 3.1415926535897
 
@@ -17,17 +19,32 @@ signal.signal(signal.SIGINT, signal_handler)
 my_name = ""
 
 distance = 0
+distance_available = False
+
+def distanceCallback(data):
+    global distance
+    global distance_available
+    distance = data.data
+    distance_available = True
+
+rospy.Subscriber("/turtle1/send_dist", Int32, distanceCallback)
 
 def getDistance():
-    return distance;
+    dist_request = rospy.Publisher('/turtle1/req_dist', Empty, queue_size=10)
+    rospy.init_node('robot_api', anonymous=True)
+    empty = Empty()
+    dist_request.publish(empty)
 
-def callback(data):
     global distance
-    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
-    distance = data.data
-
-
-rospy.Subscriber("distance", Int32, callback)
+    global distance_available
+    while not distance_available:
+        # small wait time as to not overload the arduino with requests when 
+        # continuously requesting the distance
+        time.sleep(0.1) 
+        
+    
+    distance_available = False
+    return distance
 
 def display_text(text):
     text_publisher = rospy.Publisher('display_text', String, queue_size=10)
