@@ -12,8 +12,12 @@ PI = 3.1415926535897
 import signal
 import sys
 def signal_handler(sig, frame):
-        sys.exit(0)
+    print('goodbye')
+    move('forward', 0)
+    sys.exit(0)
+
 signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
 
 # Define a function
 my_name = ""
@@ -27,10 +31,10 @@ def distanceCallback(data):
     distance = data.data
     distance_available = True
 
-rospy.Subscriber("/turtle1/send_dist", Int32, distanceCallback)
+rospy.Subscriber("distance", Int32, distanceCallback)
 
 def getDistance():
-    dist_request = rospy.Publisher('/turtle1/req_dist', Empty, queue_size=10)
+    dist_request = rospy.Publisher('distance_request', Empty, queue_size=10)
     rospy.init_node('robot_api', anonymous=True)
     empty = Empty()
     dist_request.publish(empty)
@@ -62,7 +66,7 @@ def get_name():
 def turn(direction, speed):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
+    velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
     vel_msg = Twist()
 
     #We wont use linear components
@@ -84,7 +88,7 @@ def move(direction, speed):
         speed = -speed
         
     #Starts a new node
-    velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
+    velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
     rospy.init_node('robot_api', anonymous=True)
     vel_msg = Twist()
 
@@ -100,7 +104,7 @@ def move(direction, speed):
 def turnAngle(angle=90):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    velocity_publisher = rospy.Publisher('/turtle1/cmd_vel', Twist, queue_size=10)
+    velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
     vel_msg = Twist()
 
     # Receiveing the user's input
