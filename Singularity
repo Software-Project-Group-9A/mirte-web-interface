@@ -18,7 +18,10 @@ From: ubuntu:bionic
     export DEBIAN_FRONTEND=noninteractive
 
     echo "Install basics"
-    apt install git -y
+    apt install git python-pip -y
+
+    echo "install pymata"
+    python -m pip install pymata
 
     # first install NPM due to bug (https://github.com/ros/rosdistro/issues/19845)
     echo "Installing NPM and dependancies"
@@ -39,6 +42,9 @@ From: ubuntu:bionic
 
     echo "installing rosserial"
     apt install ros-melodic-rosserial ros-melodic-rosserial-arduino -y
+
+    echo "installing ros control"
+    apt install ros-melodic-ros-control ros-melodic-ros-controllers -y
 
     # Only as test
     apt install ros-melodic-turtlesim nano -y
