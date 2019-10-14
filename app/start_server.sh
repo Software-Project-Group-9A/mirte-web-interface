@@ -12,8 +12,3 @@ BGPIDS=$!
 #start own ui server
 /app/my_app/server.js &
 BGPIDS2=$!
-
-. /opt/ros/melodic/setup.bash
-roscore &
-rosrun turtlesim turtlesim_node &
-#rosrun rosserial_python serial_node.py _port:=/dev/ttyACM1 _baud:=115200
