@@ -1,35 +1,45 @@
 ### get the web interface to work with real hardware
 
-1. flash the FirmataPlus software on your arduino ([link](https://github.com/MrYsLab/pymata-aio/wiki/Uploading-FirmataPlus-to-Arduino))
-2. connect to the orange pi via your local network
-3. install the singularity-container package and git
-4. clone web_interface
+1. Flash the FirmataPlus software on your arduino ([link](https://github.com/MrYsLab/pymata-aio/wiki/Uploading-FirmataPlus-to-Arduino))
+2. Follow the instructions in the README of sd_card repository
+
+
+### develop for web interface on real robot
+
+1. ssh into the OrangePi
+2. change into the directory of the web interface
    ```
-   $ ./run_singularity init
+    $ cd web_interafce
+    ```
+3. stop the systemd service of the currently running web_interface
    ```
-5. in the web_interface folder:
+    $ sudo service zoef_web_interface stop
     ```
-    $ sudo singularity shell -w -B app:/app/my_app ubuntu 
+4. start the singulairy image
     ```
-   you are now in the singularity
-6. make a catkin workspace in your home folder
-7.  clone zoef_ros_package in the src folder of your catkin worspace
-8.  build the ros project
+    $ sudo singularity shell -w -B app:/app/my_app zoef_web_interface
     ```
-    $ catkin_make
-    ```
-9.  You will need to have a couple of terminals open in this container (at least 2)
-10. for each of the terminals you will need to source the ros environments
-    ```
-    $ . /opt/ros/melodic/setup.bash
-    $ . ~/catkin_ws/devel/setup.bash
-    ```
-11. start roscore and the web services
+5. and start the accompanying services
     ```
     $ /app/myapp/start_server.sh
     ```
-12. launch the ros project
+6. connect to the web interface at the orange pi's ip at port 80
+
+### develop for web interface on your own machine
+
+1. install the singularity-container package and git
+2. git clone this repository 
+3. build the image as a folder
+   ```
+   $ ./run_singularity build_dev
+   ```
+4. in the web_interface folder:
     ```
-    $ roslaunch zoef_ros_package hw_control.launch
+    $ sudo singularity shell -w -B app:/app/my_app zoef_web_interface
     ```
-13. connect to the web interface at the orange pi's ip at port 8080
+   you are now in the singularity image
+5. start the web services
+    ```
+    $ /app/myapp/start_server.sh
+    ```
+6. connect to the web interface at the orange pi's ip at port 80
