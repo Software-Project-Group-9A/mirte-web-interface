@@ -14,7 +14,7 @@ fi
 if test "$1" == "run_dev"
 then
     echo "running dev build"
-    singularity instance.stop zoef
+    singularity instance.stop zoef || /bin/true
     singularity instance.start zoef_web_interface zoef
     singularity run --nv instance://zoef
 fi
@@ -29,7 +29,7 @@ fi
 if test "$1" == "run"
 then
     echo "running image"
-    singularity instance.stop zoef     
+    singularity instance.stop zoef || /bin/true
     singularity instance.start zoef_web_interface.img zoef
     singularity run --nv instance://zoef
 fi
