@@ -25,6 +25,9 @@ my_name = ""
 distance = 0
 distance_available = False
 
+# This needs to be assigned at the beginning. TODO: mae this whole thin one node instead of initializing a new node on each call
+velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
+
 def distanceCallback(data):
     global distance
     global distance_available
@@ -66,7 +69,6 @@ def get_name():
 def turn(direction, speed):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
     vel_msg = Twist()
 
     #We wont use linear components
@@ -86,9 +88,8 @@ def turn(direction, speed):
 def move(direction, speed):
     if direction == 'backward':
         speed = -speed
-        
+
     #Starts a new node
-    velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
     rospy.init_node('robot_api', anonymous=True)
     vel_msg = Twist()
 
@@ -104,7 +105,6 @@ def move(direction, speed):
 def turnAngle(angle=90):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
     vel_msg = Twist()
 
     # Receiveing the user's input
