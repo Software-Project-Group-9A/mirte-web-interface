@@ -75,7 +75,8 @@ recolor(Blockly.Blocks['move'], 120);
 var blocklyArea = document.getElementById('blocklyArea');
 var blocklyDiv = document.getElementById('blocklyDiv');
 var workspace = Blockly.inject(blocklyDiv,
-    {toolbox: document.getElementById('toolbox')});
+    {toolbox: document.getElementById('toolbox'),
+     media: '3rdparty/media/'});
 
 var onresize = function(e) {
   // Compute the absolute coordinates and dimensions of blocklyArea.
