@@ -56,7 +56,6 @@ def getDistance():
 def display_text(text):
     text_publisher = rospy.Publisher('display_text', String, queue_size=10)
     rospy.init_node('robot_api', anonymous=True)
-    time.sleep(1)
     rospy.loginfo(text)
     text_publisher.publish(text)
 
@@ -70,7 +69,6 @@ def get_name():
 def turn(direction, speed):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    time.sleep(1)
     vel_msg = Twist()
 
     #We wont use linear components
@@ -93,7 +91,6 @@ def move(direction, speed):
 
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    time.sleep(1)
     vel_msg = Twist()
 
     vel_msg.linear.x=speed
@@ -108,7 +105,6 @@ def move(direction, speed):
 def turnAngle(angle=90):
     #Starts a new node
     rospy.init_node('robot_api', anonymous=True)
-    time.sleep(1) 
     vel_msg = Twist()
 
     # Receiveing the user's input
