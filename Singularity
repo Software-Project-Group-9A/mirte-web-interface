@@ -38,8 +38,5 @@ From: arm32v7/ubuntu:bionic
     apt install -y ros-melodic-ros-base
     echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
-    echo "Installing blockly"
-    git clone https://github.com/google/blockly.git /app/thirdparty/blockly
-
 %runscript
     exec /app/my_app/start_server.sh
