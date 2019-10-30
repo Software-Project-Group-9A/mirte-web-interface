@@ -105,7 +105,9 @@ class Robot():
         self.velocity_publisher.publish(vel_msg)
 
     def stop(self):
+        self.move('forward', 0)
         print "stoppping robot"
+        sys.exit(0)
 
 def createRobot():
     global zoef
@@ -113,9 +115,7 @@ def createRobot():
     return zoef
 
 def signal_handler(sig, frame):
-    print('goodbye')
     zoef.stop()
-    sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
