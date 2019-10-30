@@ -22,7 +22,7 @@ const socket = new WebSocket(socketUrl);
 // Attach the socket to the terminal
 socket.onopen = (ev) => {
     term.attach(socket);
-    socket.send("source /opt/ros/melodic/setup.bash && clear\n");
+    socket.send("source /opt/ros/melodic/setup.bash && export ROS_IP=127.0.0.1 && clear\n");
 };
 
 // Not going to worry about close/error for the websocket
