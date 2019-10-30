@@ -1,4 +1,29 @@
+// Blockly block definition
+Blockly.Blocks['pwm'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Set PWM of  ")
+        .appendField(new Blockly.FieldDropdown([
+          ['left', 'left'],
+          ['right', 'right']
+        ]), 'motor')
+        .appendField("to value")
+        .appendField(new Blockly.FieldNumber(1), "speed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(130);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
 
+// Blockly generator
+Blockly.Python['pwm'] = function(block) {
+  let motor = block.getFieldValue('motor');
+  let speed = block.getFieldValue('speed');
+  let code = `zoef.pwm('${motor}', ${speed})\n`;
+  return code;
+};
 
 // Blockly block definition
 Blockly.Blocks['move'] = {

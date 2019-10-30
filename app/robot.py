@@ -21,6 +21,8 @@ class Robot():
     def __init__(self):
         self.dist_request = rospy.Publisher('distance_request', Empty, queue_size=10)
         self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
+        self.pwm_publisher_left = rospy.Publisher('left_pwm', Int32, queue_size=10)
+        self.pwm_publisher_right = rospy.Publisher('right_pwm', Int32, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
         rospy.init_node('robot_api', anonymous=True)
         self.distance_subscriber = rospy.Subscriber('distance', Int32, self.distanceCallback)
@@ -43,6 +45,13 @@ class Robot():
         rospy.loginfo(text)
         self.text_publisher.publish(text)
 
+    def pwm(self, motor, value):
+        pwm_value = Int32()
+        pwm_value.data = value
+	if motor == 'left':
+            self.pwm_publisher_left.publish(pwm_value)
+        else:
+            self.pwm_publisher_right.publish(pwm_value)
 
     def turn(self, direction, speed):
         vel_msg = Twist()
