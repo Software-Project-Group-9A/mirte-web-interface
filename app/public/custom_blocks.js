@@ -23,7 +23,7 @@ Blockly.Blocks['move'] = {
 Blockly.Python['move'] = function(block) {
   let direction = block.getFieldValue('direction');
   let speed = block.getFieldValue('speed');
-  let code = `robot.move('${direction}', ${speed})\n`;
+  let code = `zoef.move('${direction}', ${speed})\n`;
   return code;
 };
 
@@ -50,7 +50,7 @@ Blockly.Blocks['turn'] = {
 Blockly.Python['turn'] = function(block) {
   let direction = block.getFieldValue('direction');
   let speed = block.getFieldValue('speed');
-  let code = 'robot.turn(\'' + direction + '\', ' + speed + ')\n';
+  let code = 'zoef.turn(\'' + direction + '\', ' + speed + ')\n';
   return code;
 };
 
@@ -72,7 +72,7 @@ Blockly.Blocks['display_text'] = {
 // Blockly generator
 Blockly.Python['display_text'] = function(block) {
   let text = block.getFieldValue('text');
-  let code = `robot.display_text("${text}")\n`;
+  let code = `zoef.display_text("${text}")\n`;
   return code;
 };
 
@@ -94,7 +94,7 @@ Blockly.Blocks['turnAngle'] = {
 // Blockly generator
 Blockly.Python['turnAngle'] = function(block) {
   let angle_angle = block.getFieldValue('angle');
-  let code = 'robot.turnAngle(' + angle_angle + ')\n';
+  let code = 'zoef.turnAngle(' + angle_angle + ')\n';
   return code;
 };
 
@@ -137,7 +137,7 @@ Blockly.Blocks['get_distance'] = {
 
 Blockly.Python['get_distance'] = function(block) {
   // TODO: Assemble JavaScript into code letiable.
-  let code = 'robot.getDistance()';
+  let code = 'zoef.getDistance()';
   // TODO: Change ORDER_NONE to the correct strength.
   return [code, Blockly.Python.ORDER_NONE];
 };

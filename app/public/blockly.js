@@ -1,7 +1,7 @@
 
 // TODO: make more flexible, dependant on used blocks
 Blockly.Python.finish = function(code) { 
-   return "import robot\nimport time\n\n" + code;
+   return "import robot\nimport time\n\nzoef = robot.createRobot()\n\n" + code;
 };
 
 Blockly.BlockSvg.START_HAT = true;
