@@ -97,8 +97,29 @@ Blockly.Blocks['display_text'] = {
 // Blockly generator
 Blockly.Python['display_text'] = function(block) {
   let text = block.getFieldValue('text');
-  let code = `zoef.display_text("${text}")\n`;
+  let code = `zoef.displayText("${text}")\n`;
   return code;
+};
+
+// Blockly generator
+Blockly.Blocks['get_pin_value'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get analog pin value")
+        .appendField(new Blockly.FieldNumber(1), "pin");
+    this.setOutput(true, null);
+    this.setColour(160);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['get_pin_value'] = function(block) {
+  // TODO: Assemble JavaScript into code letiable.
+  let pin = block.getFieldValue('pin');
+  let code = `zoef.getPinValue(${pin})`;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
 };
 
 

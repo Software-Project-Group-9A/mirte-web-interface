@@ -10,10 +10,11 @@ from std_msgs.msg import Int32
 from std_msgs.msg import String
 from std_msgs.msg import Empty
 
+from zoef_types.srv import *
+
 # temp solution while not implemented sevice
 def test(data):
     a= 10
-rospy.Subscriber('distance', Int32, test)
 
 zoef = {}
 
@@ -25,23 +26,18 @@ class Robot():
         self.pwm_publisher_right = rospy.Publisher('right_pwm', Int32, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
         rospy.init_node('robot_api', anonymous=True)
-        self.distance_subscriber = rospy.Subscriber('distance', Int32, self.distanceCallback)
-        self.distance = 0
-        self.distance_available = False
-
-    def distanceCallback(self, data):
-        self.distance = data.data
-        self.distance_available = True
 
     def getDistance(self):
-        empty = Empty()
-        self.dist_request.publish(empty)
-        while not self.distance_available:
-           time.sleep(0.1)
-        self.dist_available = False
-        return self.distance
+        distance_getter = rospy.ServiceProxy('get_distance', get_distance)
+        dist = distance_getter()
+        return dist.data
 
-    def display_text(self, text):
+    def getPinValue(self, pin):
+        pin_value_getter = rospy.ServiceProxy('get_pin_value', get_pin_value)
+        value = pin_value_getter(pin)
+        return value.data
+
+    def displayText(self, text):
         rospy.loginfo(text)
         self.text_publisher.publish(text)
 
