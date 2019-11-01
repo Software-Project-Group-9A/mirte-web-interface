@@ -39,12 +39,10 @@ From: arm32v7/ubuntu:bionic
     echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
     echo "installing zoef types"
-    . /opt/ros/melodic/setup.bash
+    . /opt/ros/melodic/setup.sh
     mkdir -p ~/zoef_ws/src
-    cd ~/zoef_ws
-    catkin_make
     cd ~/zoef_ws/src
-    git clone git clone https://gitlab.tudelft.nl/rcj_zoef/zoef_types.git
+    git clone https://gitlab.tudelft.nl/rcj_zoef/zoef_types.git
     cd ~/zoef_ws
     catkin build
     echo "source ~/zoef_ws/devel/setup.bash" >> ~/.bashrc
