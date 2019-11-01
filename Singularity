@@ -5,6 +5,7 @@ From: arm32v7/ubuntu:bionic
     mkdir -p ${SINGULARITY_ROOTFS}/app
     mkdir -p ${SINGULARITY_ROOTFS}/app/thirdparty
     mkdir -p ${SINGULARITY_ROOTFS}/app/my_app
+    mkdir -p ${SINGULARITY_ROOTFS}/app/zoef_ws
 
 %files
     app/* app/my_app
@@ -39,15 +40,13 @@ From: arm32v7/ubuntu:bionic
     echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 
     echo "installing zoef types"
-    . /opt/ros/melodic/setup.bash
-    mkdir -p ~/zoef_ws/src
-    cd ~/zoef_ws
-    catkin_make
-    cd ~/zoef_ws/src
-    git clone git clone https://gitlab.tudelft.nl/rcj_zoef/zoef_types.git
-    cd ~/zoef_ws
+    . /opt/ros/melodic/setup.sh
+    mkdir -p /app/zoef_ws/src
+    cd /app/zoef_ws/src
+    git clone https://gitlab.tudelft.nl/rcj_zoef/zoef_types.git
+    cd /app/zoef_ws
     catkin build
-    echo "source ~/zoef_ws/devel/setup.bash" >> ~/.bashrc
+    echo "source /app/zoef_ws/devel/setup.bash" >> ~/.bashrc
 
 %runscript
     exec /app/my_app/start_server.sh
