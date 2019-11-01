@@ -50,3 +50,4 @@ From: arm32v7/ubuntu:bionic
 
 %runscript
     exec /app/my_app/start_server.sh
+
