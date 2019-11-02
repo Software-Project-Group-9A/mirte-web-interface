@@ -10,7 +10,7 @@ from std_msgs.msg import Int32
 from std_msgs.msg import String
 from std_msgs.msg import Empty
 
-from zoef_types.srv import *
+from zoef_msgs.srv import *
 
 # temp solution while not implemented sevice
 def test(data):
