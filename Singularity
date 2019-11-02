@@ -43,7 +43,7 @@ From: arm32v7/ubuntu:bionic
     . /opt/ros/melodic/setup.sh
     mkdir -p /app/zoef_ws/src
     cd /app/zoef_ws/src
-    git clone https://gitlab.tudelft.nl/rcj_zoef/zoef_types.git
+    git clone https://gitlab.tudelft.nl/rcj_zoef/zoef_msgs.git
     cd /app/zoef_ws
     catkin build
     echo "source /app/zoef_ws/devel/setup.bash" >> ~/.bashrc
