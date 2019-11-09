@@ -26,6 +26,8 @@ class Robot():
         self.pwm_publisher_right = rospy.Publisher('right_pwm', Int32, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
         rospy.init_node('robot_api', anonymous=True)
+        while self.velocity_publisher.get_num_connections() == 0:
+             rospy.sleep(.1)
 
     def getDistance(self):
         distance_getter = rospy.ServiceProxy('get_distance', get_distance)
