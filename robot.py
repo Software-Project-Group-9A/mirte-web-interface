@@ -33,7 +33,7 @@ class Robot():
 
         #Temp fix. We should create a node that listens to service calls from this node. This node should not have any publishers.
         print "wating to connect"
-        while self.velocity_publisher.get_num_connections() == 0 or self.left_encoder_sub.get_num_connections() == 0:
+        while self.velocity_publisher.get_num_connections() == 0:
              rospy.sleep(.1)
         print "connected"
 
