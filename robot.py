@@ -5,16 +5,14 @@ import signal
 import sys
 import math
 
+import message_filters
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32
 from std_msgs.msg import String
 from std_msgs.msg import Empty
+from zoef_msgs.msg import Encoder
 
 from zoef_msgs.srv import *
-
-# temp solution while not implemented sevice
-def test(data):
-    a= 10
 
 zoef = {}
 
@@ -25,9 +23,19 @@ class Robot():
         self.pwm_publisher_left = rospy.Publisher('left_pwm', Int32, queue_size=10)
         self.pwm_publisher_right = rospy.Publisher('right_pwm', Int32, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
+
         rospy.init_node('robot_api', anonymous=True)
-        while self.velocity_publisher.get_num_connections() == 0:
+
+        self.left_encoder_filter = message_filters.Subscriber('left_encoder', Encoder)
+        self.left_encoder_cache = message_filters.Cache(self.left_encoder_filter, 200)
+        self.right_encoder_filter = message_filters.Subscriber('right_encoder', Encoder)
+        self.right_encoder_cache = message_filters.Cache(self.right_encoder_filter, 200)
+
+        #Temp fix. We should create a node that listens to service calls from this node. This node should not have any publishers.
+        print "wating to connect"
+        while self.velocity_publisher.get_num_connections() == 0 or self.left_encoder_sub.get_num_connections() == 0:
              rospy.sleep(.1)
+        print "connected"
 
     def getDistance(self):
         distance_getter = rospy.ServiceProxy('get_distance', get_distance)
@@ -50,6 +58,13 @@ class Robot():
             self.pwm_publisher_left.publish(pwm_value)
         else:
             self.pwm_publisher_right.publish(pwm_value)
+
+    def getNumberOfEncoderTicks(self, motor, time_delta):
+        now = rospy.get_rostime()
+        if motor == 'left':
+           return len(self.left_encoder_cache.getInterval(now - rospy.Duration(time_delta), now))
+        else:
+           return len(self.right_encoder_cache.getInterval(now - rospy.Duration(time_delta), now))
 
     def turn(self, direction, speed):
         vel_msg = Twist()
