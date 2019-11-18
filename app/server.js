@@ -29,15 +29,9 @@ fs.writeFile("/tmp/test.py", source, function(err) {
         return console.log(err);
     }
 
-     const
-    { spawnSync } = require( 'child_process' ),
-    ls = spawnSync( 'python', [ '/tmp/test.py'] );
-    console.log( `stdout: ${ls.stdout.toString()}` );
-
-
-    res.send(ls.stdout.toString());
+    res.send("received");
     console.log("The file was saved!");
-}); 
+});
 
     //res.send('done');
 });

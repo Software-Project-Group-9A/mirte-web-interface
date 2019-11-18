@@ -25,7 +25,7 @@ From: arm32v7/ubuntu:bionic
 
     # install dependecies for own script
     apt install nodejs npm -y
-    npm install express body-parser child-process
+    npm install express body-parser
 
 %runscript
     exec /app/my_app/server.js

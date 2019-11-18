@@ -32,10 +32,8 @@ class Robot():
         self.right_encoder_cache = message_filters.Cache(self.right_encoder_filter, 200)
 
         #Temp fix. We should create a node that listens to service calls from this node. This node should not have any publishers.
-        print "wating to connect"
         while self.velocity_publisher.get_num_connections() == 0:
              rospy.sleep(.1)
-        print "connected"
 
     def getDistance(self):
         distance_getter = rospy.ServiceProxy('get_distance', get_distance)
@@ -122,6 +120,9 @@ class Robot():
         print "stoppping robot"
         sys.exit(0)
 
+# We need a special functio to initiate the Robot() for two reasons:
+# 1) The signal handler needs to be able to stop the robot
+# 2) The main.py need to call the init_node() (see: https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file/)
 def createRobot():
     global zoef
     zoef = Robot()
@@ -130,5 +131,7 @@ def createRobot():
 def signal_handler(sig, frame):
     zoef.stop()
 
-signal.signal(signal.SIGINT, signal_handler)
-signal.signal(signal.SIGTERM, signal_handler)
+
+# TODO: temp disabled for linetracer
+#signal.signal(signal.SIGINT, signal_handler)
+#signal.signal(signal.SIGTERM, signal_handler)
