@@ -122,6 +122,48 @@ Blockly.Python['get_pin_value'] = function(block) {
   return [code, Blockly.Python.ORDER_NONE];
 };
 
+// Blockly generator
+Blockly.Blocks['get_virtual_color'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get a color from the camera ")
+        .appendField(new Blockly.FieldDropdown([
+          ['left', 'left'],
+          ['right', 'right']
+        ]), 'direction')
+    this.setOutput(true, null);
+    this.setColour(160);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['get_virtual_color'] = function(block) {
+  // TODO: Assemble JavaScript into code letiable.
+  let direction = block.getFieldValue('direction');
+  let code = `zoef.getVirtualColor('${direction}')`;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
+};
+
+// Blockly generator
+Blockly.Blocks['get_barcode'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("get a barcode or qr code from the camera ")
+    this.setOutput(true, null);
+    this.setColour(160);
+ this.setTooltip("");
+ this.setHelpUrl("");
+  }
+};
+
+Blockly.Python['get_barcode'] = function(block) {
+  // TODO: Assemble JavaScript into code letiable.
+  let code = `zoef.getBarcode()`;
+  // TODO: Change ORDER_NONE to the correct strength.
+  return [code, Blockly.Python.ORDER_NONE];
+};
 
 // Blockly block definition
 Blockly.Blocks['turnAngle'] = {
