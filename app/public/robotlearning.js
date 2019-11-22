@@ -2,11 +2,25 @@
 $( "#run" ).click(function( event ) {
     event.preventDefault();
     $.post( "/api/python", {source: editor.getValue() } ,  function( data ) {
-         socket.send("python /tmp/test.py\n");
+         socket.send("./linetrace.py\n");
     });
 });
 
+// Can not send SIGINT since that is already handled ROS
+
+$( "#pause" ).click(function( event ) {
+    socket.send("\x03"); // CTRL-C (SIGTSTP) overruled in linetrace.py
+});
+
+$( "#step" ).click(function( event ) {
+    socket.send("n\n"); // n (own implementation in linetrace.py
+});
+
+$( "#continue" ).click(function( event ) {
+    socket.send("c\n"); // c (own implementation in linetrace.py
+});
 
 $( "#stop" ).click(function( event ) {
-    socket.send("\x03"); // CTRL-C
+    socket.send("\x1c"); // CTRL-C (SIGQUIT) 
+    editor.clearGutter("linetracer");
 });

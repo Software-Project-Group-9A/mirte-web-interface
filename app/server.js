@@ -24,20 +24,15 @@ app.post('/api/python', function(req, res) {
     var source = req.body.source;
 
 const fs = require('fs');
-fs.writeFile("/tmp/test.py", source, function(err) {
+fs.writeFile("/workdir/zoef.py", source, function(err) {
     if(err) {
         return console.log(err);
+        res.send("error");
     }
 
-     const
-    { spawnSync } = require( 'child_process' ),
-    ls = spawnSync( 'python', [ '/tmp/test.py'] );
-    console.log( `stdout: ${ls.stdout.toString()}` );
-
-
-    res.send(ls.stdout.toString());
+    res.send("received");
     console.log("The file was saved!");
-}); 
+});
 
     //res.send('done');
 });

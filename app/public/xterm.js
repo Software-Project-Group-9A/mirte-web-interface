@@ -21,9 +21,34 @@ const socket = new WebSocket(socketUrl);
 
 // Attach the socket to the terminal
 socket.onopen = (ev) => {
-    term.attach(socket);
-    socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && clear\n");
+    //term.attach(socket);
+    socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
 };
+
+
+socket.onmessage = (event) => {
+  lines = event.data.split('\n')
+  lines.forEach(function (line, index) {
+    if (line.indexOf("out: ") == 0) {
+       term.writeln(line.substring(5))
+    }
+    if (line.indexOf("line: ") == 0) {
+       linenr = parseInt(line.substring(6)) - 1
+       editor.clearGutter("linetracer");
+       editor.setGutterMarker(linenr, "linetracer", makeMarker());
+    }
+
+  });
+};
+
+
+function makeMarker() {
+  var marker = document.createElement("div");
+  marker.style.color = "#822";
+  marker.innerHTML = "●";
+  return marker;
+}
+
 
 // Not going to worry about close/error for the websocket
 
