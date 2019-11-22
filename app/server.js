@@ -24,9 +24,10 @@ app.post('/api/python', function(req, res) {
     var source = req.body.source;
 
 const fs = require('fs');
-fs.writeFile("/tmp/test.py", source, function(err) {
+fs.writeFile("/workdir/zoef.py", source, function(err) {
     if(err) {
         return console.log(err);
+        res.send("error");
     }
 
     res.send("received");

@@ -2,7 +2,7 @@
 $( "#run" ).click(function( event ) {
     event.preventDefault();
     $.post( "/api/python", {source: editor.getValue() } ,  function( data ) {
-         socket.send("./linetrace.py test.py\n");
+         socket.send("./linetrace.py\n");
     });
 });
 

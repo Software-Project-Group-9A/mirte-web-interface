@@ -22,7 +22,7 @@ const socket = new WebSocket(socketUrl);
 // Attach the socket to the terminal
 socket.onopen = (ev) => {
     //term.attach(socket);
-    socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /tmp && clear\n");
+    socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
 };
 
 
