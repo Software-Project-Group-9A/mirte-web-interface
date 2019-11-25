@@ -45,6 +45,16 @@ class Robot():
         value = pin_value_getter(pin)
         return value.data
 
+    def getVirtualColor(self, direction):
+        virtual_color_getter = rospy.ServiceProxy('get_virtual_color', get_virtual_color)
+        value = virtual_color_getter(direction)
+        return value.data
+
+    def getBarcode(self):
+        barcode_getter = rospy.ServiceProxy('get_barcode', get_barcode)
+        value = barcode_getter()
+        return value.data
+
     def displayText(self, text):
         rospy.loginfo(text)
         self.text_publisher.publish(text)
