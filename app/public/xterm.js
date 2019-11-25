@@ -33,11 +33,17 @@ socket.onmessage = (event) => {
        term.writeln(line.substring(5))
     }
     if (line.indexOf("line: ") == 0) {
-       linenr = parseInt(line.substring(6)) - 1
+       linenr = parseInt(line.substring(6));
        editor.clearGutter("linetracer");
-       editor.setGutterMarker(linenr, "linetracer", makeMarker());
+       editor.setGutterMarker(linenr-1, "linetracer", makeMarker());
+       blockMap = getBlockToLineMap();
+       highlightBlock(blockMap[linenr]);
     }
-
+    if (line.indexOf("@zoef:") > 0){
+       // Clear gutter and highligth when process stopped
+       editor.clearGutter("linetracer");
+       workspace.highlightBlock("");
+    }
   });
 };
 

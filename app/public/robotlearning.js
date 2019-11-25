@@ -22,5 +22,4 @@ $( "#continue" ).click(function( event ) {
 
 $( "#stop" ).click(function( event ) {
     socket.send("\x1c"); // CTRL-C (SIGQUIT) 
-    editor.clearGutter("linetracer");
 });
