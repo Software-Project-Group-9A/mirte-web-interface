@@ -37,7 +37,7 @@ socket.onmessage = (event) => {
        editor.clearGutter("linetracer");
        editor.setGutterMarker(linenr-1, "linetracer", makeMarker());
        blockMap = getBlockToLineMap();
-       highlightBlock(blockMap[linenr]);
+       workspace.highlightBlock(blockMap[linenr]);
     }
     if (line.indexOf("@zoef:") > 0){
        // Clear gutter and highligth when process stopped

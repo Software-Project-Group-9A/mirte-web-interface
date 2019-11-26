@@ -1,9 +1,3 @@
-
-// TODO: make more flexible, dependant on used blocks
-Blockly.Python.finish = function(code) { 
-   return "import robot\nimport time\n\nzoef = robot.createRobot()\n\n" + code;
-};
-
 Blockly.BlockSvg.START_HAT = true;
 
 //https://groups.google.com/forum/#!topic/blockly/yUBEymLKBbk
@@ -109,45 +103,30 @@ if (storage !== null) {
     Blockly.Xml.domToWorkspace(xml, workspace);
 }
 
-var highlightPause = false;
 var latestCode = '';
 
-function highlightBlock(id) {
-  workspace.highlightBlock(id);
-  highlightPause = true;
-}
+var prefix=0;
 
 function getBlockToLineMap() {
-    var blockMap = {}
-    var lastLoc = 0;
-
-    // Generate code and remove indentation for good matching
-    var code = Blockly.Python.workspaceToCode(workspace);
-    code = code.replace(/\n[ \t\r\f]+/g,"\n");
+   var blockMap = {}
+   var offset = (prefix.match(/\n/g) || []).length + 1;
 
    var all_blocks = workspace.getAllBlocks();
-   all_blocks.forEach(function(elem) {
 
-     // Get code for this block and remove indentation
-     blockCode = Blockly.Python.blockToCode(elem, true);
-     blockCode = String(blockCode).replace(/\n[ \t\r\f]+/g,"\n");
+   Blockly.Python.STATEMENT_PREFIX = "blockid: %1";
+   var code = Blockly.Python.workspaceToCode(workspace);
+   codeLines = code.split("\n");
+   for (var i = 0; i < codeLines.length; i++) {
+      line = codeLines[i].trim();
+      blockidstr = line.lastIndexOf("blockid: ");
+      if (blockidstr >= 0){
+	 line = line.substr(blockidstr);
+         block_id = line.substr(10,20);
+	 blockMap[i+offset] = block_id;
+      }
+   }
 
-     // Determine location of block
-     loc = code.indexOf(blockCode);
-     if (loc > lastLoc){
-          lastLoc = loc;
-          before = code.substr(0, loc);
-          lineNr = (before.match(/\n/g) || []).length + 1;
-          nrLines = (blockCode.match(/\n/g) || []).length;
-          if (nrLines > 0){
-          for (i = 0; i < nrLines; i++){
-	      tmp = lineNr + i;
-              blockMap[tmp] = elem.id;
-          }
-        }
-     }
-   });
-
+   Blockly.Python.STATEMENT_PREFIX = "";
    return blockMap;
 }
 
@@ -159,9 +138,9 @@ workspace.addChangeListener(function(event) {
     if (event instanceof Blockly.Events.Move || event instanceof Blockly.Events.Delete || event instanceof Blockly.Events.Change) {
     // Something changed. Parser needs to be reloaded.
 
-    getBlockToLineMap();
-
     var code = Blockly.Python.workspaceToCode(workspace);
+    prefix = "import robot\nimport time\n\nzoef = robot.createRobot()\n\n";  // TODO: make more flexible, dependant on used blocks (maybe already in blockly)
+    code = prefix + code;
     editor.setValue(code);
 
     var xml = Blockly.Xml.workspaceToDom(workspace);
