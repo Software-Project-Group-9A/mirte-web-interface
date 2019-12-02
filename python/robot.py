@@ -26,6 +26,9 @@ class Robot():
 
         rospy.init_node('robot_api', anonymous=True)
 
+        self.move_service = rospy.ServiceProxy('Move', Move)
+        self.turn_service = rospy.ServiceProxy('Turn', Turn)
+
         self.left_encoder_filter = message_filters.Subscriber('left_encoder', Encoder)
         self.left_encoder_cache = message_filters.Cache(self.left_encoder_filter, 200)
         self.right_encoder_filter = message_filters.Subscriber('right_encoder', Encoder)
@@ -74,59 +77,16 @@ class Robot():
         else:
            return len(self.right_encoder_cache.getInterval(now - rospy.Duration(time_delta), now))
 
-    def turn(self, direction, speed):
-        vel_msg = Twist()
+    def turn(self, angle = (math.pi / 2), speed = (math.pi / 10)):
+        turn = self.turn_service(angle, speed)
+        return turn.data
 
-        if direction == 'right':
-            vel_msg.angular.z = -speed
-        else:
-            vel_msg.angular.z = speed
-
-        self.velocity_publisher.publish(vel_msg)
-
-
-    def move(self, direction, speed):
-        if direction == 'backward':
-            speed = -speed
-
-        vel_msg = Twist()
-        vel_msg.linear.x=speed
-
-        self.velocity_publisher.publish(vel_msg)
-
-    def turnAngle(self, angle=90):
-        vel_msg = Twist()
-
-        # Receiveing the user's input
-        speed = 90#input("Input your speed (degrees/sec):")
-        angle = angle#input("Type your distance (degrees):")
-        clockwise = True;#input("Clockwise?: ") #True or false
-
-        #Converting from angles to radians
-        angular_speed = speed*2*math.pi/360
-        relative_angle = angle*2*math.pi/360
-
-        # Checking if our movement is CW or CCW
-        if clockwise:
-            vel_msg.angular.z = -abs(angular_speed)
-        else:
-            vel_msg.angular.z = abs(angular_speed)
-        # Setting the current time for distance calculus
-        t0 = rospy.Time.now().to_sec()
-        current_angle = 0
-
-        while(current_angle < relative_angle):
-            self.velocity_publisher.publish(vel_msg)
-            t1 = rospy.Time.now().to_sec()
-            current_angle = angular_speed*(t1-t0)
-
-
-        #Forcing our robot to stop
-        vel_msg.angular.z = 0
-        self.velocity_publisher.publish(vel_msg)
+    def move(self, distance = 0.1, speed = 0.02):
+        move = self.move_service(distance, speed)
+        return move.data
 
     def stop(self):
-        self.move('forward', 0)
+        self.move(0, 0)
         print "stoppping robot"
         sys.exit(0)
 
