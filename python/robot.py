@@ -18,6 +18,7 @@ zoef = {}
 
 class Robot():
     def __init__(self):
+        # Publishers
         self.dist_request = rospy.Publisher('distance_request', Empty, queue_size=10)
         self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
         self.pwm_publisher_left = rospy.Publisher('left_pwm', Int32, queue_size=10)
@@ -26,26 +27,24 @@ class Robot():
 
         rospy.init_node('robot_api', anonymous=True)
 
+        # Services
         self.move_service = rospy.ServiceProxy('Move', Move)
         self.turn_service = rospy.ServiceProxy('Turn', Turn)
+        self.distance_service = rospy.ServiceProxy('get_distance', get_distance)
+        self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
 
+        # Message filters
         self.left_encoder_filter = message_filters.Subscriber('left_encoder', Encoder)
         self.left_encoder_cache = message_filters.Cache(self.left_encoder_filter, 200)
         self.right_encoder_filter = message_filters.Subscriber('right_encoder', Encoder)
         self.right_encoder_cache = message_filters.Cache(self.right_encoder_filter, 200)
 
-        #Temp fix. We should create a node that listens to service calls from this node. This node should not have any publishers.
-        while self.velocity_publisher.get_num_connections() == 0:
-             rospy.sleep(.1)
-
     def getDistance(self):
-        distance_getter = rospy.ServiceProxy('get_distance', get_distance)
-        dist = distance_getter()
+        dist = self.distance_service()
         return dist.data
 
     def getPinValue(self, pin):
-        pin_value_getter = rospy.ServiceProxy('get_pin_value', get_pin_value)
-        value = pin_value_getter(pin)
+        value = self.pin_value_service(pin)
         return value.data
 
     def getVirtualColor(self, direction):
