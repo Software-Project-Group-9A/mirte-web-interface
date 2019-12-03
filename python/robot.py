@@ -30,7 +30,7 @@ class Robot():
         # Services
         self.move_service = rospy.ServiceProxy('Move', Move)
         self.turn_service = rospy.ServiceProxy('Turn', Turn)
-        self.distance_service = rospy.ServiceProxy('get_distance', get_distance)
+        self.distance_service = rospy.ServiceProxy('/zoef_service_api/get_distance', get_distance)
         self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
 
         # Message filters
