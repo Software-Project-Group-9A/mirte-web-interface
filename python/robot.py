@@ -30,7 +30,12 @@ class Robot():
         # Services
         self.move_service = rospy.ServiceProxy('Move', Move)
         self.turn_service = rospy.ServiceProxy('Turn', Turn)
-        self.distance_service = rospy.ServiceProxy('/zoef_service_api/get_distance', get_distance)
+
+        # Services for sensors
+        distance_sensors = rospy.get_param("/zoef/distance")
+        self.distance_services = {}
+        for sensor in distance_sensors:
+            self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance)
         self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
 
         # Message filters
@@ -39,8 +44,8 @@ class Robot():
         self.right_encoder_filter = message_filters.Subscriber('right_encoder', Encoder)
         self.right_encoder_cache = message_filters.Cache(self.right_encoder_filter, 200)
 
-    def getDistance(self):
-        dist = self.distance_service()
+    def getDistance(self, sensor):
+        dist = self.distance_services[sensor]()
         return dist.data
 
     def getPinValue(self, pin):
