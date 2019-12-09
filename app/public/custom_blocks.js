@@ -211,24 +211,28 @@ Blockly.Python['wait'] = function(block) {
   return code;
 };
 
-// Blockly generator
-Blockly.Blocks['get_distance'] = {
-  init: function() {
-    this.appendDummyInput()
-        .appendField("get distance");
-    this.setOutput(true, null);
-    this.setColour(160);
- this.setTooltip("");
- this.setHelpUrl("");
-  }
-};
 
-Blockly.Python['get_distance'] = function(block) {
-  // TODO: Assemble JavaScript into code letiable.
-  let code = 'zoef.getDistance()';
-  // TODO: Change ORDER_NONE to the correct strength.
-  return [code, Blockly.Python.ORDER_NONE];
-};
+function generateDistanceBlock(options){
+	// Blockly generator
+  Blockly.Blocks['get_distance'] = {
+
+    init: function() {
+      this.appendDummyInput()
+        .appendField("get distance of ")
+        .appendField(new Blockly.FieldDropdown(options), 'sensor');
+      this.setOutput(true, null);
+      this.setColour(160);
+  this.setTooltip("");
+   this.setHelpUrl("");	
+    }
+  };
+
+  Blockly.Python['get_distance'] = function(block) {
+    let sensor = block.getFieldValue('sensor');
+    let code = `zoef.getDistance('${sensor}')\n`;
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+}
 
 Blockly.Blocks['wait_until'] = {
   init: function() {

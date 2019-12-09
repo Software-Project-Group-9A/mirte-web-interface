@@ -1,3 +1,39 @@
+var workspace = Blockly.inject(blocklyDiv,
+    {toolbox: document.getElementById('toolbox'),
+     media: '3rdparty/media/'});
+
+
+var prefix= 0;
+
+function getBlockToLineMap() {
+   var blockMap = {}
+   var offset = (prefix.match(/\n/g) || []).length + 1;
+
+   var all_blocks = workspace.getAllBlocks();
+
+   Blockly.Python.STATEMENT_PREFIX = "blockid: %1";
+   var code = Blockly.Python.workspaceToCode(workspace);
+   codeLines = code.split("\n");
+   for (var i = 0; i < codeLines.length; i++) {
+      line = codeLines[i].trim();
+      blockidstr = line.lastIndexOf("blockid: ");
+      if (blockidstr >= 0){
+         line = line.substr(blockidstr);
+         block_id = line.substr(10,20);
+         blockMap[i+offset] = block_id;
+      }
+   }
+
+   Blockly.Python.STATEMENT_PREFIX = "";
+   return blockMap;
+}
+
+
+
+
+
+function initBlockly(){
+
 Blockly.BlockSvg.START_HAT = true;
 
 //https://groups.google.com/forum/#!topic/blockly/yUBEymLKBbk
@@ -69,9 +105,6 @@ recolor(Blockly.Blocks['pwm'], 120);
   
 var blocklyArea = document.getElementById('blocklyArea');
 var blocklyDiv = document.getElementById('blocklyDiv');
-var workspace = Blockly.inject(blocklyDiv,
-    {toolbox: document.getElementById('toolbox'),
-     media: '3rdparty/media/'});
 
 var onresize = function(e) {
   // Compute the absolute coordinates and dimensions of blocklyArea.
@@ -105,30 +138,6 @@ if (storage !== null) {
 
 var latestCode = '';
 
-var prefix=0;
-
-function getBlockToLineMap() {
-   var blockMap = {}
-   var offset = (prefix.match(/\n/g) || []).length + 1;
-
-   var all_blocks = workspace.getAllBlocks();
-
-   Blockly.Python.STATEMENT_PREFIX = "blockid: %1";
-   var code = Blockly.Python.workspaceToCode(workspace);
-   codeLines = code.split("\n");
-   for (var i = 0; i < codeLines.length; i++) {
-      line = codeLines[i].trim();
-      blockidstr = line.lastIndexOf("blockid: ");
-      if (blockidstr >= 0){
-	 line = line.substr(blockidstr);
-         block_id = line.substr(10,20);
-	 blockMap[i+offset] = block_id;
-      }
-   }
-
-   Blockly.Python.STATEMENT_PREFIX = "";
-   return blockMap;
-}
 
 
 // Load the interpreter now, and upon future changes.
@@ -153,3 +162,4 @@ workspace.addChangeListener(function(event) {
 // Keep menu open after drop
 workspace.toolbox_.flyout_.autoClose = false
 
+ }

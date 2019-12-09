@@ -1,3 +1,20 @@
+// Open the websocket connection to the backend
+const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+const port = ':3000'; //location.port ? `:${location.port}` : '';
+const socketUrl = `${protocol}${location.hostname}${port}/shell`;
+const socket = new WebSocket(socketUrl);
+
+// Attach the socket to the terminal
+socket.onopen = (ev) => {
+    console.log("HIER"); 
+    //term.attach(socket);
+    socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
+    console.log("DONE");
+};
+
+
+function initXterm(){
+
 // No idea what these are about. Just copied them from the demo code
 Terminal.applyAddon(attach);
 Terminal.applyAddon(fit);
@@ -12,18 +29,6 @@ term.winptyCompatInit();
 // This kinda makes sense
 const container = document.getElementById('terminal');
 term.open(container);
-
-// Open the websocket connection to the backend
-const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-const port = ':3000'; //location.port ? `:${location.port}` : '';
-const socketUrl = `${protocol}${location.hostname}${port}/shell`;
-const socket = new WebSocket(socketUrl);
-
-// Attach the socket to the terminal
-socket.onopen = (ev) => {
-    //term.attach(socket);
-    socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
-};
 
 
 socket.onmessage = (event) => {
@@ -58,3 +63,4 @@ function makeMarker() {
 
 // Not going to worry about close/error for the websocket
 
+}
