@@ -10,7 +10,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32
 from std_msgs.msg import String
 from std_msgs.msg import Empty
-from zoef_msgs.msg import Encoder
+from zoef_msgs.msg import Encoder, Intensity
 
 from zoef_msgs.srv import *
 
@@ -36,6 +36,12 @@ class Robot():
         self.distance_services = {}
         for sensor in distance_sensors:
             self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance)
+
+        intensity_sensors = rospy.get_param("/zoef/intensity")
+        self.intensity_services = {}
+        for sensor in intensity_sensors:
+            self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity)
+
         self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
 
         # Message filters
@@ -47,6 +53,10 @@ class Robot():
     def getDistance(self, sensor):
         dist = self.distance_services[sensor]()
         return dist.data
+
+    def getIntensity(self, sensor):
+        value = self.intensity_services[sensor]()
+        return value.data
 
     def getPinValue(self, pin):
         value = self.pin_value_service(pin)

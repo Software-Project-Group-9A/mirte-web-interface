@@ -4,11 +4,8 @@ const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
 const ros_port = ':9090'; //location.port ? `:${location.port}` : '';
 const ros_socketUrl = `${ros_protocol}${location.hostname}${ros_port}`;
 
-function test(){
-    ros.getParams(function(params) {
-       console.log(params);
-    });
-
+function addDistanceBlocks(){
+  return new Promise( resolve => {
   var distance_sensors = new ROSLIB.Param({
     ros : ros,
     name : '/zoef/distance'
@@ -16,20 +13,44 @@ function test(){
 
 
   distance_sensors.get(function(sensors) {
-    console.log(JSON.stringify(sensors));
     var options = []
     for (sensor in sensors){
        options.push([sensor, sensor]);
     } 
     generateDistanceBlock(options);
-    initBlockly();
-    initXterm();
+    resolve();
   });
+
+  });
+}
+
+function addIntensityBlocks(){
+  return new Promise( resolve => {
+  var intensity_sensors = new ROSLIB.Param({
+    ros : ros,
+    name : '/zoef/intensity'
+  });
+
+  intensity_sensors.get(function(sensors) {
+    var options = []
+    for (sensor in sensors){
+       options.push([sensor, sensor]);
+    }
+    generateIntensityBlock(options);
+    resolve();
+  });
+ 
+ });
 
 }
 
 
-
+async function initGUI(){
+    const a = await addDistanceBlocks();
+    const b = await addIntensityBlocks();
+    initBlockly();
+    initXterm();
+}
 
   var ros = new ROSLIB.Ros({
     url : ros_socketUrl
@@ -37,7 +58,7 @@ function test(){
 
   ros.on('connection', function() {
     console.log('Connected to websocket server.');
-    test();
+    initGUI()
   });
 
 

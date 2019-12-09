@@ -212,6 +212,30 @@ Blockly.Python['wait'] = function(block) {
 };
 
 
+function generateIntensityBlock(options){
+  // Blockly generator
+  Blockly.Blocks['get_intensity'] = {
+
+    init: function() {
+      this.appendDummyInput()
+        .appendField("get intensity of ")
+        .appendField(new Blockly.FieldDropdown(options), 'sensor');
+      this.setOutput(true, null);
+      this.setColour(160);
+  this.setTooltip("");
+   this.setHelpUrl(""); 
+    }
+  };
+
+  Blockly.Python['get_intensity'] = function(block) {
+    let sensor = block.getFieldValue('sensor');
+    let code = `zoef.getIntensity('${sensor}')\n`;
+    return [code, Blockly.Python.ORDER_NONE];
+  };
+}
+
+
+
 function generateDistanceBlock(options){
 	// Blockly generator
   Blockly.Blocks['get_distance'] = {
