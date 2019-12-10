@@ -39,15 +39,31 @@ function addIntensityBlocks(){
     generateIntensityBlock(options);
     resolve();
   });
- 
  });
-
 }
 
+function addPWMBlocks(){
+  return new Promise( resolve => {
+  var motors = new ROSLIB.Param({
+    ros : ros,
+    name : '/zoef/motor'
+  });
+
+  motors.get(function(motor_list) {
+    var options = []
+    for (motor in motor_list){
+       options.push([motor, motor]);
+    }
+    generatePWMBlock(options);
+    resolve();
+  });
+ });
+}
 
 async function initGUI(){
     const a = await addDistanceBlocks();
     const b = await addIntensityBlocks();
+    const c = await addPWMBlocks();
     initBlockly();
     initXterm();
 }

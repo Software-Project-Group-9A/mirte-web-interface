@@ -18,11 +18,16 @@ zoef = {}
 
 class Robot():
     def __init__(self):
-        # Publishers
+        # Services for actuators 
+        # Those are not publishers since the connection to the subsriber node can take a lot of
+        # time. Therefore we use the service in the service API which translates it to a publisher
+        motors = rospy.get_param("/zoef/motor")
+        self.motor_services = {}
+        for motor in motors:
+            self.motor_services[motor] = rospy.ServiceProxy('/zoef_pymata/set_' + motor + '_pwm', SetMotorPWM)
+
         self.dist_request = rospy.Publisher('distance_request', Empty, queue_size=10)
         self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
-        self.pwm_publisher_left = rospy.Publisher('left_pwm', Int32, queue_size=10)
-        self.pwm_publisher_right = rospy.Publisher('right_pwm', Int32, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
 
         rospy.init_node('robot_api', anonymous=True)
@@ -76,13 +81,15 @@ class Robot():
         rospy.loginfo(text)
         self.text_publisher.publish(text)
 
-    def pwm(self, motor, value):
+    def setMotorPWM(self, motor, value):
         pwm_value = Int32()
         pwm_value.data = value
-	if motor == 'left':
-            self.pwm_publisher_left.publish(pwm_value)
-        else:
-            self.pwm_publisher_right.publish(pwm_value)
+        motor = self.motor_services[motor](value)
+        return motor.status
+
+        resp1 = add_two_ints(x, y)
+        return resp1.sum
+
 
     def getNumberOfEncoderTicks(self, motor, time_delta):
         now = rospy.get_rostime()
