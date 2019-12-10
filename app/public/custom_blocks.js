@@ -228,7 +228,7 @@ function generateIntensityBlock(options){
 
   Blockly.Python['get_intensity'] = function(block) {
     let sensor = block.getFieldValue('sensor');
-    let code = `zoef.getIntensity('${sensor}')\n`;
+    let code = `zoef.getIntensity('${sensor}')`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 }
@@ -252,7 +252,7 @@ function generateDistanceBlock(options){
 
   Blockly.Python['get_distance'] = function(block) {
     let sensor = block.getFieldValue('sensor');
-    let code = `zoef.getDistance('${sensor}')\n`;
+    let code = `zoef.getDistance('${sensor}')`;
     return [code, Blockly.Python.ORDER_NONE];
   };
 }
