@@ -26,7 +26,6 @@ class Robot():
         for motor in motors:
             self.motor_services[motor] = rospy.ServiceProxy('/zoef_pymata/set_' + motor + '_pwm', SetMotorPWM)
 
-        self.dist_request = rospy.Publisher('distance_request', Empty, queue_size=10)
         self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
 
@@ -47,13 +46,13 @@ class Robot():
         for sensor in intensity_sensors:
             self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity)
 
+        encoder_sensors = rospy.get_param("/zoef/encoder")
+        self.encoder_services = {}
+        for sensor in encoder_sensors:
+            self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder)
+
         self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
 
-        # Message filters
-        self.left_encoder_filter = message_filters.Subscriber('left_encoder', Encoder)
-        self.left_encoder_cache = message_filters.Cache(self.left_encoder_filter, 200)
-        self.right_encoder_filter = message_filters.Subscriber('right_encoder', Encoder)
-        self.right_encoder_cache = message_filters.Cache(self.right_encoder_filter, 200)
 
     def getDistance(self, sensor):
         dist = self.distance_services[sensor]()
@@ -82,21 +81,12 @@ class Robot():
         self.text_publisher.publish(text)
 
     def setMotorPWM(self, motor, value):
-        pwm_value = Int32()
-        pwm_value.data = value
         motor = self.motor_services[motor](value)
         return motor.status
 
-        resp1 = add_two_ints(x, y)
-        return resp1.sum
-
-
-    def getNumberOfEncoderTicks(self, motor, time_delta):
-        now = rospy.get_rostime()
-        if motor == 'left':
-           return len(self.left_encoder_cache.getInterval(now - rospy.Duration(time_delta), now))
-        else:
-           return len(self.right_encoder_cache.getInterval(now - rospy.Duration(time_delta), now))
+    def getEncoderTicks(self, sensor, time_delta):
+        encoder = self.motor_services[sensor](time_delta)
+        return ecnoder.ticks
 
     def turn(self, angle = (math.pi / 2), speed = (math.pi / 10)):
         turn = self.turn_service(angle, speed)
