@@ -18,6 +18,8 @@ zoef = {}
 
 class Robot():
     def __init__(self):
+        self.original_sigint_handler = signal.getsignal(signal.SIGINT)
+
         # Services for actuators 
         # Those are not publishers since the connection to the subsriber node can take a lot of
         # time. Therefore we use the service in the service API which translates it to a publisher
@@ -29,7 +31,7 @@ class Robot():
         self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
 
-        rospy.init_node('robot_api', anonymous=True)
+        rospy.init_node('zoef_python_api', anonymous=False)
 
         # Services
         self.move_service = rospy.ServiceProxy('Move', Move)
@@ -52,6 +54,9 @@ class Robot():
             self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder)
 
         self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
+
+        signal.signal(signal.SIGINT, self.signal_handler)
+        signal.signal(signal.SIGTERM, self.signal_handler)
 
 
     def getDistance(self, sensor):
@@ -98,21 +103,18 @@ class Robot():
 
     def stop(self):
         self.move(0, 0)
-        print "stoppping robot"
-        sys.exit(0)
 
-# We need a special functio to initiate the Robot() for two reasons:
-# 1) The signal handler needs to be able to stop the robot
-# 2) The main.py need to call the init_node() (see: https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file/)
+    def signal_handler(self, sig, frame):
+       if self.original_sigint_handler == signal.default_int_handler:
+          self.stop()
+          sys.exit()
+       else:
+          self.original_sigint_handler(sig, frame)
+
+
+# We need a special function to initiate the Robot() because the main.py need to call the 
+# init_node() (see: https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file/)
 def createRobot():
     global zoef
     zoef = Robot()
     return zoef
-
-def signal_handler(sig, frame):
-    zoef.stop()
-
-
-# TODO: temp disabled for linetracer
-#signal.signal(signal.SIGINT, signal_handler)
-#signal.signal(signal.SIGTERM, signal_handler)

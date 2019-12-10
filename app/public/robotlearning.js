@@ -9,7 +9,7 @@ $( "#run" ).click(function( event ) {
 // Can not send SIGINT since that is already handled ROS
 
 $( "#pause" ).click(function( event ) {
-    socket.send("\x03"); // CTRL-C (SIGTSTP) overruled in linetrace.py
+    socket.send("\x03"); // SIGINT overruled in linetrace.py
 });
 
 $( "#step" ).click(function( event ) {
@@ -21,5 +21,5 @@ $( "#continue" ).click(function( event ) {
 });
 
 $( "#stop" ).click(function( event ) {
-    socket.send("\x1c"); // CTRL-C (SIGQUIT) 
+    socket.send("\x1c"); // SIGQUIT 
 });

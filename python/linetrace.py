@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+#TODO: instead of rewiing the print, publsh it as a ROS topic and lister to it in the webservice
+
 import time
 import sys
 import inspect
