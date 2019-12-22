@@ -67,6 +67,10 @@ class Robot():
         value = self.intensity_services[sensor]()
         return value.data
 
+    def getSpeed(self, sensor):
+        value = self.encoder_services[sensor](1) # Currently Encoder asks for a timedelta, not used
+        return value.data
+
     def getPinValue(self, pin):
         value = self.pin_value_service(pin)
         return value.data
