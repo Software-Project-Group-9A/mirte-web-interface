@@ -34,21 +34,21 @@ class Robot():
         rospy.init_node('zoef_python_api', anonymous=False)
 
         # Services
-        self.move_service = rospy.ServiceProxy('Move', Move)
-        self.turn_service = rospy.ServiceProxy('Turn', Turn)
+        self.move_service = rospy.ServiceProxy('zoef_navigation/move', Move)
+        self.turn_service = rospy.ServiceProxy('zoef_navigation/turn', Turn)
 
         # Services for sensors
-        distance_sensors = rospy.get_param("/zoef/distance")
+        distance_sensors = {} #rospy.get_param("/zoef/distance")
         self.distance_services = {}
         for sensor in distance_sensors:
             self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance)
 
-        intensity_sensors = rospy.get_param("/zoef/intensity")
+        intensity_sensors = {} #rospy.get_param("/zoef/intensity")
         self.intensity_services = {}
         for sensor in intensity_sensors:
             self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity)
 
-        encoder_sensors = rospy.get_param("/zoef/encoder")
+        encoder_sensors = {} #rospy.get_param("/zoef/encoder")
         self.encoder_services = {}
         for sensor in encoder_sensors:
             self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder)
@@ -99,11 +99,11 @@ class Robot():
 
     def turn(self, angle = (math.pi / 2), speed = (math.pi / 10)):
         turn = self.turn_service(angle, speed)
-        return turn.data
+        return turn.finished
 
-    def move(self, distance = 0.1, speed = 0.02):
+    def move(self, distance = 0.1, speed = 0.5):
         move = self.move_service(distance, speed)
-        return move.data
+        return move.finished
 
     def stop(self):
         self.move(0, 0)
