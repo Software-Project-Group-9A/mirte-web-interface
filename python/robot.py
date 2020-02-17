@@ -32,6 +32,10 @@ class Robot():
         self.PULLUP = 11
         self.ANALOG = 2
 
+        # Start timing
+        self.begin_time = time.time()
+        self.last_call = 0
+
         # Call /stop and /start service to disable/enable the ROS diff_drive_controller
         # By default this class will control the rbot though PWM (controller stopped). Only in case
         # the controller is needed, it will be enabled.
@@ -87,6 +91,17 @@ class Robot():
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
+
+    def getTimestamp(self):
+        return time.time() - self.begin_time
+
+    def getTimeSinceLastCall(self):
+        last_call = self.last_call
+        self.last_call = time.time()
+        if last_call == 0:
+           return 0
+        else:
+           return time.time() - last_call
 
     def getDistance(self, sensor):
         dist = self.distance_services[sensor + "_distance"]()
