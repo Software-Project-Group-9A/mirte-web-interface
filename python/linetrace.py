@@ -41,6 +41,14 @@ def load_zoef_module(stepper, do_step):
     # We thereofe need to load teh module from source instead of importing it.
     # https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file
     test = imp.load_source("zoef", "/home/zoef/workdir/zoef.py")
+
+    # Stop the motors. The atexit call in robot.py does not work when running from a subprocess: 
+    # https://stackoverflow.com/questions/34506638/how-to-register-atexit-function-in-pythons-multiprocessing-subprocess
+    # TODO: this assumes we have the robot initlized under variable 'zoef'. As soon as we let them create their own python,
+    # this might not work anymore.
+    test.zoef.stop()
+
+    # Sending the linetrace 0 to the client
     server.send_message_to_all("0")
 
 process = multiprocessing.Process(target = load_zoef_module, args=(stepper, do_step))
