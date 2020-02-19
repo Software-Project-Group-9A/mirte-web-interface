@@ -23,7 +23,10 @@ class Robot():
         # Services for actuators 
         # Those are not publishers since the connection to the subsriber node can take a lot of
         # time. Therefore we use the service in the service API which translates it to a publisher
-        motors = rospy.get_param("/zoef/motor")
+
+        motors = {}
+        if rospy.has_param("/zoef/motor"):
+            motors = rospy.get_param("/zoef/motor")
         self.motor_services = {}
         for motor in motors:
             self.motor_services[motor] = rospy.ServiceProxy('/zoef_pymata/set_' + motor + '_pwm', SetMotorPWM)
@@ -38,17 +41,23 @@ class Robot():
         self.turn_service = rospy.ServiceProxy('zoef_navigation/turn', Turn)
 
         # Services for sensors
-        distance_sensors = {} #rospy.get_param("/zoef/distance")
+        distance_sensors = {}
+        if rospy.has_param("/zoef/distance"):
+            distance_sensors = rospy.get_param("/zoef/distance")
         self.distance_services = {}
         for sensor in distance_sensors:
             self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance)
 
-        intensity_sensors = {} #rospy.get_param("/zoef/intensity")
+        intensity_sensors = {}
+        if rospy.has_param("/zoef/intensity"):
+            intensity_sensors = rospy.get_param("/zoef/intensity")
         self.intensity_services = {}
         for sensor in intensity_sensors:
             self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity)
 
-        encoder_sensors = {} #rospy.get_param("/zoef/encoder")
+        encoder_sensors = {}
+        if rospy.has_param("/zoef/encoder"):
+            encoder_sensors = rospy.get_param("/zoef/encoder")
         self.encoder_services = {}
         for sensor in encoder_sensors:
             self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder)
