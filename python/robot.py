@@ -5,6 +5,10 @@ import signal
 import sys
 import math
 
+sys.path.append('/usr/local/lib/python2.7/dist-packages/PyMata-2.20-py2.7.egg')  # Needed for jupyter notebooks
+sys.path.append('/usr/local/lib/python2.7/dist-packages/pyserial-3.4-py2.7.egg')
+from PyMata.pymata import PyMata
+
 import message_filters
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32
@@ -18,6 +22,13 @@ zoef = {}
 
 class Robot():
     def __init__(self):
+        self.PWM = PyMata.PWM
+        self.INPUT = PyMata.INPUT
+        self.OUTPUT = PyMata.OUTPUT
+        self.PULLUP = PyMata.PULLUP
+        self.ANALOG = PyMata.ANALOG
+        self.DIGITAL = PyMata.DIGITAL
+
         self.original_sigint_handler = signal.getsignal(signal.SIGINT)
 
         # Services for actuators 
@@ -62,7 +73,9 @@ class Robot():
         for sensor in encoder_sensors:
             self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder)
 
-        self.pin_value_service = rospy.ServiceProxy('get_pin_value', get_pin_value)
+        self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode)
+        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue)
+        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue)
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
@@ -80,9 +93,25 @@ class Robot():
         value = self.encoder_services[sensor](1) # Currently Encoder asks for a timedelta, not used
         return value.data
 
-    def getPinValue(self, pin):
-        value = self.pin_value_service(pin)
+    def setPinMode(self, pin, mode, type):
+        value = self.set_pin_mode_service(pin, mode, type)
+        return value.status
+
+    def getAnalogPinValue(self, pin):
+        value = self.get_pin_value_service(pin, "analog")
         return value.data
+
+    def setAnalogPinValue(self, pin, value):
+        value = self.set_pin_value_service(pin, "analog", value)
+        return value.status
+
+    def getDigitalPinValue(self, pin):
+        value = self.get_pin_value_service(pin, "digital")
+        return value.data
+
+    def setDigitalPinValue(self, pin, value):
+        value = self.set_pin_value_service(pin, "digital", value)
+        return value.status
 
     def getVirtualColor(self, direction):
         virtual_color_getter = rospy.ServiceProxy('get_virtual_color', get_virtual_color)
