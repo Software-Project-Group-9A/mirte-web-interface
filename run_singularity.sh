@@ -24,7 +24,7 @@ fi
 if test "$1" == "build"
 then
     echo "create image form Singularity file"
-    sudo singularity build zoef_web_interface.ing Singularity
+    sudo singularity build zoef_web_interface.img Singularity
 fi
 if test "$1" == "run"
 then
