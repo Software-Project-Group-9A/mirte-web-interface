@@ -8,12 +8,6 @@ From: arm32v7/ubuntu:bionic
 
 %files
     /usr/bin/qemu-arm-static /usr/bin/
-    /usr/bin/qemu-arm-static /usr/bin/
-    /usr/bin/qemu-arm-static /usr/bin/
-    /usr/bin/qemu-arm-static /usr/bin/
-    /usr/bin/qemu-arm-static /usr/bin/
-    /usr/bin/qemu-arm-static /usr/bin/
-    /usr/bin/qemu-arm-static /usr/bin/
     app/* app/my_app
 
 %post
