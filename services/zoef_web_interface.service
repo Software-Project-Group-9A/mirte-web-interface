@@ -1,0 +1,11 @@
+[Unit]
+Description=Zoef Web Interface
+After=network.target
+After=ssh.service
+After=network-online.target
+
+[Service]
+ExecStart=/bin/bash -c "export NODE_PATH=/usr/local/lib/node_modules/ && nodejs /usr/local/src/zoef/web_interface/web-shell.js & cd /usr/local/src/zoef/web_interface/ && singularity run -B app:/app/my_app -B /home/zoef/workdir:/workdir zoef_web_interface 2>&1 | tee"
+
+[Install]
+WantedBy=multi-user.target
