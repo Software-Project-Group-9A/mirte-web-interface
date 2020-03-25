@@ -23,7 +23,7 @@ sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
 # Add systemd service
 # NOTE: starting singularity image form systemd has some issues (https://github.com/sylabs/singularity/issues/1600)
 sudo rm /lib/systemd/system/zoef_web_interface.service
-sudo ln -s ./services/zoef_web_interface.service /lib/systemd/system/
+sudo ln -s $ZOEF_SRC_DIR/web_interface/services/zoef_web_interface.service /lib/systemd/system/
 
 sudo systemctl daemon-reload
 sudo systemctl stop zoef_web_interface || /bin/true
