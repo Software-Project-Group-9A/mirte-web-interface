@@ -18,6 +18,7 @@ sudo npm install express express-ws node-pty
 
 grep -qxF "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" /home/zoef/.bashrc || echo "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" >> /home/zoef/.bashrc
 sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
+cd $ZOEF_SRC_DIR/web_interface
 ./run_singularity.sh build_dev
 
 # Add systemd service
