@@ -65,19 +65,23 @@ export default {
 
         // The terminal
         const term = new Terminal();
-        //term.loadAddon(new AttachAddon(this.socket));
+        term.loadAddon(new AttachAddon(this.socket));
         term.loadAddon(new FitAddon());
         term.open(this.$refs.terminal);
+
+        // Load env variables
+        this.socket.onopen = (ev) => {
+            this.socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
+        };
 
         this.socket.onmessage = (event) => {
             let lines = event.data.split('\n')
             lines.forEach((line, index) => {
                 if (line.indexOf("out: ") == 0) {
-                    term.writeln(line.substring(5))
+                    //term.writeln(line.substring(5))
                 }
                 if (line.indexOf("line: ") == 0) {
                     let linenr = parseInt(line.substring(6));
-                    console.log("emit event")
                     this.$emit('currentLine', linenr)
                 }
             });

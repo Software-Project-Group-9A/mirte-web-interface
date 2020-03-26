@@ -7,9 +7,6 @@
     </div>
     <div class="row">
       <div class="col">
-        <Codemirror :linenumber="linenumber" :code="blocklyCode" />
-      </div>
-      <div class="col">
           <Xterm :code="blocklyCode" @currentLine="updateLinenumber"/>
       </div>
     </div>

@@ -178,16 +178,20 @@
   export default {
     data: () => ({
       workspace: Object,
-      prefix: "import time\n\n"
+      prefix: "import time\n\n",
+      // prefix: "import robot\nimport time\n\nzoef = robot.createRobot()\n\n"
     }),
+
     props: {
       blocklyCode: String,
       linenumber: Number
     },
+
     methods: {
       updateBlocklycode: function (code) {
         this.$emit('blocklyCode', code)
       },
+
       getBlockToLineMap: function() {
         var blockMap = {}
         var offset = (this.prefix.match(/\n/g) || []).length + 1;
@@ -211,12 +215,14 @@
         return blockMap;
       }
     },
+
     watch: {
       linenumber: function(newVal, oldVal){
         let blockMap = this.getBlockToLineMap();
         this.workspace.highlightBlock(blockMap[newVal]);
       }
     },
+
     mounted: function() {
       Blockly.setLocale(En);
 
