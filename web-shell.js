@@ -4,8 +4,7 @@ var express = require("express");
 var pty = require('node-pty');
 var app = express();
 var expressWs = require('express-ws')(app);
-// Serve static assets from ./static
-app.use(express.static(__dirname + "/static"));
+
 // Instantiate shell and set up data handlers
 expressWs.app.ws('/shell', function (ws, req) {
     // Spawn the shell
@@ -21,7 +20,7 @@ expressWs.app.ws('/shell', function (ws, req) {
     });
     // For all websocket data send it to the shell
     ws.on('message', function (msg) {
-	console.log(msg);
+	    console.log("message on socket: " + msg);
         var tmp = shell.write(msg);
         console.log(tmp);
     });
