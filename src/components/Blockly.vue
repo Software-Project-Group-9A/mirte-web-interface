@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div id="blocklyArea" class="blocklyArea">
-      <div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+    <div id="blocklyArea" ref="blocklyArea" class="blocklyArea">
+      <div id="blocklyDiv" ref="blocklyDiv" style="height: 480px; width: 600px;"></div>
     </div>
 
-    <xml id="toolbox" style="display: none">
+    <xml id="toolbox" ref="toolbox" style="display: none">
 		<category name="Sensors" colour="10">
 			<block type="get_distance"></block>
       <block type="get_intensity"></block>
@@ -174,25 +174,57 @@
   import Blockly from 'blockly';
   import 'blockly/python';
   import * as En from 'blockly/msg/en';
-  // import _ from '@/assets/custom_blocks.js'
   
   export default {
     data: () => ({
+      workspace: Object,
+      prefix: "import time\n\n"
     }),
-    props: ['blocklyCode'],
+    props: {
+      blocklyCode: String,
+      linenumber: Number
+    },
     methods: {
       updateBlocklycode: function (code) {
         this.$emit('blocklyCode', code)
+      },
+      getBlockToLineMap: function() {
+        var blockMap = {}
+        var offset = (this.prefix.match(/\n/g) || []).length + 1;
+
+        var all_blocks = this.workspace.getAllBlocks();
+
+        Blockly.Python.STATEMENT_PREFIX = "blockid: %1";
+        var code = Blockly.Python.workspaceToCode(this.workspace);
+        let codeLines = code.split("\n");
+        for (var i = 0; i < codeLines.length; i++) {
+            let line = codeLines[i].trim();
+            let blockidstr = line.lastIndexOf("blockid: ");
+            if (blockidstr >= 0){
+              line = line.substr(blockidstr);
+              let block_id = line.substr(10,20);
+              blockMap[i+offset] = block_id;
+            }
+        }
+
+        Blockly.Python.STATEMENT_PREFIX = "";
+        return blockMap;
       }
     },
-    mounted() {
+    watch: {
+      linenumber: function(newVal, oldVal){
+        let blockMap = this.getBlockToLineMap();
+        this.workspace.highlightBlock(blockMap[newVal]);
+      }
+    },
+    mounted: function() {
       Blockly.setLocale(En);
 
-      var blocklyArea = document.getElementById('blocklyArea');
-      var blocklyDiv = document.getElementById('blocklyDiv');
-      var workspace = Blockly.inject(blocklyDiv,
-          {toolbox: document.getElementById('toolbox')});
-      var onresize = function(e) {
+      var blocklyArea = this.$refs.blocklyArea;
+      var blocklyDiv = this.$refs.blocklyDiv;
+      this.workspace = Blockly.inject(blocklyDiv,
+          {toolbox: this.$refs.toolbox});
+      var onresize = (e) => {
         // Compute the absolute coordinates and dimensions of blocklyArea.
         var element = blocklyArea;
         var x = 0;
@@ -207,32 +239,29 @@
         blocklyDiv.style.top = y + 'px';
         blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
         blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
-        Blockly.svgResize(workspace);
+        Blockly.svgResize(this.workspace);
       };
       window.addEventListener('resize', onresize, false);
       onresize();
-      Blockly.svgResize(workspace);
+      Blockly.svgResize(this.workspace);
 
-      workspace.toolbox_.flyout_.autoClose = false
+      this.workspace.toolbox_.flyout_.autoClose = false
 
       // Load the interpreter now, and upon future changes.
       //generateCodeAndLoadIntoInterpreter();
-      workspace.addChangeListener((event) => {
+      this.workspace.addChangeListener((event) => {
           //console.log(event);
           if (event instanceof Blockly.Events.Move || event instanceof Blockly.Events.Delete || event instanceof Blockly.Events.Change) {
           // Something changed. Parser needs to be reloaded.
 
-          var code = Blockly.Python.workspaceToCode(workspace);
+          var code = Blockly.Python.workspaceToCode(this.workspace);
 
-          // TODO: make more flexible, dependant on used blocks (maybe already in blockly)
-          let prefix = "import robot\nimport time\n\nzoef = robot.createRobot()\n\n";  
-
-          code = prefix + code;
+          code = this.prefix + code;
           // cmEditor.setValue(code);
           this.updateBlocklycode(code)
           
 
-          var xml = Blockly.Xml.workspaceToDom(workspace);
+          var xml = Blockly.Xml.workspaceToDom(this.workspace);
           var xml_text = Blockly.Xml.domToText(xml);
           localStorage.setItem("blockly", xml_text);
 
@@ -537,7 +566,7 @@
       var storage = localStorage.getItem("blockly");
       if (storage !== null) {
           var xml = Blockly.Xml.textToDom(storage);
-          Blockly.Xml.domToWorkspace(xml, workspace);
+          Blockly.Xml.domToWorkspace(xml, this.workspace);
       }
 
       var latestCode = '';

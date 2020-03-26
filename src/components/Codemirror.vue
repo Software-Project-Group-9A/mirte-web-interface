@@ -1,38 +1,45 @@
 <template>
-
-  <!-- Or manually control the data synchronization -->
-  <codemirror
-    class="codemirror"
-    ref="cmEditor"
-    :value="code"
-    :options="options"
-  />
-
+  <textarea ref="codemirror"></textarea>
 </template>
 
 <script>
-import { codemirror } from 'vue-codemirror'
+import codemirror from 'codemirror'
 import 'codemirror/mode/python/python.js'
-
-// import base style
 import 'codemirror/lib/codemirror.css'
-
-// import more codemirror resource...
 
 export default {
   data: () => ({
-    options: {
+    editor: Object
+  }),
+  props: {
+    code: String,
+    linenumber: Number
+  },
+  methods: {
+    makeMarker: () => {
+      var marker = document.createElement("div");
+      marker.style.color = "#822";
+      marker.innerHTML = "●";
+      return marker;
+    }
+  },
+  mounted() {
+    this.editor = codemirror.fromTextArea(this.$refs.codemirror, {
       mode: "python",
       lineNumbers: true,
       autoRefresh: true,
       gutters: ["linetracer"]
-    }
-  }),
-  props: {
-    code: String
+    });
+    this.editor.save()
   },
-  components: {
-    codemirror
+  watch: { 
+    code: function(newVal, oldVal) {
+      this.editor.setValue(newVal)
+    },
+    linenumber: function(newVal, oldVal){
+      this.editor.clearGutter("linetracer");
+      this.editor.setGutterMarker(newVal-1, "linetracer", this.makeMarker());
+    }
   }
 }
 </script>

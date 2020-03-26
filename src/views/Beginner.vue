@@ -2,15 +2,15 @@
   <div>
     <div class="row">
       <div class="col">
-        <Blockly @blocklyCode="updateBlocklyCode"/>
+        <Blockly :linenumber="linenumber" @blocklyCode="updateBlocklyCode"/>
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <Codemirror :code="blocklyCode" />
+        <Codemirror :linenumber="linenumber" :code="blocklyCode" />
       </div>
       <div class="col">
-          <Xterm :code="blocklyCode" />
+          <Xterm :code="blocklyCode" @currentLine="updateLinenumber"/>
       </div>
     </div>
   </div>
@@ -27,12 +27,16 @@ export default {
   name: 'beginner',
   data: function () {
     return {
-      blocklyCode: ""
+      blocklyCode: "",
+      linenumber: 0
     }
   },
   methods: {
     updateBlocklyCode(e) {
       this.blocklyCode = e;
+    },
+    updateLinenumber(e) {
+      this.linenumber = e;
     },
   },
   components: {
