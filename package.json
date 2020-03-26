@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "interface": "vue-cli-service serve",
-    "shell": "node web-shell.js",
+    "shell": "node services.js",
     "build": "vue-cli-service build"
   },
   "dependencies": {
@@ -18,6 +18,7 @@
     "body-parser": "^1.19.0",
     "bootstrap": "^4.4.1",
     "bootstrap-vue": "^2.8.0",
+    "cors": "^2.8.5",
     "express-ws": "^4.0.0",
     "jquery": "^3.4.1",
     "node-pty": "^0.9.0",

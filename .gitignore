@@ -1,2 +1,5 @@
 ubuntu
 *.img
+*.pyc
+
+node_modules/
