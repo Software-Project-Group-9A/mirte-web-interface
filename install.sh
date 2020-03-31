@@ -22,6 +22,8 @@ sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
 cd $ZOEF_SRC_DIR/web_interface
 ./run_singularity.sh build_dev
 
+sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8081
+
 # Add systemd service
 # NOTE: starting singularity image form systemd has some issues (https://github.com/sylabs/singularity/issues/1600)
 sudo rm /lib/systemd/system/zoef_web_interface.service
