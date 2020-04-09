@@ -22,9 +22,9 @@ sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
 cd $ZOEF_SRC_DIR/web_interface
 ./run_singularity.sh build_dev
 
-#sudo apt install -y iptables-persistent
-#sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 8081
-#sudo iptables-save > /etc/iptables/rules.v4
+sudo apt install -y iptables-persistent
+sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 8081
+sudo bash -c "iptables-save > /etc/iptables/rules.v4"
 
 # Add systemd service
 # NOTE: starting singularity image form systemd has some issues (https://github.com/sylabs/singularity/issues/1600)
