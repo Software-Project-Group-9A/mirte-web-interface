@@ -56,7 +56,7 @@ export default {
   data: function () {
     return {
     	networks: [],
-		security: "enterprise"
+		security: "wpa"
 	}
   },
   methods: {
@@ -72,7 +72,6 @@ export default {
     .then(res => res.json())
     .then(data => {
 		this.networks = data
-		this.security = event.target.options[event.target.options.selectedIndex].dataset.security;
     });
 
   }

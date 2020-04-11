@@ -178,8 +178,8 @@
   export default {
     data: () => ({
       workspace: Object,
-      prefix: "import time\n\n",
-      // prefix: "import robot\nimport time\n\nzoef = robot.createRobot()\n\n"
+      //prefix: "import time\n\n",
+      prefix: "import robot\nimport time\n\nzoef = robot.createRobot()\n\n"
     }),
 
     props: {

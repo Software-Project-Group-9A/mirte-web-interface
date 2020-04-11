@@ -3,3 +3,6 @@ ubuntu
 *.pyc
 
 node_modules/
+dist/
+
+__pycache__/
