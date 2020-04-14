@@ -6,9 +6,21 @@ ZOEF_SRC_DIR=/usr/local/src/zoef
 sudo apt update
 
 # Remove ROS due to bug (https://github.com/ros/rosdistro/issues/19845)
-#TODO: this should not be needed when we run this in en virtual env (https://pypi.org/project/nodeenv/)
+#TODO: Not needed when using nodeenv. Also remove singularity from this branch, use nodeenv
 sudo apt purge -y ros-*
 sudo apt autoremove -y
+
+# Install nodeenv
+sudo apt install python-pip
+sudo pip install nodeenv
+
+# Install nodeenv
+nodeenv $ZOEF_SRC_DIR/web_interface/node_env
+
+# Install dependencies for avahi-ws (TODO: package.json and install via npm)
+. $ZOEF_SRC_DIR/web_interface/node_env/bin/activate
+npm install ws bonjour
+deactivate_node
 
 # Install nodejs and dependecies
 # TODO: install dependencies with nodejs as package
