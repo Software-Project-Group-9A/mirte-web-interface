@@ -5,11 +5,6 @@ ZOEF_SRC_DIR=/usr/local/src/zoef
 # Update
 sudo apt update
 
-# Remove ROS due to bug (https://github.com/ros/rosdistro/issues/19845)
-#TODO: Not needed when using nodeenv. Also remove singularity from this branch, use nodeenv
-sudo apt purge -y ros-*
-sudo apt autoremove -y
-
 # Install nodeenv
 sudo apt install python-pip
 sudo pip install nodeenv
@@ -19,33 +14,24 @@ nodeenv $ZOEF_SRC_DIR/web_interface/node_env
 
 # Install dependencies for avahi-ws (TODO: package.json and install via npm)
 . $ZOEF_SRC_DIR/web_interface/node_env/bin/activate
-npm install ws bonjour
+cd $ZOEF_SRC_DIR/web_interface
+npm install
+npm run build
 deactivate_node
 
-# Install nodejs and dependecies
-# TODO: install dependencies with nodejs as package
-sudo apt install nodejs npm -y
-cd /usr/local/lib
-sudo npm install express express-ws node-pty
-
-sudo apt install singularity-container -y
+# Set some links for python interface
 grep -qxF "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" /home/zoef/.bashrc || echo "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" >> /home/zoef/.bashrc
 sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
-cd $ZOEF_SRC_DIR/web_interface
-./run_singularity.sh build_dev
 
+# Foward for 80 to 8080
 sudo apt install -y iptables-persistent
-sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 8081
+sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 8080
 sudo bash -c "iptables-save > /etc/iptables/rules.v4"
 
 # Add systemd service
-# NOTE: starting singularity image form systemd has some issues (https://github.com/sylabs/singularity/issues/1600)
 sudo rm /lib/systemd/system/zoef_web_interface.service
-sudo ln -s $ZOEF_SRC_DIR/web_interface/services/zoef_web_interface.service /lib/systemd/system/
-
+sudo ln -s $ZOEF_SRC_DIR/web_interface/systemd/zoef_web_interface.service /lib/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl stop zoef_web_interface || /bin/true
 sudo systemctl start zoef_web_interface
 sudo systemctl enable zoef_web_interface
-
-echo -e "\e[33mPlease, also reinstall zoef_ROS\e[0m"

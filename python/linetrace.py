@@ -60,4 +60,4 @@ sys.settrace(traceit)
 
 # rospy.init_node() for some reason needs to be called from __main__ when importing in the regular way.
 # https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file
-test = imp.load_source("zoef", "zoef.py")
+test = imp.load_source("zoef", "python/zoef.py")
