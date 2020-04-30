@@ -28,6 +28,7 @@ export default {
       viewportMargin: Infinity
     });
     this.editor.save()
+    this.editor.setValue(this.$store.getters.getCode)
   },
   watch: { 
     '$store.getters.getCode': function(newVal, oldVal) {

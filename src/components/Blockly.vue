@@ -217,6 +217,8 @@
 
     mounted: function() {
       Blockly.setLocale(En);
+      Blockly.HSV_SATURATION = .8
+      Blockly.HSV_VALUE = .8
 
       var blocklyArea = this.$refs.blocklyArea;
       var blocklyDiv = this.$refs.blocklyDiv;

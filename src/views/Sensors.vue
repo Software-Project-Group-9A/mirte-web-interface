@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="sensors">
+    <div ref="sensors" id="sensors">
 		</div>
   </div>
 </template>
@@ -36,7 +36,7 @@ export default {
         distance_sensors = value["distance"]; 
         listeners = {};
         for (sensor in distance_sensors){
-          document.getElementById("sensors").innerHTML = document.getElementById("sensors").innerHTML + sensor + " (" + distance_sensors[sensor]['frequency'] + "Hz)" + ": <div id=/zoef/" + sensor + "/><br/>";       
+          this.$refs.sensors.innerHTML = this.$refs.sensors.innerHTML + sensor + " (" + distance_sensors[sensor]['frequency'] + "Hz)" + ": <div id=/zoef/" + sensor + "/><br/>";       
             listeners['/zoef/' + sensor] = new ROSLIB.Topic({
               ros : ros,
               name : '/zoef/' + sensor,
@@ -50,7 +50,7 @@ export default {
 
         intensity_sensors = value["intensity"];
         for (sensor in intensity_sensors){
-          document.getElementById("sensors").innerHTML = document.getElementById("sensors").innerHTML + sensor + " (" + intensity_sensors[sensor]['frequency'] + "Hz)" + ": <div id=/zoef/" + sensor + "/><br/>";
+          this.$refs.sensors.innerHTML = this.$refs.sensors.innerHTML + sensor + " (" + intensity_sensors[sensor]['frequency'] + "Hz)" + ": <div id=/zoef/" + sensor + "/><br/>";
             listeners['/zoef/' + sensor] = new ROSLIB.Topic({
               ros : ros,
               name : '/zoef/' + sensor,

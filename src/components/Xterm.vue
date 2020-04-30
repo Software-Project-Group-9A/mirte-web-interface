@@ -44,6 +44,7 @@ export default {
             this.socket.send("c\n");
         },
         clearCode() {
+            // stop running program, clear terminal, remove step indicator
             this.socket.send("\x1c");
             this.socket.send("clear\n");
             this.$store.dispatch('setLinenumber', null)
@@ -74,7 +75,7 @@ export default {
             let lines = event.data.split('\n')
             lines.forEach((line, index) => {
                 if (line.indexOf("out: ") == 0) {
-                    //term.writeln(line.substring(5))
+                    // term.writeln(line.substring(5))
                 }
                 if (line.indexOf("line: ") == 0) {
                     let linenr = parseInt(line.substring(6));

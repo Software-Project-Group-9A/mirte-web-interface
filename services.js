@@ -13,6 +13,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 
+// handle commands and stepper
 expressWs.app.ws('/command', (ws, req) => {
     // For all shell data send it to the websocket
     ws.on('data', (data) => {
@@ -32,10 +33,13 @@ expressWs.app.ws('/shell', (ws, req) => {
         cwd: process.env.PWD,
         env: process.env
     });
+
     // For all shell data send it to the websocket
     shell.on('data', (data) => {
+        console.log("shell stdout: " + data);
         ws.send(data);
     });
+
     // For all websocket data send it to the shell
     ws.on('message', (msg) => {
 	    console.log("message on socket: " + msg);
@@ -43,6 +47,7 @@ expressWs.app.ws('/shell', (ws, req) => {
     });
 });
 
+// catch python files from the web interface and save them
 app.post('/api/python', (req, res) => {
     var source = req.body
 
