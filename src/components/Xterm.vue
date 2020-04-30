@@ -25,7 +25,6 @@ export default {
                 },
                 body: this.$store.getters.getCode,
             }).then(res => {
-                console.log("sent succesfully")
                 this.socket.send("python2 python/linetrace.py\n")
             }).catch(err => {
                 console.log("sending failed")
@@ -45,7 +44,9 @@ export default {
             this.socket.send("c\n");
         },
         clearCode() {
-            this.$store.dispatch('setLinenumber', -1)
+            this.socket.send("\x1c");
+            this.socket.send("clear\n");
+            this.$store.dispatch('setLinenumber', null)
         },
     },
     mounted()  {
@@ -58,9 +59,11 @@ export default {
 
         // The terminal
         const term = new Terminal();
+        const fitAddon = new FitAddon();
         term.loadAddon(new AttachAddon(this.socket));
-        term.loadAddon(new FitAddon());
+        term.loadAddon(fitAddon);
         term.open(this.$refs.terminal);
+        fitAddon.fit();
 
         // Load env variables
         this.socket.onopen = (ev) => {
@@ -82,8 +85,6 @@ export default {
 
         // event bus for control functions
         EventBus.$on('control', (payload) => {
-            console.log('event')
-            console.log(payload)
             switch(payload){
                 case "send":
                     this.sendCode()

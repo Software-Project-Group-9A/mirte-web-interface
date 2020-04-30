@@ -1,11 +1,53 @@
 <template>
     <div>
-        <button class="btn btn-primary mr-2" @click="control('send')"     ref="run">Run</button>
-        <button class="btn btn-primary mr-2" @click="control('pause')"    ref="pause">Pause</button>
-        <button class="btn btn-primary mr-2" @click="control('step')"     ref="step">Step</button>
-        <button class="btn btn-primary mr-2" @click="control('continue')" ref="continue">Continue</button>
-		<button class="btn btn-primary mr-2" @click="control('stop')"     ref="stop">Stop</button>
-        <button class="btn btn-primary mr-2" @click="control('clear')"    ref="clear">Clear</button>
+        <button class="btn btn-primary mr-2" 
+            v-b-tooltip.hover 
+            title="play" 
+            @click="control('send')"
+        >
+            <i class="fa fa-play"></i>
+        </button>
+
+        <button class="btn btn-primary mr-2" 
+            v-b-tooltip.hover 
+            title="pause" 
+            @click="control('pause')"
+        >
+            <i class="fa fa-pause"></i>
+        </button>
+
+        <button class="btn btn-primary mr-2" 
+            v-b-tooltip.hover 
+            title="step" 
+            @click="control('step')"
+        >
+            <i class="fa fa-step-forward"></i>
+        </button>
+
+        <button class="btn btn-primary mr-2" 
+            v-b-tooltip.hover 
+            title="continue" 
+            @click="control('continue')"
+        >
+            <i class="fa fa-arrow-right"></i>
+        </button>
+
+		<button class="btn btn-primary mr-2" 
+            v-b-tooltip.hover 
+            title="stop" 
+            @click="control('stop')"
+        >
+            <i class="fa fa-stop"></i>
+        </button>
+
+        <button class="btn btn-primary mr-2" 
+            v-b-tooltip.hover 
+            title="clear" 
+            @click="control('clear')"
+        >
+            <i class="fa fa-repeat"></i>
+        </button>
+
     </div>
 </template>
 
@@ -13,9 +55,6 @@
 import EventBus from '../event-bus';
 
 export default {
-    data: () => ({
-        socket: WebSocket
-    }),
     methods: {
         control(command) {
             EventBus.$emit('control', command);

@@ -39,7 +39,7 @@ export default {
             return state.code = code
         },
 
-        blockly(state, bloclinenumberkly) {
+        blockly(state, blockly) {
             return state.blockly = blockly
         },
 

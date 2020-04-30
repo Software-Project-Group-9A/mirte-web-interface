@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Beginner from '../views/Beginner.vue'
 import Advanced from '../views/Advanced.vue'
 import Settings from '../views/Settings.vue'
 import Network from '../views/Network.vue'
@@ -12,12 +11,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Beginner',
-    component: Beginner
-  },
-  {
-    path: '/Advanced',
-    name: 'Advanced',
+    name: 'Control panel',
     component: Advanced
   },
   {

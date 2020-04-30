@@ -1,10 +1,29 @@
 
+  
+  .smalltext{
+      font-size: .8em;
+  }
+  
+  body{
+      overflow: hidden;
+  }
+  
+  
+  // blockly, codemirror and xterm
+  
   #blocklyArea{
-    width: 100vw;
-    height: 60vh;
+    width: 100%;
+    height: calc(100vh - 65px);
   }
 
-  .codemirror{
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto !important;
+    width: 100%;
+  }
+
+  .codemirror-wrapper{
+      height: calc(100vh - 65px - 463px);
   }
 
   #blocklyDiv{
@@ -114,6 +133,8 @@
 
 .xterm {
     cursor: text;
+    position: absolute;
+    bottom: 0px;
 }
 
 .xterm.enable-mouse-events {

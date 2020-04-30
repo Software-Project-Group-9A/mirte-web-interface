@@ -1,18 +1,19 @@
 <template>
   <div>
-    <ControlButtons />
     <div class="row">
-      <div class="col">
+      <div class="col-8 mr-0 pr-0">
         <Blockly />
       </div>
-    </div>
-    <div class="row">
+
       <div class="col">
-        <Codemirror />
+        <div class="row codemirror-wrapper">
+          <Codemirror />
+        </div>
+        <div class="row">
+            <Xterm />
+        </div>
       </div>
-      <div class="col">
-          <Xterm />
-      </div>
+ 
     </div>
   </div>
 </template>

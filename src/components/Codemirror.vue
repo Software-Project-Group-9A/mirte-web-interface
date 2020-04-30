@@ -24,7 +24,8 @@ export default {
       mode: "python",
       lineNumbers: true,
       autoRefresh: true,
-      gutters: ["linetracer"]
+      gutters: ["linetracer"],
+      viewportMargin: Infinity
     });
     this.editor.save()
   },
