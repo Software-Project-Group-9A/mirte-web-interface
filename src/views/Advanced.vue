@@ -1,48 +1,35 @@
 <template>
   <div>
+    <ControlButtons />
     <div class="row">
       <div class="col">
-        <Blockly :linenumber="linenumber" @blocklyCode="updateBlocklyCode"/>
+        <Blockly />
       </div>
     </div>
     <div class="row">
       <div class="col">
-        <Codemirror :linenumber="linenumber" :code="blocklyCode" />
+        <Codemirror />
       </div>
       <div class="col">
-          <Xterm :code="blocklyCode" @currentLine="updateLinenumber"/>
+          <Xterm />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import Blockly from '@/components/Blockly.vue'
 import Codemirror from '@/components/Codemirror.vue'
 import Xterm from '@/components/Xterm.vue'
-
+import ControlButtons from '@/components/ControlButtons.vue'
 
 export default {
   name: 'advanced',
-  data: function () {
-    return {
-      blocklyCode: "",
-      linenumber: 0
-    }
-  },
-  methods: {
-    updateBlocklyCode(e) {
-      this.blocklyCode = e;
-    },
-    updateLinenumber(e) {
-      this.linenumber = e;
-    },
-  },
   components: {
     Blockly,
     Codemirror,
-    Xterm
+    Xterm,
+    ControlButtons
   }
 }
 </script>

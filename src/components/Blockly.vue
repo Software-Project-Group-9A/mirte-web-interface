@@ -178,19 +178,11 @@
   export default {
     data: () => ({
       workspace: Object,
-      //prefix: "import time\n\n",
-      prefix: "import robot\nimport time\n\nzoef = robot.createRobot()\n\n"
+      prefix: "import time\n\n",
+      // prefix: "import robot\nimport time\n\nzoef = robot.createRobot()\n\n"
     }),
 
-    props: {
-      blocklyCode: String,
-      linenumber: Number
-    },
-
     methods: {
-      updateBlocklycode: function (code) {
-        this.$emit('blocklyCode', code)
-      },
 
       getBlockToLineMap: function() {
         var blockMap = {}
@@ -217,7 +209,7 @@
     },
 
     watch: {
-      linenumber: function(newVal, oldVal){
+      '$store.getters.getLinenumber': function(newVal, oldVal){
         let blockMap = this.getBlockToLineMap();
         this.workspace.highlightBlock(blockMap[newVal]);
       }
@@ -264,15 +256,22 @@
 
           code = this.prefix + code;
           // cmEditor.setValue(code);
-          this.updateBlocklycode(code)
-          
 
           var xml = Blockly.Xml.workspaceToDom(this.workspace);
           var xml_text = Blockly.Xml.domToText(xml);
           localStorage.setItem("blockly", xml_text);
 
+          // update the store
+          this.$store.dispatch('setCode', code)
+          this.$store.dispatch('setBlockly', xml_text)
         }
       });
+
+
+
+      ////////////////////////////////////////////////////////////////////////////////////////
+      //                                 Block definitions                                  //
+      ////////////////////////////////////////////////////////////////////////////////////////
 
       // Blockly block definition
       Blockly.Blocks['move'] = {
@@ -567,15 +566,13 @@
         return code;
       };
 
-
       // Load xml from previous session
       var storage = localStorage.getItem("blockly");
       if (storage !== null) {
           var xml = Blockly.Xml.textToDom(storage);
           Blockly.Xml.domToWorkspace(xml, this.workspace);
+          this.$store.dispatch('setBlockly', xml)
       }
-
-      var latestCode = '';
     }
     
 

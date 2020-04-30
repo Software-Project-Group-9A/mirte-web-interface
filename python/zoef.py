@@ -1,8 +1,5 @@
-import robot
 import time
 
-zoef = robot.createRobot()
-
 for count in range(10):
-  time.sleep(1)
-  print('joe')
+  time.sleep(0.5)
+  print('hallo')

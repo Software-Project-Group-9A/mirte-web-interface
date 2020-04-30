@@ -1,11 +1,5 @@
 <template>
     <div>
-        <button class="btn btn-primary mr-2" @click="sendCode" ref="run">Run</button>
-        <button class="btn btn-primary mr-2" @click="pauseCode" ref="pause">Pause</button>
-        <button class="btn btn-primary mr-2" @click="stepCode" ref="step">Step</button>
-        <button class="btn btn-primary mr-2" @click="continueCode" ref="continue">Continue</button>
-		<button class="btn btn-primary mr-2" @click="stopCode" ref="stop">Stop</button>
-        <button class="btn btn-primary mr-2" @click="clearCode" ref="clear">Clear</button>
         <div id="terminal" ref="terminal" class="xterm"></div>
     </div>
 </template>
@@ -15,13 +9,12 @@ import { Terminal } from 'xterm';
 import { AttachAddon } from 'xterm-addon-attach';
 import { FitAddon } from 'xterm-addon-fit';
 
+import EventBus from '../event-bus';
+
 export default {
     data: () => ({
         socket: WebSocket
     }),
-    props: {
-        code: String,
-    },
     methods: {
         sendCode() {
             fetch("http://localhost:3000/api/python", {
@@ -30,7 +23,7 @@ export default {
                     'Content-Type': 'text/plain',
                     'CORS': 'Access-Control-Allow-Origin'
                 },
-                body: this.code,
+                body: this.$store.getters.getCode,
             }).then(res => {
                 console.log("sent succesfully")
                 this.socket.send("python2 python/linetrace.py\n")
@@ -52,7 +45,7 @@ export default {
             this.socket.send("c\n");
         },
         clearCode() {
-            this.$emit('currentLine', -1)
+            this.$store.dispatch('setLinenumber', -1)
         },
     },
     mounted()  {
@@ -82,10 +75,37 @@ export default {
                 }
                 if (line.indexOf("line: ") == 0) {
                     let linenr = parseInt(line.substring(6));
-                    this.$emit('currentLine', linenr)
+                    this.$store.dispatch('setLinenumber', linenr)
                 }
             });
         };
+
+        // event bus for control functions
+        EventBus.$on('control', (payload) => {
+            console.log('event')
+            console.log(payload)
+            switch(payload){
+                case "send":
+                    this.sendCode()
+                    break;
+                case "stop":
+                    this.stopCode()
+                    break;
+                case "step":
+                    this.stepCode()
+                    break;
+                case "pause":
+                    this.pauseCode()
+                    break;
+                case "continue":
+                    this.continueCode()
+                    break;
+                case "clear":
+                    this.clearCode()
+                    break;
+            }
+        });
+        
 
     }
 }

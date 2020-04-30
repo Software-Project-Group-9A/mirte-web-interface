@@ -11,10 +11,6 @@ export default {
   data: () => ({
     editor: Object
   }),
-  props: {
-    code: String,
-    linenumber: Number
-  },
   methods: {
     makeMarker: () => {
       var marker = document.createElement("div");
@@ -33,10 +29,10 @@ export default {
     this.editor.save()
   },
   watch: { 
-    code: function(newVal, oldVal) {
+    '$store.getters.getCode': function(newVal, oldVal) {
       this.editor.setValue(newVal)
     },
-    linenumber: function(newVal, oldVal){
+    '$store.getters.getLinenumber': function(newVal, oldVal){
       this.editor.clearGutter("linetracer");
       this.editor.setGutterMarker(newVal-1, "linetracer", this.makeMarker());
     }
