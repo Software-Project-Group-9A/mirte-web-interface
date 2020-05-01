@@ -5,6 +5,13 @@ $background-light: #23a880;
       font-size: .8em;
   }
   
+  .nav-spacer{
+    height: 100%;
+    border: 1px solid white;
+    margin: 0 .2em;
+    border-radius: 5px;
+  }
+
   body{
       overflow: hidden;
       background-color: $background !important;

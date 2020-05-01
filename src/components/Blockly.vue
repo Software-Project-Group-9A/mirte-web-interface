@@ -212,7 +212,12 @@
       '$store.getters.getLinenumber': function(newVal, oldVal){
         let blockMap = this.getBlockToLineMap();
         this.workspace.highlightBlock(blockMap[newVal]);
-      }
+      },
+      '$store.getters.getBlockly': function(newVal, oldVal){
+        var xml = Blockly.Xml.textToDom(newVal);
+        Blockly.Xml.domToWorkspace(xml, this.workspace);
+        localStorage.setItem("blockly", newVal);
+      },
     },
 
     mounted: function() {
@@ -265,11 +270,11 @@
 
           // update the store
           this.$store.dispatch('setCode', code)
-          this.$store.dispatch('setBlockly', xml_text)
+          // this.$store.dispatch('setBlockly', xml_text)
         }
       });
 
-
+      
 
       ////////////////////////////////////////////////////////////////////////////////////////
       //                                 Block definitions                                  //
@@ -573,8 +578,9 @@
       if (storage !== null) {
           var xml = Blockly.Xml.textToDom(storage);
           Blockly.Xml.domToWorkspace(xml, this.workspace);
-          this.$store.dispatch('setBlockly', xml)
+          // this.$store.dispatch('setBlockly', xml)
       }
+
     }
     
 

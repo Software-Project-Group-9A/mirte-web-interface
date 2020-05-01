@@ -48,6 +48,25 @@
             <i class="fa fa-repeat"></i>
         </button>
 
+        <span class="nav-spacer"></span>
+
+        <button href="#" class="btn btn-outline-light mx-2" 
+            v-b-tooltip.hover 
+            title="download" 
+            @click="download"
+        >
+            <i class="fa fa-cloud-download"></i>
+        </button>
+
+        <button class="btn btn-outline-light mr-2" 
+            v-b-tooltip.hover 
+            title="upload" 
+            @click="openFileWindow"
+        >
+            <i class="fa fa-cloud-upload"></i>
+            <input ref="file_input" @change="upload" type="file" name="name" style="display: none;" />
+        </button>
+
     </div>
 </template>
 
@@ -59,6 +78,42 @@ export default {
         control(command) {
             EventBus.$emit('control', command);
         },
+
+        openFileWindow(){
+            this.$refs.file_input.click()
+        },
+
+        upload(){
+            var fr=new FileReader(); 
+
+            fr.onload = () => { 
+                console.log(fr.result)
+                this.$store.dispatch('setBlockly', fr.result)
+            } 
+
+            if(this.$refs.file_input.files.length > 0){
+                fr.readAsText(this.$refs.file_input.files[0]); 
+            }
+            
+        },
+
+        download(){
+            var text = localStorage.getItem("blockly");
+            var filename = "zoef.xml";
+            
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+
+        },
+
     },
 
 }

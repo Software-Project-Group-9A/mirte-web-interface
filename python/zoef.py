@@ -1,5 +1,12 @@
 import time
 
-for count in range(10):
-  time.sleep(0.6)
-  print('hallo')
+x = None
+y = None
+
+# Describe this function...
+def fibbonachi(x, y):
+  print(x + y)
+  fibbonachi(y, x + y)
+
+
+fibbonachi(0, 1)
