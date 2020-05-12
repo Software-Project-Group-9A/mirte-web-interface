@@ -57,11 +57,8 @@ app.post('/api/python', (req, res) => {
             console.log(err);
             res.end("something went wrong writing the file");
         }
-
         res.end("the file was saved");
     });
-
-    res.end("something went wrong sending the file");
 });
 
 
