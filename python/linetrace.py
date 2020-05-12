@@ -1,37 +1,41 @@
 #!/usr/bin/env python
 
-import time
 import sys
-import inspect
-import signal
 import imp
+import time
 import os
+import threading
+from websocket_server import WebsocketServer
 
+# Define global variables
+stepper = True
+do_step = False
 
-dirname, filename = os.path.split(os.path.abspath(sys.argv[0]))
-stepper = False
+# Called when a client sends a message
+def message_received(client, server, message):
+   global stepper, do_step
+   if message == "b":
+      stepper = True
+   if message == "c":
+      stepper = False
+   if message == "s":
+      do_step = True
+   if message == "e":
+      os._exit(1)
 
-def debug_signal_handler(signal, frame):
-     global stepper
-     stepper = True
+server = WebsocketServer(8001)
+server.set_fn_message_received(message_received)
+p = threading.Thread(target=server.serve_forever)
+p.start()
 
-signal.signal(signal.SIGINT, debug_signal_handler)
-
-#TODO: use semotehing else than files. for stepping it is fine, but too slow for running
 def trace_lines(frame, event, arg):
-    global stepper, myPrint
+    global stepper, do_step
     if event != 'line':
         return
-    line_no = frame.f_lineno
-    print line_no #TODO: to file
-    f = open(dirname + "/linenr.log", "w")
-    f.write(str(line_no) + "\n")
-    f.flush()
-    f.close()
-    if stepper:
-       inp = raw_input()
-       if inp == "c":
-           stepper = False
+    server.send_message_to_all(str(frame.f_lineno)) 
+    while stepper and not do_step:
+       time.sleep(.01)
+    do_step = False
 
 def traceit(frame, event, arg):
     global stepper
@@ -46,9 +50,5 @@ sys.settrace(traceit)
 # rospy.init_node() for some reason needs to be called from __main__ when importing in the regular way.
 # https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file
 test = imp.load_source("zoef", "python/zoef.py")
-
-f = open(dirname + "/linenr.log", "w")
-f.write("0")
-f.flush()
-f.close()
-
+server.send_message_to_all("0") 
+server.shutdown()

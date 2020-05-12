@@ -13,9 +13,32 @@ import EventBus from '../event-bus';
 
 export default {
     data: () => ({
-        socket: WebSocket
+        shell_socket: WebSocket,
+		  linenr_socket: WebSocket
     }),
     methods: {
+		  waitForSocketConnection(){
+			     this.linenr_socket = new WebSocket("ws://localhost:8001");
+
+              this.linenr_socket.onerror = (event) => {
+                  setTimeout(function () {
+							console.log("waiting for conection");
+							this.waitForSocketConnection();
+					   }.bind(this), 10);
+				  };
+
+              this.linenr_socket.onopen = (event) => {
+					   this.linenr_socket.send("c");
+				  };
+
+				  this.linenr_socket.onmessage = (event) => {
+					 if (event.data != 0) {
+					   this.$store.dispatch('setLinenumber', event.data);
+					 } else {
+                  this.$store.dispatch('setLinenumber', null);
+                }
+				  };
+		  },
         sendCode() {
             fetch("http://localhost:3000/api/python", {
                 method: 'POST',
@@ -25,28 +48,30 @@ export default {
                 },
                 body: this.$store.getters.getCode,
             }).then(res => {
-                this.socket.send("python2 python/linetrace.py\n")
+                this.shell_socket.send("python2 python/linetrace.py\n");
+					 this.waitForSocketConnection();
             }).catch(err => {
                 console.log("sending failed")
                 console.log(err)
             })
         },
         stopCode() {
-            this.socket.send("\x1c");
+            this.linenr_socket.send("e");
+            this.$store.dispatch('setLinenumber', null)
         },
         pauseCode() {
-            this.socket.send("\x03");
+            this.linenr_socket.send("b");
         },
         stepCode() {
-            this.socket.send("n\n");
+            this.linenr_socket.send("s");
         },
         continueCode() {
-            this.socket.send("c\n");
+            this.linenr_socket.send("c");
         },
         clearCode() {
             // stop running program, clear terminal, remove step indicator
-            this.socket.send("\x1c");
-            this.socket.send("clear\n");
+            this.linenr_socket.send("e");
+            this.shell_socket.send("clear\n");
             this.$store.dispatch('setLinenumber', null)
         },
     },
@@ -54,34 +79,22 @@ export default {
        // Open the websocket connection to the backend
         const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
         const port = ':3000';
-        const socketUrl = `${protocol}${location.hostname}${port}/shell`;
-        const pythonUrl = `${location.protocol}${location.hostname}${port}/api/python`;
-        this.socket = new WebSocket(socketUrl);
+        const shell_socketUrl = `${protocol}${location.hostname}${port}/shell`;
+        const linetrace_socketUrl = `${protocol}${location.hostname}:8001`;
+        this.shell_socket = new WebSocket(shell_socketUrl);
 
         // The terminal
         const term = new Terminal();
         const fitAddon = new FitAddon();
-        term.loadAddon(new AttachAddon(this.socket));
+        term.loadAddon(new AttachAddon(this.shell_socket));
         term.loadAddon(fitAddon);
         term.open(this.$refs.terminal);
         fitAddon.fit();
-
+ 
         // Load env variables
-        this.socket.onopen = (ev) => {
-            this.socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
-        };
-
-        this.socket.onmessage = (event) => {
-            let lines = event.data.split('\n')
-            lines.forEach((line, index) => {
-                if (line.indexOf("out: ") == 0) {
-                    // term.writeln(line.substring(5))
-                }
-                if (line.indexOf("line: ") == 0) {
-                    let linenr = parseInt(line.substring(6));
-                    this.$store.dispatch('setLinenumber', linenr)
-                }
-            });
+        this.shell_socket.onopen = (ev) => {
+            // TODO: could we do this on the server side?
+            this.shell_socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
         };
 
         // event bus for control functions

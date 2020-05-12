@@ -7,7 +7,7 @@ sudo apt update
 
 # Install nodeenv
 sudo apt install python-pip
-sudo pip install nodeenv
+sudo pip install nodeenv websocket_server
 
 # Install nodeenv
 nodeenv $ZOEF_SRC_DIR/web_interface/node_env

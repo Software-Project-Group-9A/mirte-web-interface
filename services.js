@@ -2,28 +2,16 @@
 var express = require("express");
 var pty = require('node-pty');
 var app = express();
-var expressWs = require('express-ws')(app);  // TODO: decide on which websocket lib we use
+var expressWs = require('express-ws')(app);  // TODO: decide on which websocket lib we use (probably express)
 var cors = require('cors')
 const bodyParser = require('body-parser');
 var bonjour = require('bonjour')();
-const WebSocket = require('ws');  // TODO: decide on which websocket lib we use
+const WebSocket = require('ws');  // TODO: decide on which websocket lib we use (probably express)
 const wss = new WebSocket.Server({port: 4567 });
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
-
-// handle commands and stepper
-expressWs.app.ws('/command', (ws, req) => {
-    // For all shell data send it to the websocket
-    ws.on('data', (data) => {
-        ws.send(data);
-    });
-    // For all websocket data send it to the shell
-    ws.on('message', (msg) => {
-	    console.log("message on socket: " + msg);
-    });
-});
 
 // Instantiate shell and set up data handlers
 expressWs.app.ws('/shell', (ws, req) => {
@@ -36,13 +24,11 @@ expressWs.app.ws('/shell', (ws, req) => {
 
     // For all shell data send it to the websocket
     shell.on('data', (data) => {
-        console.log("shell stdout: " + data);
         ws.send(data);
     });
 
     // For all websocket data send it to the shell
     ws.on('message', (msg) => {
-	    console.log("message on socket: " + msg);
         shell.write(msg);
     });
 });
