@@ -195,6 +195,7 @@
         let codeLines = code.split("\n");
         for (var i = 0; i < codeLines.length; i++) {
             let line = codeLines[i].trim();
+            //console.log(line);
             let blockidstr = line.lastIndexOf("blockid: ");
             if (blockidstr >= 0){
               line = line.substr(blockidstr);
@@ -205,13 +206,31 @@
 
         Blockly.Python.STATEMENT_PREFIX = "";
         return blockMap;
+      },
+     highlightBlockLine: function(blockId, isParent){ 
+        if (isParent){
+           this.workspace.highlightBlock(blockId);
+        } else {
+           this.workspace.highlightBlock(blockId, true);
+        }
+
+        let curBlock = this.workspace.getBlockById(blockId);
+        if (curBlock){
+           let children = curBlock.getChildren();
+           let blockMap = this.getBlockToLineMap(); // TODO: this should only be generated when the block change. Not while running.
+           for (var child = 0; child < children.length; child++){
+              if (Object.values(blockMap).indexOf(children[child].id) == -1) {
+                 this.highlightBlockLine(children[child].id, false);
+              }
+           }
+         }
       }
     },
 
     watch: {
       '$store.getters.getLinenumber': function(newVal, oldVal){
-        let blockMap = this.getBlockToLineMap();
-        this.workspace.highlightBlock(blockMap[newVal]);
+        let blockMap = this.getBlockToLineMap(); // TODO: this should only be generated when the block change. Not while running.
+        this.highlightBlockLine(blockMap[newVal], true);
       },
       '$store.getters.getBlockly': function(newVal, oldVal){
         var xml = Blockly.Xml.textToDom(newVal);
