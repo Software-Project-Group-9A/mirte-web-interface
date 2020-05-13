@@ -30,6 +30,7 @@ export default {
 
               this.linenr_socket.onopen = (event) => {
                   this.linenr_socket.send("c");
+                  this.$store.dispatch('setExecution', 'running');
               };
 
               this.linenr_socket.onmessage = (event) => {
@@ -37,41 +38,48 @@ export default {
                   this.$store.dispatch('setLinenumber', event.data);
                 } else {
                   this.$store.dispatch('setLinenumber', null);
+                  this.$store.dispatch('setExecution', 'stopped');
                 }
               };
         },
-        sendCode() {
-            fetch("http://localhost:3000/api/python", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain',
-                    'CORS': 'Access-Control-Allow-Origin'
-                },
-                body: this.$store.getters.getCode,
-            }).then(res => {
-                this.shell_socket.send("python2 python/linetrace.py\n");
-                this.waitForSocketConnection();
-            }).catch(err => {
-                console.log("sending failed")
-                console.log(err)
-            })
+        playCode() {
+            if (this.$store.getters.getExecution == "paused"){
+               this.linenr_socket.send("c");
+               this.$store.dispatch('setExecution', 'running');
+            } else {
+               // Not running, so upload code and start executing
+               fetch("http://localhost:3000/api/python", {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'text/plain',
+                       'CORS': 'Access-Control-Allow-Origin'
+                   },
+                   body: this.$store.getters.getCode,
+               }).then(res => {
+                   this.shell_socket.send("python2 python/linetrace.py\n");
+                   this.waitForSocketConnection();
+               }).catch(err => {
+                   console.log("sending failed")
+                   console.log(err)
+               })
+               }
         },
         stopCode() {
             this.linenr_socket.send("e");
             this.$store.dispatch('setLinenumber', null)
+            this.$store.dispatch('setExecution', 'stopped');
         },
         pauseCode() {
             this.linenr_socket.send("b");
+            this.$store.dispatch('setExecution', 'paused');
         },
         stepCode() {
             this.linenr_socket.send("s");
         },
-        continueCode() {
-            this.linenr_socket.send("c");
-        },
         clearOutput() {
             // stop running program, clear terminal, remove step indicator
             this.linenr_socket.send("e");
+            this.$store.dispatch('setExecution', 'stopped');
             this.shell_socket.send("clear\n");
             this.$store.dispatch('setLinenumber', null)
         },
@@ -81,7 +89,7 @@ export default {
               this.term.setOption('disableStdin', false);
            } else {
               this.shell_socket.send("stty -echo && PS1='' && clear\n");
-            this.shell_socket.send("clear\n");
+              this.shell_socket.send("clear\n");
               this.term.setOption('disableStdin', true);
            }
         },
@@ -121,8 +129,8 @@ export default {
         // event bus for control functions
         EventBus.$on('control', (payload) => {
             switch(payload){
-                case "send":
-                    this.sendCode()
+                case "play":
+                    this.playCode()
                     break;
                 case "stop":
                     this.stopCode()
@@ -133,9 +141,6 @@ export default {
                 case "pause":
                     this.pauseCode()
                     break;
-                case "continue":
-                    this.continueCode()
-                    break;
                 case "clear":
                     this.clearOutput()
                     break;
@@ -144,8 +149,7 @@ export default {
                     break;
             }
         });
-        
-
     }
+
 }
 </script>

@@ -3,7 +3,8 @@ export default {
 	state: {
         code: "",
         blockly: "",
-        linenumber: 0
+        linenumber: 0,
+        execution: "stopped" //TODO: enum?
 	},
 
 	getters: {
@@ -19,6 +20,9 @@ export default {
             return state.linenumber
         },
 
+        getExecution(state){
+            return state.execution
+        },
 	},
 
 	actions: {
@@ -31,6 +35,9 @@ export default {
         },
         setLinenumber({commit, getters}, linenumber){
             commit('linenumber', linenumber)
+        },
+        setExecution({commit, getters}, execution){
+            commit('execution', execution)
         },
     },
 
@@ -45,6 +52,10 @@ export default {
 
         linenumber(state, linenumber) {
             return state.linenumber = linenumber
+        },
+
+        execution(state, execution) {
+            return state.execution = execution
         },
 	}
 }

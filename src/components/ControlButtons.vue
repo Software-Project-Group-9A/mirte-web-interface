@@ -1,14 +1,14 @@
 <template>
     <div>
-        <button class="btn btn-outline-light mr-2" 
+        <button :disabled="isPlayDisabled" class="btn btn-outline-light mr-2" 
             v-b-tooltip.hover 
             title="play" 
-            @click="control('send')"
+            @click="control('play')"
         >
             <i class="fa fa-play"></i>
         </button>
 
-        <button class="btn btn-outline-light mr-2" 
+        <button :disabled="isPauseDisabled" class="btn btn-outline-light mr-2" 
             v-b-tooltip.hover 
             title="pause" 
             @click="control('pause')"
@@ -16,7 +16,7 @@
             <i class="fa fa-pause"></i>
         </button>
 
-        <button class="btn btn-outline-light mr-2" 
+        <button :disabled="isStepDisabled" class="btn btn-outline-light mr-2" 
             v-b-tooltip.hover 
             title="step" 
             @click="control('step')"
@@ -24,15 +24,7 @@
             <i class="fa fa-step-forward"></i>
         </button>
 
-        <button class="btn btn-outline-light mr-2" 
-            v-b-tooltip.hover 
-            title="continue" 
-            @click="control('continue')"
-        >
-            <i class="fa fa-arrow-right"></i>
-        </button>
-
-		<button class="btn btn-outline-light mr-2" 
+		<button :disabled="isStopDisabled" class="btn btn-outline-light mr-2" 
             v-b-tooltip.hover 
             title="stop" 
             @click="control('stop')"
@@ -82,6 +74,7 @@
 import EventBus from '../event-bus';
 
 export default {
+
     methods: {
         control(command) {
             EventBus.$emit('control', command);
@@ -122,7 +115,22 @@ export default {
 
         },
 
+
     },
+    computed: {
+     	 isPlayDisabled: function(){
+          return this.$store.getters.getExecution == "running";
+       },
+     	 isPauseDisabled: function(){
+          return this.$store.getters.getExecution == "stopped";
+       },
+     	 isStepDisabled: function(){
+          return this.$store.getters.getExecution == "stopped";
+       },
+     	 isStopDisabled: function(){
+          return this.$store.getters.getExecution == "stopped";
+       }
+    }
 
 }
 </script>
