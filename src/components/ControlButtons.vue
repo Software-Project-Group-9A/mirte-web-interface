@@ -42,10 +42,18 @@
 
         <button class="btn btn-outline-light mr-2" 
             v-b-tooltip.hover 
-            title="clear" 
+            title="clear output" 
             @click="control('clear')"
         >
             <i class="fa fa-repeat"></i>
+        </button>
+
+        <button class="btn btn-outline-light mr-2" 
+            v-b-tooltip.hover 
+            title="toggle output/terminal" 
+            @click="control('terminal')"
+        >
+            <i class="fa fa-terminal"></i>
         </button>
 
         <span class="nav-spacer"></span>

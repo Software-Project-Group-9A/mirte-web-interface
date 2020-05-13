@@ -14,31 +14,32 @@ import EventBus from '../event-bus';
 export default {
     data: () => ({
         shell_socket: WebSocket,
-		  linenr_socket: WebSocket
+        linenr_socket: WebSocket,
+        term: Terminal
     }),
     methods: {
-		  waitForSocketConnection(){
-			     this.linenr_socket = new WebSocket("ws://localhost:8001");
+        waitForSocketConnection(){
+              this.linenr_socket = new WebSocket("ws://localhost:8001");
 
               this.linenr_socket.onerror = (event) => {
                   setTimeout(function () {
-							console.log("waiting for conection");
-							this.waitForSocketConnection();
-					   }.bind(this), 10);
-				  };
+                     console.log("waiting for conection");
+                     this.waitForSocketConnection();
+                  }.bind(this), 10);
+              };
 
               this.linenr_socket.onopen = (event) => {
-					   this.linenr_socket.send("c");
-				  };
+                  this.linenr_socket.send("c");
+              };
 
-				  this.linenr_socket.onmessage = (event) => {
-					 if (event.data != 0) {
-					   this.$store.dispatch('setLinenumber', event.data);
-					 } else {
+              this.linenr_socket.onmessage = (event) => {
+                if (event.data != 0) {
+                  this.$store.dispatch('setLinenumber', event.data);
+                } else {
                   this.$store.dispatch('setLinenumber', null);
                 }
-				  };
-		  },
+              };
+        },
         sendCode() {
             fetch("http://localhost:3000/api/python", {
                 method: 'POST',
@@ -49,7 +50,7 @@ export default {
                 body: this.$store.getters.getCode,
             }).then(res => {
                 this.shell_socket.send("python2 python/linetrace.py\n");
-					 this.waitForSocketConnection();
+                this.waitForSocketConnection();
             }).catch(err => {
                 console.log("sending failed")
                 console.log(err)
@@ -68,11 +69,24 @@ export default {
         continueCode() {
             this.linenr_socket.send("c");
         },
-        clearCode() {
+        clearOutput() {
             // stop running program, clear terminal, remove step indicator
             this.linenr_socket.send("e");
             this.shell_socket.send("clear\n");
             this.$store.dispatch('setLinenumber', null)
+        },
+        setTerminal(terminal){
+           if (terminal){
+              this.shell_socket.send("stty echo && PS1='\\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ ' && clear\n");
+              this.term.setOption('disableStdin', false);
+           } else {
+              this.shell_socket.send("stty -echo && PS1='' && clear\n");
+            this.shell_socket.send("clear\n");
+              this.term.setOption('disableStdin', true);
+           }
+        },
+        toggleTerminal() {
+            this.setTerminal(this.term.getOption('disableStdin'));
         },
     },
     mounted()  {
@@ -84,16 +98,17 @@ export default {
         this.shell_socket = new WebSocket(shell_socketUrl);
 
         // The terminal
-        const term = new Terminal();
+        this.term = new Terminal();
         const fitAddon = new FitAddon();
-        term.loadAddon(new AttachAddon(this.shell_socket));
-        term.loadAddon(fitAddon);
-        term.open(this.$refs.terminal);
+        this.term.loadAddon(new AttachAddon(this.shell_socket));
+        this.term.loadAddon(fitAddon);
+        this.term.open(this.$refs.terminal);
         fitAddon.fit();
- 
+        this.term.setOption('disableStdin', true);
+        
         // Load env variables
         this.shell_socket.onopen = (ev) => {
-            // TODO: could we do this on the server side?
+            this.setTerminal(false);
             this.shell_socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
         };
 
@@ -116,7 +131,10 @@ export default {
                     this.continueCode()
                     break;
                 case "clear":
-                    this.clearCode()
+                    this.clearOutput()
+                    break;
+                case "terminal":
+                    this.toggleTerminal()
                     break;
             }
         });
