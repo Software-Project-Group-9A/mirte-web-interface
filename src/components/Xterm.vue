@@ -112,6 +112,12 @@ export default {
             this.shell_socket.send("source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && cd /home/zoef/workdir && export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && clear\n");
         };
 
+        // Autoresize terminal on size change
+        const observer = new ResizeObserver(entries => {
+           fitAddon.fit();
+        })
+        observer.observe(this.$refs.terminal)
+
         // event bus for control functions
         EventBus.$on('control', (payload) => {
             switch(payload){
