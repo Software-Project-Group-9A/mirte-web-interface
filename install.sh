@@ -24,6 +24,8 @@ grep -qxF "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" /ho
 sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
 
 # Foward for 80 to 8080
+echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 sudo apt install -y iptables-persistent
 sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 8080
 sudo bash -c "iptables-save > /etc/iptables/rules.v4"
