@@ -3,10 +3,10 @@
 ZOEF_SRC_DIR=/usr/local/src/zoef
 
 # Update
-sudo apt update
+sudo apt update -y
 
 # Install nodeenv
-sudo apt install python-pip
+sudo apt install -y python-pip
 sudo pip install nodeenv websocket_server
 
 # Install nodeenv
