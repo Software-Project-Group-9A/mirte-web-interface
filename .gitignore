@@ -6,3 +6,6 @@ node_modules/
 dist/
 
 __pycache__/
+
+node_env/
+python/zoef.py
