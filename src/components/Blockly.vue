@@ -5,16 +5,16 @@
     </div>
 
     <xml id="toolbox" ref="toolbox" style="display: none">
-		<category name="Sensors" colour="10">
+		<category name="Sensors" colour="%{BKY_SENSORS_RGB}">
 			<block type="get_distance"></block>
-      <block type="get_intensity"></block>
+         <block type="get_intensity"></block>
 			<block type="get_pin_value"></block>
 			<block type="get_virtual_color"></block>
 			<block type="get_barcode"></block>
 		</category>
 
-		<category name="Flow" colour="60" expanded="true">
-			<category name="Loops" colour="60">
+		<category name="Flow" colour="%{BKY_FLOW_RGB}" expanded="true">
+			<category name="Loops" colour="%{BKY_FLOW_RGB}">
 				<block type="controls_repeat_ext">
 					<value name="TIMES">
 						<block type="math_number">
@@ -45,7 +45,7 @@
 				<block type="controls_flow_statements"></block>
 			</category>
 
-			<category name="Timing" colour="60">
+			<category name="Timing" colour="%{BKY_FLOW_RGB}">
 				<block type="wait">
 					<value name="wait">
 						<block type="math_number">
@@ -57,7 +57,7 @@
 				<block type="wait_until"></block>
 			</category>
 
-			<category name="If" colour="60">
+			<category name="If" colour="%{BKY_FLOW_RGB}">
 				<block type="controls_if"></block>
 				<block type="controls_if">
 					<mutation else="1"></mutation>
@@ -66,12 +66,12 @@
 					<mutation elseif="1" else="1"></mutation>
 				</block>
 			</category>
-			<category name="Functions" custom="PROCEDURE" colour="60">
+			<category name="Functions" custom="PROCEDURE" colour="%{BKY_FLOW_RGB}">
 			</category>
 		</category>
 
-		<category name="Data" colour="%{BKY_LOGIC_HUE}" expanded="true">
-			<category name="Boolean" colour="%{BKY_LOGIC_HUE}">
+		<category name="Data" colour="%{BKY_DATA_RGB}" expanded="true">
+			<category name="Logic" colour="%{BKY_DATA_RGB}">
 				<block type="logic_compare"></block>
 				<block type="logic_operation"></block>
 				<block type="logic_negate"></block>
@@ -79,11 +79,7 @@
 				<block type="logic_null"></block>
 				<block type="logic_ternary"></block>
 			</category>
-			<category name="Parameters" colour="%{BKY_LOGIC_HUE}">
-
-				<block type="getpressedkey"></block>
-			</category>
-			<category name="Math" colour="%{BKY_LOGIC_HUE}">
+			<category name="Math" colour="%{BKY_DATA_RGB}">
 				<block type="math_number">
 					<field name="NUM">123</field>
 				</block>
@@ -122,7 +118,7 @@
 				<block type="math_random_float"></block>
 				<block type="math_atan2"></block>
 			</category>
-			<category name="Lists" colour="%{BKY_LOGIC_HUE}">
+			<category name="Lists" colour="%{BKY_DATA_RGB}">
 				<block type="lists_create_empty"></block>
 				<block type="lists_create_with"></block>
 				<block type="lists_repeat">
@@ -138,29 +134,32 @@
 				<block type="lists_getIndex"></block>
 				<block type="lists_setIndex"></block>
 			</category>
-			<category name="Variables" custom="VARIABLE" colour="%{BKY_LOGIC_HUE}">
+			<category name="Variables" custom="VARIABLE" colour="%{BKY_DATA_RGB}">
 			</category>
 		</category>
 
-		<category name="Actions" colour="%{BKY_LOOPS_HUE}">
-			<block type="text"></block>
-			<block type="text_print"></block>
+		<category name="Actions" colour="%{BKY_ACTIONS_RGB}">
+			<block type="text_print">
+            <value name="TEXT">
+               <block type="text"></block>
+            </value>
+         </block>
 			<block type="move"></block>
-      <block type="pwm"></block>
+         <block type="pwm"></block>
 			<block type="display_text"></block>
 			<block type="turn"></block>
 			<block type="turnAngle"></block>
 		</category>
 
 		<sep></sep>
-		<category name="Modules" expanded="true">
-			<category name="Button">
+		<category name="Modules" expanded="true" colour="%{BKY_MODULES_RGB}">
+			<category name="Button" colour="%{BKY_MODULES_RGB}">
 			</category>
-			<category name="Camera">
+			<category name="Camera" colour="%{BKY_MODULES_RGB}">
 			</category>
-			<category name="QR">
+			<category name="QR" colour="%{BKY_MODULES_RGB}">
 			</category>
-			<category name="Motor">
+			<category name="Motor" colour="%{BKY_MODULES_RGB}">
 			</category>
 		</category>
   </xml>
@@ -207,7 +206,7 @@
         Blockly.Python.STATEMENT_PREFIX = "";
         return blockMap;
       },
-     highlightBlockLine: function(blockId, isParent){ 
+      highlightBlockLine: function(blockId, isParent){ 
         if (isParent){
            this.workspace.highlightBlock(blockId);
         } else {
@@ -224,7 +223,15 @@
               }
            }
          }
-      }
+      },
+      recolor: function(block, rgb_color){ 
+        //https://groups.google.com/forum/#!topic/blockly/yUBEymLKBbk
+        var oldInit = block.init; 
+        block.init = function() { 
+         oldInit.call(this); 
+         this.setColour(rgb_color); 
+        } 
+      },
     },
 
     watch: {
@@ -241,8 +248,14 @@
 
     mounted: function() {
       Blockly.setLocale(En);
-      Blockly.HSV_SATURATION = .8
-      Blockly.HSV_VALUE = .8
+
+      // Palette generated by: https://coolors.co/5a7574-cfd186-e3655b-52414c-5b8c5a-57467b
+      Blockly.Msg.SENSORS_RGB = "#cfd186";
+      Blockly.Msg.FLOW_RGB = "#e3655b";
+      Blockly.Msg.DATA_RGB = "#52414c";
+      Blockly.Msg.ACTIONS_RGB = "#57467b";
+      Blockly.Msg.MODULES_RGB = "#5b8c5a";
+
 
       var blocklyArea = this.$refs.blocklyArea;
       var blocklyDiv = this.$refs.blocklyDiv;
@@ -294,6 +307,52 @@
       });
 
       
+      // Recolor predefined blocks
+      this.recolor(Blockly.Blocks['text'], "%{BKY_ACTIONS_RGB}");
+      this.recolor(Blockly.Blocks['text_print'], "%{BKY_ACTIONS_RGB}");
+
+      this.recolor(Blockly.Blocks['controls_repeat_ext'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['controls_whileUntil'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['controls_for'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['controls_forEach'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['controls_flow_statements'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['controls_if'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['procedures_defnoreturn'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['procedures_defreturn'], "%{BKY_FLOW_RGB}");
+      this.recolor(Blockly.Blocks['procedures_ifreturn'], "%{BKY_FLOW_RGB}");
+
+      this.recolor(Blockly.Blocks['variables_set'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['variables_get'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_change'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['logic_compare'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['logic_operation'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['logic_negate'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['logic_boolean'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['logic_null'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['logic_ternary'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_number'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_arithmetic'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_single'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_trig'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_constant'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_number_property'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_round'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_on_list'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_modulo'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_constrain'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_random_int'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_random_float'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['math_atan2'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_create_empty'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_create_with'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_repeat'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_length'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_isEmpty'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_indexOf'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_getIndex'], "%{BKY_DATA_RGB}");
+      this.recolor(Blockly.Blocks['lists_setIndex'], "%{BKY_DATA_RGB}");
+
+
 
       ////////////////////////////////////////////////////////////////////////////////////////
       //                                 Block definitions                                  //
@@ -303,7 +362,7 @@
       Blockly.Blocks['move'] = {
         init: function() {
           this.appendDummyInput()
-              .appendField("Move ")
+              .appendField("move ")
               .appendField(new Blockly.FieldDropdown([
                 ['forward', 'forward'],
                 ['backward', 'backward']
@@ -312,26 +371,7 @@
               .appendField(new Blockly.FieldNumber(1), "speed");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
-      this.setTooltip("");
-      this.setHelpUrl("");
-        }
-      };
-
-      // Blockly block definition
-      Blockly.Blocks['move'] = {
-        init: function() {
-          this.appendDummyInput()
-              .appendField("Move ")
-              .appendField(new Blockly.FieldDropdown([
-                ['forward', 'forward'],
-                ['backward', 'backward']
-              ]), 'direction')
-              .appendField("with speed")
-              .appendField(new Blockly.FieldNumber(1), "speed");
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_ACTIONS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -349,7 +389,7 @@
       Blockly.Blocks['turn'] = {
         init: function() {
           this.appendDummyInput()
-              .appendField("Turn ")
+              .appendField("turn ")
               .appendField(new Blockly.FieldDropdown([
                 ['left', 'left'],
                 ['right', 'right']
@@ -358,7 +398,7 @@
               .appendField(new Blockly.FieldNumber(1), "speed");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_ACTIONS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -377,11 +417,11 @@
       Blockly.Blocks['display_text'] = {
         init: function() {
           this.appendDummyInput()
-              .appendField("Display text")
+              .appendField("display text")
               .appendField(new Blockly.FieldTextInput("Hello, World!"), "text");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_ACTIONS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -401,7 +441,7 @@
               .appendField("get analog pin value")
               .appendField(new Blockly.FieldNumber(1), "pin");
           this.setOutput(true, null);
-          this.setColour(160);
+          this.setColour("%{BKY_SENSORS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -425,7 +465,7 @@
                 ['right', 'right']
               ]), 'direction')
           this.setOutput(true, null);
-          this.setColour(160);
+          this.setColour("%{BKY_SENSORS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -445,7 +485,7 @@
           this.appendDummyInput()
               .appendField("get a barcode or qr code from the camera ")
           this.setOutput(true, null);
-          this.setColour(160);
+          this.setColour("%{BKY_SENSORS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -462,11 +502,11 @@
       Blockly.Blocks['turnAngle'] = {
         init: function() {
           this.appendDummyInput()
-              .appendField("Turn with angle ")
+              .appendField("turn with angle ")
               .appendField(new Blockly.FieldAngle(90), "angle");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_ACTIONS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -485,13 +525,13 @@
         init: function() {
           this.appendValueInput("wait")
               .setCheck("Number")
-              .appendField("Wait ");
+              .appendField("wait ");
           this.appendDummyInput()
               .appendField("second(s)");
           this.setInputsInline(true);
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_FLOW_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -513,7 +553,7 @@
             .appendField("get intensity of ")
             .appendField(new Blockly.FieldDropdown([['left', 'left'], ['right', 'right']]), 'sensor');
           this.setOutput(true, null);
-          this.setColour(160);
+          this.setColour("%{BKY_SENSORS_RGB}");
       this.setTooltip("");
       this.setHelpUrl(""); 
         }
@@ -533,7 +573,7 @@
             .appendField("get distance of ")
             .appendField(new Blockly.FieldDropdown([['left', 'left'], ['right', 'right']]), 'sensor');
           this.setOutput(true, null);
-          this.setColour(160);
+          this.setColour("%{BKY_SENSORS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");	
         }
@@ -549,11 +589,11 @@
         init: function() {
           this.appendValueInput("condition")
               .setCheck("Boolean")
-              .appendField("Wait until");
+              .appendField("wait until");
           this.setInputsInline(false);
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_FLOW_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -572,13 +612,13 @@
       Blockly.Blocks['pwm'] = {
         init: function() {
           this.appendDummyInput()
-            .appendField("Set PWM of  ")
+            .appendField("set PWM of  ")
             .appendField(new Blockly.FieldDropdown([['left', 'left'], ['right', 'right']]), 'motor')
             .appendField("to value")
             .appendField(new Blockly.FieldNumber(1), "speed");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
-          this.setColour(130);
+          this.setColour("%{BKY_ACTIONS_RGB}");
       this.setTooltip("");
       this.setHelpUrl("");
         }
@@ -600,8 +640,8 @@
           // this.$store.dispatch('setBlockly', xml)
       }
 
-    }
-    
+      
 
+    }
   }
 </script>
