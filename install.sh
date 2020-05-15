@@ -3,21 +3,19 @@
 ZOEF_SRC_DIR=/usr/local/src/zoef
 
 # Update
-sudo apt update -y
+sudo apt update
 
 # Install nodeenv
-sudo apt install -y python-pip python-setuptools
-sudo pip install wheel
+sudo apt install -y python-pip python-setuptools python-wheel
 sudo pip install nodeenv websocket_server
 
-# Install nodeenv
-nodeenv $ZOEF_SRC_DIR/web_interface/node_env
+# Install nodeenv (TODO: find out why node-pty and node-sass will not compile correctly on higher versions)
+nodeenv --node=8.17.0 $ZOEF_SRC_DIR/web_interface/node_env
 
-# Install dependencies for avahi-ws (TODO: package.json and install via npm)
+# Install web interface
 . $ZOEF_SRC_DIR/web_interface/node_env/bin/activate
 cd $ZOEF_SRC_DIR/web_interface
 npm install
-npm run build
 deactivate_node
 
 # Set some links for python interface
