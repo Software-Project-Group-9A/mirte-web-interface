@@ -23,7 +23,7 @@ def message_received(client, server, message):
    if message == "e":
       os._exit(1)
 
-server = WebsocketServer(8001)
+server = WebsocketServer(host="0.0.0.0", port=8001)
 server.set_fn_message_received(message_received)
 p = threading.Thread(target=server.serve_forever)
 p.start()
@@ -49,6 +49,6 @@ sys.settrace(traceit)
 
 # rospy.init_node() for some reason needs to be called from __main__ when importing in the regular way.
 # https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file
-test = imp.load_source("zoef", "python/zoef.py")
+test = imp.load_source("zoef", "/home/zoef/workdir/zoef.py")
 server.send_message_to_all("0") 
 server.shutdown()

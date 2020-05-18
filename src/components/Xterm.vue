@@ -19,7 +19,9 @@ export default {
     }),
     methods: {
         waitForSocketConnection(){
-              this.linenr_socket = new WebSocket("ws://localhost:8001");
+              const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+              const linetrace_socketUrl = `${protocol}${location.hostname}:8001`;
+              this.linenr_socket = new WebSocket(linetrace_socketUrl);
 
               this.linenr_socket.onerror = (event) => {
                   setTimeout(function () {
@@ -48,7 +50,9 @@ export default {
                this.$store.dispatch('setExecution', 'running');
             } else {
                // Not running, so upload code and start executing
-               fetch("http://localhost:3000/api/python", {
+               const pythonUrl = `http://${location.hostname}:3000/api/python`;
+
+               fetch(pythonUrl, {
                    method: 'POST',
                    headers: {
                        'Content-Type': 'text/plain',
@@ -56,7 +60,7 @@ export default {
                    },
                    body: this.$store.getters.getCode,
                }).then(res => {
-                   this.shell_socket.send("python2 python/linetrace.py\n");
+                   this.shell_socket.send("python2 /home/zoef/workdir/linetrace.py\n");
                    this.waitForSocketConnection();
                }).catch(err => {
                    console.log("sending failed")

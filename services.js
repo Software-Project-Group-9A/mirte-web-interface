@@ -38,7 +38,7 @@ app.post('/api/python', (req, res) => {
     var source = req.body
 
     const fs = require('fs');
-    fs.writeFile("python/zoef.py", source, (err) => {
+    fs.writeFile("/home/zoef/workdir/zoef.py", source, (err) => {
         if(err) {
             console.log(err);
             res.end("something went wrong writing the file");
