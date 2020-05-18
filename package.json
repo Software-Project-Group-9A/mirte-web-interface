@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "interface": "vue-cli-service serve",
+    "interface": "vue-cli-service serve --port 4000",
     "shell": "node services.js",
     "build": "vue-cli-service build"
   },
