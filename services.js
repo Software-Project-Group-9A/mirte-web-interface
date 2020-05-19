@@ -13,6 +13,10 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 
+
+// Serve Vue production 
+app.use(express.static('dist'))
+
 // Instantiate shell and set up data handlers
 expressWs.app.ws('/shell', (ws, req) => {
     // Spawn the shell

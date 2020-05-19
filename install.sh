@@ -7,7 +7,7 @@ sudo apt update
 
 # Install nodeenv
 sudo apt install -y python-pip python-setuptools python-wheel
-sudo pip install nodeenv websocket_server
+sudo -H pip install nodeenv websocket_server
 
 # Install nodeenv (TODO: find out why node-pty and node-sass will not compile correctly on higher versions)
 nodeenv --node=8.17.0 $ZOEF_SRC_DIR/web_interface/node_env
@@ -16,17 +16,18 @@ nodeenv --node=8.17.0 $ZOEF_SRC_DIR/web_interface/node_env
 . $ZOEF_SRC_DIR/web_interface/node_env/bin/activate
 cd $ZOEF_SRC_DIR/web_interface
 npm install
+npm run build
 deactivate_node
 
 # Set some links for python interface
 grep -qxF "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" /home/zoef/.bashrc || echo "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" >> /home/zoef/.bashrc
 sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
 
-# Foward for 80 to 8080
+# Foward for 80 to 3000
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
 echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
 sudo apt install -y iptables-persistent
-sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 4000
+sudo iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 3000
 sudo bash -c "iptables-save > /etc/iptables/rules.v4"
 
 # Add systemd service

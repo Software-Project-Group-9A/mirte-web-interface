@@ -6,7 +6,7 @@ After=network-online.target
 
 [Service]
 User=zoef
-ExecStart=/bin/bash -c "cd /usr/local/src/zoef/web_interface/ && source ./node_env/bin/activate && bash -c 'npm run interface & npm run shell'"
+ExecStart=/bin/bash -c "cd /usr/local/src/zoef/web_interface/ && source ./node_env/bin/activate && npm run shell"
 
 [Install]
 WantedBy=multi-user.target
