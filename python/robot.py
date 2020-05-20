@@ -4,6 +4,7 @@ import rospy
 import signal
 import sys
 import math
+import atexit
 
 sys.path.append('/usr/local/lib/python2.7/dist-packages/PyMata-2.20-py2.7.egg')  # Needed for jupyter notebooks
 sys.path.append('/usr/local/lib/python2.7/dist-packages/pyserial-3.4-py2.7.egg')
@@ -17,11 +18,15 @@ from std_msgs.msg import Empty
 from zoef_msgs.msg import Encoder, Intensity
 
 from zoef_msgs.srv import *
+from std_srvs.srv import *
 
 zoef = {}
 
 class Robot():
     def __init__(self):
+        # Stop robot when exited
+        atexit.register(self.stop)
+
         self.PWM = PyMata.PWM
         self.INPUT = PyMata.INPUT
         self.OUTPUT = PyMata.OUTPUT
@@ -30,6 +35,13 @@ class Robot():
         self.DIGITAL = PyMata.DIGITAL
 
         self.original_sigint_handler = signal.getsignal(signal.SIGINT)
+
+        # Call /stop and /start service to disable/enable the ROS diff_drive_controller
+        # By default this class will control the rbot though PWM (controller stopped). Only in case
+        # the controller is needed, it will be enabled.
+        self.stop_controller_service = rospy.ServiceProxy('stop', Empty)
+        self.start_controller_service = rospy.ServiceProxy('start', Empty)
+        self.stop_controller_service()
 
         # Services for actuators 
         # Those are not publishers since the connection to the subsriber node can take a lot of
@@ -144,6 +156,7 @@ class Robot():
         return move.finished
 
     def stop(self):
+        self.start_controller_service()
         self.move(0, 0)
 
     def signal_handler(self, sig, frame):
@@ -152,7 +165,6 @@ class Robot():
           sys.exit()
        else:
           self.original_sigint_handler(sig, frame)
-
 
 # We need a special function to initiate the Robot() because the main.py need to call the 
 # init_node() (see: https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file/)
