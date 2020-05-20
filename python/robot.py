@@ -82,15 +82,15 @@ class Robot():
 
 
     def getDistance(self, sensor):
-        dist = self.distance_services[sensor]()
+        dist = self.distance_services[sensor + "_distance"]()
         return dist.data
 
     def getIntensity(self, sensor):
-        value = self.intensity_services[sensor]()
+        value = self.intensity_services[sensor + "_intensity"]()
         return value.data
 
     def getSpeed(self, sensor):
-        value = self.encoder_services[sensor](1) # Currently Encoder asks for a timedelta, not used
+        value = self.encoder_services[sensor + "_encoder"](1) # Currently Encoder asks for a timedelta, not used
         return value.data
 
     def setPinMode(self, pin, mode, type):
@@ -128,7 +128,7 @@ class Robot():
         self.text_publisher.publish(text)
 
     def setMotorPWM(self, motor, value):
-        motor = self.motor_services[motor](value)
+        motor = self.motor_services[motor + "_motor"](value)
         return motor.status
 
     def getEncoderTicks(self, sensor, time_delta):
