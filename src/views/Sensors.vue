@@ -1,7 +1,42 @@
 <template>
-  <div>
-    <div ref="sensors" id="sensors">
-		</div>
+  <div class="container">
+
+    <h3 class="mt-5">Device</h3>
+    <table>
+      <tr v-for="[k, v] of Object.entries(params.device)" v-bind:key="k">
+        <td>
+          {{k}}
+        </td>
+        <td>
+          {{v}}
+        </td>
+      </tr>
+    </table>
+
+    <h3 class="mt-5">Motors</h3>
+    <table>
+      <tr v-for="[k, v] of Object.entries(params.motor)" v-bind:key="k">
+        <td>
+          {{k}}
+        </td>
+        <td>
+          {{v}}
+        </td>
+      </tr>
+    </table>
+
+    <h3 class="mt-5">Encoders</h3>
+    <table>
+      <tr v-for="[k, v] of Object.entries(params.encoder)" v-bind:key="k">
+        <td>
+          {{k}}
+        </td>
+        <td>
+          {{v}}
+        </td>
+      </tr>
+    </table>
+
   </div>
 </template>
 
@@ -12,59 +47,26 @@ import ROSLIB from 'roslib'
 export default {
   data: function () {
     return {
-
+      params: {}
     }
   },
 
   mounted(){
-
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-    const ros_port = ':9090'; //location.port ? `:${location.port}` : '';
-    const ros_socketUrl = `${ros_protocol}${location.hostname}${ros_port}`;
-
-      var ros = new ROSLIB.Ros({
-        url : ros_socketUrl
-      });
-
-      var params = new ROSLIB.Param({
-        ros : ros,
-        name : '/zoef'
-      });
-
-      params.get(function(value) {
-
-        distance_sensors = value["distance"]; 
-        listeners = {};
-        for (sensor in distance_sensors){
-          this.$refs.sensors.innerHTML = this.$refs.sensors.innerHTML + sensor + " (" + distance_sensors[sensor]['frequency'] + "Hz)" + ": <div id=/zoef/" + sensor + "/><br/>";       
-            listeners['/zoef/' + sensor] = new ROSLIB.Topic({
-              ros : ros,
-              name : '/zoef/' + sensor,
-              messageType : 'sensor_msgs/Range'
-            });
-
-            listeners['/zoef/'+ sensor].subscribe(function(message) {
-                document.getElementById(this.name + "/").innerHTML = message.range;
-            });
-        }
-
-        intensity_sensors = value["intensity"];
-        for (sensor in intensity_sensors){
-          this.$refs.sensors.innerHTML = this.$refs.sensors.innerHTML + sensor + " (" + intensity_sensors[sensor]['frequency'] + "Hz)" + ": <div id=/zoef/" + sensor + "/><br/>";
-            listeners['/zoef/' + sensor] = new ROSLIB.Topic({
-              ros : ros,
-              name : '/zoef/' + sensor,
-              messageType : 'zoef_msgs/Intensity'
-            });
-
-            listeners['/zoef/'+ sensor].subscribe(function(message) {
-                document.getElementById(this.name + "/").innerHTML = message.value;
-            });
-        } 
-
-
-    
-      });
+    const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`;
+      
+    var ros = new ROSLIB.Ros({
+      url : ros_socketUrl
+    });
+      
+    var params = new ROSLIB.Param({
+      ros : ros,
+      name : '/zoef'
+    });
+      
+    params.get((res) => {
+      this.params = res
+    });
 
   }
 }
