@@ -1,7 +1,7 @@
 <template>
   <div class="container">
 
-    <h3 class="mt-5">Device</h3>
+    <h3>Device</h3>
     <table>
       <tr v-for="[k, v] of Object.entries(params.device)" v-bind:key="k">
         <td>
@@ -47,7 +47,25 @@ import ROSLIB from 'roslib'
 export default {
   data: function () {
     return {
-      params: {}
+      params: {
+        motor: {
+          left: {
+            pins: [1,2,3],
+          }
+        },
+        encoder: {
+          left: {
+            pins: [1,2,3],
+          }
+        },
+        device: {
+          left: {
+            virtual: true,
+            device: 'zoef'
+          }
+        }
+      }
+      //params: {}
     }
   },
 

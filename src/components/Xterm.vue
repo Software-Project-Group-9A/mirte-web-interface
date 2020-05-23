@@ -25,7 +25,7 @@ export default {
 
               this.linenr_socket.onerror = (event) => {
                   setTimeout(function () {
-                     console.log("waiting for conection");
+                     console.log("waiting for connection");
                      this.waitForSocketConnection();
                   }.bind(this), 10);
               };
