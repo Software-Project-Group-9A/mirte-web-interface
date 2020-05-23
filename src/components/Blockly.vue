@@ -9,8 +9,8 @@
 			<block type="get_distance"></block>
          <block type="get_intensity"></block>
 			<block type="get_pin_value"></block>
-			<block type="get_virtual_color"></block>
-			<block type="get_barcode"></block>
+<!--			<block type="get_virtual_color"></block>
+			<block type="get_barcode"></block> -->
 		</category>
 
 		<category name="Flow" colour="%{BKY_FLOW_RGB}" expanded="true">
@@ -144,13 +144,14 @@
                <block type="text"></block>
             </value>
          </block>
-			<block type="move"></block>
-         <block type="pwm"></block>
-			<block type="display_text"></block>
+			<!--<block type="move"></block>-->
+                        <block type="set_digital_pin_value"></block>
+                        <block type="pwm"></block>
+			<!--<block type="display_text"></block>
 			<block type="turn"></block>
-			<block type="turnAngle"></block>
+			<block type="turnAngle"></block>-->
 		</category>
-
+<!--
 		<sep></sep>
 		<category name="Modules" expanded="true" colour="%{BKY_MODULES_RGB}">
 			<category name="Button" colour="%{BKY_MODULES_RGB}">
@@ -162,6 +163,7 @@
 			<category name="Motor" colour="%{BKY_MODULES_RGB}">
 			</category>
 		</category>
+-->
   </xml>
 
 
@@ -440,7 +442,7 @@
       Blockly.Blocks['get_pin_value'] = {
         init: function() {
           this.appendDummyInput()
-              .appendField("get analog pin value")
+              .appendField("get analog value of pin")
               .appendField(new Blockly.FieldNumber(1), "pin");
           this.setOutput(true, null);
           this.setColour("%{BKY_SENSORS_RGB}");
@@ -453,7 +455,7 @@
         // TODO: Assemble JavaScript into code letiable.
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
         let pin = block.getFieldValue('pin');
-        let code = `zoef.getPinValue(${pin})`;
+        let code = `zoef.getAnalogPinValue(${pin})`;
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
       };
@@ -619,12 +621,37 @@
       };
 
       // Blockly block definition
+      Blockly.Blocks['set_digital_pin_value'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("set value of digital pin ")
+            .appendField(new Blockly.FieldNumber(1), "pin")
+            .appendField("to value")
+            .appendField(new Blockly.FieldDropdown([['0', '0'], ['1', '1']]), 'value');
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour("%{BKY_ACTIONS_RGB}");
+      this.setTooltip("");
+      this.setHelpUrl("");
+        }
+      };
+
+      // Blockly generator
+      Blockly.Python['set_digital_pin_value'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let pin = block.getFieldValue('pin');
+        let value = block.getFieldValue('value');
+        let code = `zoef.setDigitalPinValue(${pin}, ${value})\n`;
+        return code;
+      };
+
+      // Blockly block definition
       Blockly.Blocks['pwm'] = {
         init: function() {
           this.appendDummyInput()
-            .appendField("set PWM of  ")
+            .appendField("set PWM of ")
             .appendField(new Blockly.FieldDropdown([['left', 'left'], ['right', 'right']]), 'motor')
-            .appendField("to value")
+            .appendField("motor to value")
             .appendField(new Blockly.FieldNumber(1), "speed");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
