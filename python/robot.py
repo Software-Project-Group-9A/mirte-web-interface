@@ -39,8 +39,8 @@ class Robot():
         # Call /stop and /start service to disable/enable the ROS diff_drive_controller
         # By default this class will control the rbot though PWM (controller stopped). Only in case
         # the controller is needed, it will be enabled.
-        self.stop_controller_service = rospy.ServiceProxy('stop', Empty)
-        self.start_controller_service = rospy.ServiceProxy('start', Empty)
+        self.stop_controller_service = rospy.ServiceProxy('stop', Empty, persistent=True)
+        self.start_controller_service = rospy.ServiceProxy('start', Empty, persistent=True)
         self.stop_controller_service()
 
         # Services for actuators 
@@ -52,7 +52,7 @@ class Robot():
             motors = rospy.get_param("/zoef/motor")
         self.motor_services = {}
         for motor in motors:
-            self.motor_services[motor] = rospy.ServiceProxy('/zoef_pymata/set_' + motor + '_pwm', SetMotorPWM)
+            self.motor_services[motor] = rospy.ServiceProxy('/zoef_pymata/set_' + motor + '_pwm', SetMotorPWM, persistent=True)
 
         self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
         self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
@@ -69,25 +69,25 @@ class Robot():
             distance_sensors = rospy.get_param("/zoef/distance")
         self.distance_services = {}
         for sensor in distance_sensors:
-            self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance)
+            self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance, persistent=True)
 
         intensity_sensors = {}
         if rospy.has_param("/zoef/intensity"):
             intensity_sensors = rospy.get_param("/zoef/intensity")
         self.intensity_services = {}
         for sensor in intensity_sensors:
-            self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity)
+            self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity, persistent=True)
 
         encoder_sensors = {}
         if rospy.has_param("/zoef/encoder"):
             encoder_sensors = rospy.get_param("/zoef/encoder")
         self.encoder_services = {}
         for sensor in encoder_sensors:
-            self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder)
+            self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder, persistent=True)
 
-        self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode)
-        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue)
-        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue)
+        self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode, persistent=True)
+        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue, persistent=True)
+        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue, persistent=True)
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
@@ -110,7 +110,10 @@ class Robot():
         return value.status
 
     def getAnalogPinValue(self, pin):
+        print "robot.py: in get analogprint value"
+        #self.setPinMode(pin, self.PULLUP, self.ANALOG)
         value = self.get_pin_value_service(pin, "analog")
+        print "robot.py: returnig print value" 
         return value.data
 
     def setAnalogPinValue(self, pin, value):
