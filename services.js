@@ -14,8 +14,26 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 
 
-// Serve Vue production 
-app.use(express.static('dist'))
+// Serve Vue, both in production and development
+// Check if port 4000 is running, and if so, proxy to it.
+// If not, serve the stais files in dist.
+var net = require('net');
+var server = net.createServer();
+
+server.once('error', function(err) {
+  if (err.code === 'EADDRINUSE') {
+    // port is currently in use, so serve dev
+    app.use('/', createProxyMiddleware({ target: 'http://localhost:4000', changeOrigin: false }));
+  }
+});
+
+server.once('listening', function() {
+  // port is not in use, so close server and 
+  server.close();
+  app.use(express.static('dist'))
+});
+
+server.listen(4000);
 
 // Instantiate shell and set up data handlers
 expressWs.app.ws('/shell', (ws, req) => {
