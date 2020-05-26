@@ -1,10 +1,11 @@
 export default {
 
 	state: {
-        code: "",
-        blockly: "",
-        linenumber: 0,
-        execution: "stopped" //TODO: enum?
+           code: "",
+           blockly: "",
+           linenumber: 0,
+           execution: "stopped", //TODO: enum?
+           user: "none" // TODO: at the moment it can not be empty on start
 	},
 
 	getters: {
@@ -23,7 +24,12 @@ export default {
         getExecution(state){
             return state.execution
         },
-	},
+
+        getUser(state){
+            return state.user
+        },
+
+    },
 
 	actions: {
         setCode({commit, getters}, code){
@@ -39,6 +45,10 @@ export default {
         setExecution({commit, getters}, execution){
             commit('execution', execution)
         },
+        setUser({commit, getters}, user){
+            commit('user', user)
+        },
+
     },
 
 	mutations: {
@@ -57,5 +67,10 @@ export default {
         execution(state, execution) {
             return state.execution = execution
         },
+
+        user(state, user) {
+            return state.user = user
+        },
+
 	}
 }

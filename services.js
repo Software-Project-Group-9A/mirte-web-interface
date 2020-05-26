@@ -8,7 +8,37 @@ const bodyParser = require('body-parser');
 var bonjour = require('bonjour')();
 const WebSocket = require('ws');  // TODO: decide on which websocket lib we use (probably express)
 const wss = new WebSocket.Server({port: 4567 });
+const cookieSession = require('cookie-session')
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
+var flash=require("connect-flash");
+const { createProxyMiddleware } = require('http-proxy-middleware');
+fs = require('fs')
 
+// TODO: Currently the local-ip package is not working
+function getLocalIP(){
+	var  address,os = require('os'),ifaces = os.networkInterfaces();
+	for (var dev in ifaces) {
+	    var iface = ifaces[dev].filter(function(details) {
+		return details.family === 'IPv4' && details.internal === false;
+	    });
+	    if(iface.length > 0) address = iface[0].address;
+	}
+	return address;
+}
+
+var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
+var zoef_password = fs.readFileSync('/etc/wifi_pwd', 'utf8').trim();
+
+app.use(bodyParser.json())
+app.use(cookieSession({
+    name: 'mysession',
+    keys: ['vueauthrandomkey'],
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
@@ -23,7 +53,7 @@ var server = net.createServer();
 server.once('error', function(err) {
   if (err.code === 'EADDRINUSE') {
     // port is currently in use, so serve dev
-    app.use('/', createProxyMiddleware({ target: 'http://localhost:4000', changeOrigin: false }));
+    app.use('/', createProxyMiddleware({ target: 'http://localhost:4000', changeOrigin: true}));
   }
 });
 
@@ -34,6 +64,92 @@ server.once('listening', function() {
 });
 
 server.listen(4000);
+
+// Setup passportJS
+//
+//
+const authMiddleware = (req, res, next) => {
+  if (req.isAuthenticated() || getLocalIP() == "192.168.42.1") {
+    return next()
+  } else {
+    res.redirect('/#/Login');
+  }
+}
+
+let users = [
+  {
+    id: 1,
+    username: zoef_name,
+    password: zoef_password
+  }
+]
+
+passport.serializeUser((user, done) => {
+  done(null, user.id)
+})
+
+passport.deserializeUser((id, done) => {
+  let user = users.find((user) => {
+    return user.id === id
+  })
+
+  done(null, user)
+})
+
+passport.use('local-login',
+  new LocalStrategy(
+    {
+      usernameField: "username",
+      passwordField: "password"
+    },
+
+    (username, password, done) => {
+      let user = users.find((user) => {
+        return user.username === username && user.password === password
+      })
+
+
+      if (user) {
+        done(null, user)
+      } else {
+        done(null, false, { message: 'Incorrect password'})
+      }
+    }
+  )
+)
+
+app.get('/api/self', (req, res) => {
+  if (req.user){
+     return res.json(req.user.username);
+  } else if (getLocalIP() == "192.168.42.1"){
+     return res.json(zoef_name);
+  } else {
+     return res.send("")
+  }
+})
+
+app.post("/api/login", (req, res, next) => {
+  passport.authenticate("local-login", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.send(info);
+    }
+    req.login(user, err => {
+      res.json(req.user.username);
+    });
+  })(req, res, next);
+});
+
+app.get("/api/logout", function(req, res) {
+  req.logout();
+  return res.send();
+});
+
+
+
+
 
 // Instantiate shell and set up data handlers
 expressWs.app.ws('/shell', (ws, req) => {
@@ -46,7 +162,9 @@ expressWs.app.ws('/shell', (ws, req) => {
 
     // For all shell data send it to the websocket
     shell.on('data', (data) => {
-        ws.send(data);
+        if (ws.readyState == 1){
+          ws.send(data);
+        }
     });
 
     // For all websocket data send it to the shell
