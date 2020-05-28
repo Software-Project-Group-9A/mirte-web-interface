@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Navbar />
-    <router-view />
+    <div class="content">
+      <router-view />
+    </div>
     <b-modal v-model="loginModalShow" no-close-on-backdrop hide-header-close centered title="Login" :body-text-variant="textVariant" :header-text-variant="textVariant">
      <div class="mt-3">
         <form @submit.prevent="handleSubmit">

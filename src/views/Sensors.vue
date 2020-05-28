@@ -1,38 +1,22 @@
 <template>
   <div class="container">
 
-    <h3 class="mt-5">Device</h3>
-    <table>
-      <tr v-for="[k, v] of Object.entries(params.device)" v-bind:key="k">
-        <td>
-          {{k}}
-        </td>
-        <td>
-          {{v}}
-        </td>
-      </tr>
-    </table>
-
-    <h3 class="mt-5">Motors</h3>
-    <table>
-      <tr v-for="[k, v] of Object.entries(params.motor)" v-bind:key="k">
-        <td>
-          {{k}}
-        </td>
-        <td>
-          {{v}}
-        </td>
-      </tr>
-    </table>
-
     <h3 class="mt-5">Encoders</h3>
     <table>
-      <tr v-for="[k, v] of Object.entries(params.encoder)" v-bind:key="k">
+      <tr>
         <td>
-          {{k}}
+          left
         </td>
         <td>
-          {{v}}
+          {{left_encoder}}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          right
+        </td>
+        <td>
+          {{right_encoder}}
         </td>
       </tr>
     </table>
@@ -45,9 +29,10 @@
 import ROSLIB from 'roslib'
 
 export default {
-  data: function () {
+  data() {
     return {
-      params: {}
+      left_encoder: 0,
+      right_encoder: 0
     }
   },
 
@@ -59,13 +44,24 @@ export default {
       url : ros_socketUrl
     });
       
-    var params = new ROSLIB.Param({
+    var left_encoder_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef'
+      name : '/zoef/left_encoder',
+      messageType : 'zoef_msgs/Encoder'
     });
-      
-    params.get((res) => {
-      this.params = res
+
+    var right_encoder_sub = new ROSLIB.Topic({
+      ros : ros,
+      name : '/zoef/right_encoder',
+      messageType : 'zoef_msgs/Encoder'
+    });
+
+    left_encoder_sub.subscribe((message) => {
+      this.left_encoder = message.value
+    });
+
+    right_encoder_sub.subscribe((message) => {
+      this.right_encoder = message.value
     });
 
   }
