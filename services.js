@@ -17,14 +17,14 @@ fs = require('fs')
 
 // TODO: Currently the local-ip package is not working
 function getLocalIP(){
-	var  address,os = require('os'),ifaces = os.networkInterfaces();
-	for (var dev in ifaces) {
-	    var iface = ifaces[dev].filter(function(details) {
-		return details.family === 'IPv4' && details.internal === false;
-	    });
-	    if(iface.length > 0) address = iface[0].address;
-	}
-	return address;
+  var  address,os = require('os'),ifaces = os.networkInterfaces();
+  for (var dev in ifaces) {
+    var iface = ifaces[dev].filter(function(details) {
+      return details.family === 'IPv4' && details.internal === false;
+    });
+    if(iface.length > 0) address = iface[0].address;
+  }
+  return address;
 }
 
 var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
@@ -32,9 +32,9 @@ var zoef_password = fs.readFileSync('/etc/wifi_pwd', 'utf8').trim();
 
 app.use(bodyParser.json())
 app.use(cookieSession({
-    name: 'mysession',
-    keys: ['vueauthrandomkey'],
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  name: 'mysession',
+  keys: ['vueauthrandomkey'],
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }))
 app.use(passport.initialize());
 app.use(passport.session());
@@ -120,11 +120,11 @@ passport.use('local-login',
 
 app.get('/api/self', (req, res) => {
   if (req.user){
-     return res.json(req.user.username);
+    return res.json(req.user.username);
   } else if (getLocalIP() == "192.168.42.1"){
-     return res.json(zoef_name);
+    return res.json(zoef_name);
   } else {
-     return res.send("")
+    return res.send("")
   }
 })
 
@@ -146,10 +146,6 @@ app.get("/api/logout", function(req, res) {
   req.logout();
   return res.send();
 });
-
-
-
-
 
 // Instantiate shell and set up data handlers
 expressWs.app.ws('/shell', (ws, req) => {
@@ -194,17 +190,17 @@ app.listen(3000 , () => console.log("services have started"));
 
 // send new list of zoefs to websocket
 function update(){
-   console.log(browser.services);
-   wss.clients.forEach(function each(client) {
+  console.log(browser.services);
+  wss.clients.forEach(function each(client) {
       if (client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify(browser.services));
       }
-   });
+  });
 }
 
 // browse for all zoef services and update on up and down
 browser = bonjour.find({ type: 'zoef' }, function (service) {
-   update();
+  update();
 })
 browser.on('down', update);
 
