@@ -7,6 +7,7 @@
                 <b-nav-item :to="'Sensors'" active-class="active">Sensoren</b-nav-item>
                 <b-nav-item :to="'Settings'" active-class="active">Instellingen</b-nav-item>
                 <b-nav-item :to="'Network'" active-class="active">Netwerk</b-nav-item>
+                <b-nav-item :to="'Tutorials'" active-class="active">Oefeningen</b-nav-item>
                 <b-navbar-nav class="ml-auto">
                     <ControlButtons />
                 </b-navbar-nav>

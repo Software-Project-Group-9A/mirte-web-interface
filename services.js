@@ -27,8 +27,11 @@ function getLocalIP(){
   return address;
 }
 
-var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
-var zoef_password = fs.readFileSync('/etc/wifi_pwd', 'utf8').trim();
+// var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
+// var zoef_password = fs.readFileSync('/etc/wifi_pwd', 'utf8').trim();
+
+var zoef_name = "chell"
+var zoef_password = "zoef_zoef"
 
 app.use(bodyParser.json())
 app.use(cookieSession({

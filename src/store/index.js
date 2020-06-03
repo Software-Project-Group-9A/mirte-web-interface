@@ -2,6 +2,7 @@ export default {
 
 	state: {
            code: "",
+           tutorial: null,
            blockly: "",
            linenumber: 0,
            execution: "stopped", //TODO: enum?
@@ -11,6 +12,10 @@ export default {
 	getters: {
         getCode(state){ 
             return state.code
+        },
+
+        getTutorial(state){ 
+            return state.tutorial
         },
 
         getBlockly(state){ 
@@ -36,6 +41,10 @@ export default {
             commit('code', code)
         },
 
+        setTutorial({commit, getters}, tutorial){
+            commit('tutorial', tutorial)
+        },
+
         setBlockly({commit, getters}, blockly){
             commit('blockly', blockly)
         },
@@ -54,6 +63,10 @@ export default {
 	mutations: {
         code(state, code) {
             return state.code = code
+        },
+
+        tutorial(state, tutorial) {
+            return state.tutorial = tutorial
         },
 
         blockly(state, blockly) {

@@ -1,0 +1,67 @@
+<template>
+    <div class="tutorial_window">
+
+        <button class="btn btn-primary btn-sm" @click="close">
+            <i class="fa fa-times-circle"></i>
+        </button>
+
+        <div class="tutorial_media">
+            <img v-if="type == 'image'" :src="media">
+            <video v-if="type == 'video'" width="800" height="600" controls>
+                <source :src="media" type="video/mp4">
+            </video> 
+        </div>
+
+        <div class="tutorial_text">
+            {{text}}
+        </div>
+
+        <div class="tutorial_control">
+            <button class="btn btn-primary btn-sm" @click="prev">
+                <i class="fa fa-arrow-circle-left"></i>
+            </button>
+            <button class="btn btn-primary btn-sm" @click="next">
+                <i class="fa fa-arrow-circle-right"></i>
+            </button>
+        </div>
+    </div>
+</template>
+
+<script>
+
+export default {
+    data(){
+        return {
+            step: 0
+        }
+    },
+    props: {
+        tutorial: {}
+    },
+    computed:{
+        type(){
+            if(!this.media) return 'text'
+            return ['jpg', 'jpeg', 'webp', 'png', 'bmp'].includes(this.media.split('.')[1]) ? 'image' : 'video'
+        },
+        media(){
+            return this.tutorial[this.step].media
+        },
+        text(){
+            return this.tutorial[this.step].text
+        }
+    },
+    methods: {
+        next(){
+            if(Object.entries(this.tutorial).length -1 > this.step)
+                this.step++
+        },
+        prev(){
+            if(this.step > 0)
+                this.step--
+        },
+        close(){
+            this.$store.dispatch('setTutorial', null)
+        }
+    }
+}
+</script>

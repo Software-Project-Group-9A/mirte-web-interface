@@ -24,6 +24,19 @@ body{
     padding: 2em 0;
 }
 
+// tutorial
+.tutorial_window{
+    position: fixed;
+    background-color: $background-light;
+    z-index: 999;
+    padding: 1em;
+    border-radius: 10px;
+}
+
+.tutorial_media img{
+    width: 300px;
+}
+
 // navbar
 
 .nav-spacer{
