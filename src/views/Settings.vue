@@ -37,6 +37,12 @@
       </tr>
     </table>
 
+    <h3 class="mt-5">verander wachtwoord</h3>
+    <div class="input-group w-50">
+      <input v-model="password" type="text" class="form-control mr-3" placeholder="new password">
+      <button @click="setPassword" type="button" class="btn btn-danger">change</button>
+    </div>
+
   </div>
 </template>
 
@@ -47,6 +53,8 @@ import ROSLIB from 'roslib'
 export default {
   data: function () {
     return {
+      password: null,
+
       // placeholder data
       params: {
         motor: {
@@ -67,6 +75,25 @@ export default {
         }
       }
       //params: {}
+    }
+  },
+
+  methods:{
+    setPassword(){
+      if (confirm('Weet je zeker dat je het wachtwoord wilt veranderen?')) {
+        fetch("http://localhost:3000/api/passwd", {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'text/plain',
+              'CORS': 'Access-Control-Allow-Origin'
+          },
+          body: this.password + "\n",
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+        });
+      }
     }
   },
 
