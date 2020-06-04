@@ -29,17 +29,38 @@ body{
     position: fixed;
     background-color: $background-light;
     z-index: 999;
-    padding: 1em;
+    padding: 15px;
     border-radius: 10px;
+    cursor: grab;
+
+    .tutorial_media img{
+        width: 300px;
+    }
+
+    button{
+        background-color: $background;
+        border: 1px solid white;
+        margin: 0 5px 5px 0;
+    }
+
+    button:hover{
+        background-color: white;
+        border: 1px solid white;
+        margin: 0 5px 5px 0;
+        color: $background;
+    }
 }
 
-.tutorial_media img{
-    width: 300px;
+.tutorial_window:hover{
+    border: 3px solid #fc3;
+    padding: 12px;
 }
 
 .moveable{
     position: fixed;
 }
+
+
 
 // navbar
 
