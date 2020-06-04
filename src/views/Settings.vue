@@ -43,6 +43,11 @@
       <button @click="setPassword" type="button" class="btn btn-danger">change</button>
     </div>
 
+    <h3 class="mt-5">upload stm32 stuurprogramma</h3>
+    <div class="input-group w-50">
+      <button @click="stm32" type="button" class="btn btn-danger">upload</button>
+    </div>
+
   </div>
 </template>
 
@@ -89,6 +94,15 @@ export default {
           },
           body: this.password + "\n",
         })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data)
+        });
+      }
+    },
+    stm32(){
+      if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
+        fetch("http://localhost:3000/api/stm32")
         .then(res => res.json())
         .then(data => {
           console.log(data)

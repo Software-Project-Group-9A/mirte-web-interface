@@ -169,6 +169,21 @@ expressWs.app.ws('/shell', (ws, req) => {
     });
 });
 
+// upload stm32 build
+app.get('/api/stm32', (req, res) => {
+  const exec = require('child_process').exec;
+  const myShellScript = exec('sudo /usr/local/src/zoef/zoef_arduino/run.sh upload_stm32');
+  myShellScript.stdout.on('data', (data)=>{
+    console.log(data);
+    return res.end(data);
+  });
+  myShellScript.stderr.on('data', (data)=>{
+    console.log(data);
+    return res.end(data);
+  });
+})
+
+
 // catch python files from the web interface and save them
 app.post('/api/python', (req, res) => {
     var source = req.body
@@ -196,6 +211,8 @@ app.post('/api/passwd', (req, res) => {
       res.end("the password was changed");
   });
 });
+
+
 
 
 // Start the application
