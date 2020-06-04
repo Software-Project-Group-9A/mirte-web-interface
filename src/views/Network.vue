@@ -8,7 +8,7 @@
 			</div>
 			<div class="row before-submit">
 				<div class="col-lg-8 col-lg-offset-2">
-					<form class="form form-horizontal" id='connect-form' action='/connect' method='post'>
+					<form class="form form-horizontal" id='connect-form' action='http://localhost:8080/connect' method='post'>
 						<div class="form-group">
 							<label for="ssid-select" class="control-label col-lg-2">SSID</label>
 							<div class="col-lg-6">
@@ -66,7 +66,7 @@ export default {
   },
   mounted(){
     
-    fetch("http://192.168.42.1:8080/networks", {
+    fetch("http://localhost:8080/networks", {
     	"method": "GET",
     	"mode": "cors"})
     .then(res => res.json())
