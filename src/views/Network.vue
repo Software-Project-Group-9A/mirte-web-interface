@@ -8,7 +8,7 @@
 			</div>
 			<div class="row before-submit">
 				<div class="col-lg-8 col-lg-offset-2">
-					<form class="form form-horizontal" id='connect-form' :action="'http://' + location.hostname + '':8080/connect'" method='post'>
+					<form class="form form-horizontal" id='connect-form' :action="'http://' + location.hostname + ':8080/connect'" method='post'>
 						<div class="form-group">
 							<label for="ssid-select" class="control-label col-lg-2">SSID</label>
 							<div class="col-lg-6">
