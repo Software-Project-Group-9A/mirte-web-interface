@@ -5,7 +5,7 @@
             <i class="fa fa-times-circle"></i>
         </button>
 
-        <div class="tutorial_control pull-right">
+        <div class="tutorial_control float-right">
             <button class="btn btn-primary btn-sm" @click="prev">
                 <i class="fa fa-arrow-circle-left"></i>
             </button>
@@ -14,7 +14,7 @@
             </button>
         </div>
 
-        <div class="tutorial_slide_indicator pull-right mr-3">
+        <div class="tutorial_slide_indicator float-right mr-3">
             slide {{step+1}}/{{length}}
         </div>
 
