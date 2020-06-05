@@ -15,12 +15,13 @@
 <script>
 
 import build from '@/assets/tutorials/build.json'
+import stm32 from '@/assets/tutorials/stm32.json'
 import fibbonachi from '@/assets/tutorials/fibbonachi.json'
 
 export default {
   data(){
     return {
-      tutorials: [build, fibbonachi]
+      tutorials: [build, stm32, fibbonachi]
     }
   },
   methods: {

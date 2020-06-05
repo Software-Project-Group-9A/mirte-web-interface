@@ -171,16 +171,9 @@ expressWs.app.ws('/shell', (ws, req) => {
 
 // upload stm32 build
 app.get('/api/stm32', (req, res) => {
-  const exec = require('child_process').exec;
-  const myShellScript = exec('sudo /usr/local/src/zoef/zoef_arduino/run.sh upload_stm32');
-  myShellScript.stdout.on('data', (data)=>{
-    console.log(data);
-    return res.end(data);
-  });
-  myShellScript.stderr.on('data', (data)=>{
-    console.log(data);
-    return res.end(data);
-  });
+  const exec = require('child_process').execSync;
+  const stdout = exec('sudo /usr/local/src/zoef/zoef_arduino/run.sh upload_stm32');
+  res.end(stdout);
 })
 
 

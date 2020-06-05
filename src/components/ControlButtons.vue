@@ -5,7 +5,7 @@
             title="play" 
             @click="control('play')"
         >
-            <i class="fa fa-play"></i>
+            <i class="fas fa-play"></i>
         </button>
 
         <button :disabled="isPauseDisabled" class="btn btn-outline-light mr-2" 
@@ -37,7 +37,7 @@
             title="clear output" 
             @click="control('clear')"
         >
-            <i class="fa fa-repeat"></i>
+            <i class="fas fa-redo"></i>
         </button>
 
         <button class="btn btn-outline-light mr-2" 
@@ -55,7 +55,7 @@
             title="download" 
             @click="download"
         >
-            <i class="fa fa-cloud-download"></i>
+            <i class="fa fa-download"></i>
         </button>
 
         <button class="btn btn-outline-light mr-2" 
@@ -63,7 +63,7 @@
             title="upload" 
             @click="openFileWindow"
         >
-            <i class="fa fa-cloud-upload"></i>
+            <i class="fa fa-file-upload"></i>
             <input ref="file_input" @change="upload" type="file" name="name" style="display: none;" />
         </button>
 

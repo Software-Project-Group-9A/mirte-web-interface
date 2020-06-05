@@ -45,7 +45,10 @@
 
     <h3 class="mt-5">upload stm32 stuurprogramma</h3>
     <div class="input-group w-50">
-      <button @click="stm32" type="button" class="btn btn-danger">upload</button>
+      <button @click="stm32" type="button" class="btn btn-danger">
+        <span v-if="!busy">upload</span>
+        <i v-else class="fa fa-spin fa-stroopwafel"></i>
+      </button>
     </div>
 
   </div>
@@ -58,6 +61,7 @@ import ROSLIB from 'roslib'
 export default {
   data: function () {
     return {
+      busy: false,
       password: null,
 
       // placeholder data
@@ -102,10 +106,12 @@ export default {
     },
     stm32(){
       if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
+        this.busy = true
         fetch(`http://${location.hostname}:3000/api/stm32`)
-        .then(res => res.json())
+        .then(res => res.text())
         .then(data => {
           console.log(data)
+          this.busy = false
         });
       }
     }
