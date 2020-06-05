@@ -2,11 +2,11 @@
   <div class="container">
       Oefeningen
 
-      <div class="card mt-3">
+      <div v-for="t of tutorials" v-bind:key="t.title" class="card mt-3">
         <div class="card-body">
-          <h5 class="card-title">Fibbonachi</h5>
-          <p class="card-text">Print de Fibbonachi reeks, leer het gebruik van functies</p>
-          <a href="#" @click="go('@/assets/tutorials/fibbonachi.json')" class="card-link">Ga naar deze opdracht</a>
+          <h5 class="card-title">{{t.title}}</h5>
+          <p class="card-text">{{t.description}}</p>
+          <a href="#" @click="go(t)" class="card-link">Ga naar deze opdracht</a>
         </div>
       </div>
   </div>
@@ -14,12 +14,18 @@
 
 <script>
 
+import build from '@/assets/tutorials/build.json'
 import fibbonachi from '@/assets/tutorials/fibbonachi.json'
 
 export default {
+  data(){
+    return {
+      tutorials: [build, fibbonachi]
+    }
+  },
   methods: {
     go(t){
-      this.$store.dispatch('setTutorial', fibbonachi)
+      this.$store.dispatch('setTutorial', t)
       this.$router.push('/')
     }
   }

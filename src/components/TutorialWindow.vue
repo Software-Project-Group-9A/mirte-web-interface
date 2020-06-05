@@ -49,13 +49,13 @@ export default {
             return ['jpg', 'jpeg', 'webp', 'png', 'bmp'].includes(this.media.split('.')[1]) ? 'image' : 'video'
         },
         media(){
-            return this.tutorial[this.step].media
+            return this.tutorial.steps[this.step].media
         },
         text(){
-            return this.tutorial[this.step].text
+            return this.tutorial.steps[this.step].text
         },
         length(){
-            return Object.entries(this.tutorial).length
+            return Object.entries(this.tutorial.steps).length
         }
     },
     methods: {
