@@ -66,7 +66,7 @@ export default {
   },
   mounted(){
     
-    fetch("http://localhost:8080/networks", {
+    fetch(`http://${location.hostname}:8080/networks`, {
     	"method": "GET",
     	"mode": "cors"})
     .then(res => res.json())

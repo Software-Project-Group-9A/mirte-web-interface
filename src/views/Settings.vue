@@ -86,7 +86,7 @@ export default {
   methods:{
     setPassword(){
       if (confirm('Weet je zeker dat je het wachtwoord wilt veranderen?')) {
-        fetch("http://localhost:3000/api/passwd", {
+        fetch(`http://${location.hostname}:3000/api/passwd`, {
           method: 'POST',
           headers: {
               'Content-Type': 'text/plain',
@@ -102,7 +102,7 @@ export default {
     },
     stm32(){
       if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
-        fetch("http://localhost:3000/api/stm32")
+        fetch(`http://${location.hostname}:3000/api/stm32`)
         .then(res => res.json())
         .then(data => {
           console.log(data)
