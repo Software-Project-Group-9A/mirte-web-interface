@@ -159,12 +159,14 @@ class Robot():
         return move.finished
 
     def stop(self):
-        self.start_controller_service()
-        self.move(0, 0)
+        self.setMotorPWM("left", 0)
+        self.setMotorPWM("right", 0)
+        #self.start_controller_service() # this cen be replaced as soon as the controller is working properly
+        #self.move(0, 0)
 
     def signal_handler(self, sig, frame):
+       self.stop()
        if self.original_sigint_handler == signal.default_int_handler:
-          self.stop()
           sys.exit()
        else:
           self.original_sigint_handler(sig, frame)
