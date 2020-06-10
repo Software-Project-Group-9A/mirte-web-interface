@@ -34,8 +34,6 @@ class Robot():
         self.ANALOG = PyMata.ANALOG
         self.DIGITAL = PyMata.DIGITAL
 
-        self.original_sigint_handler = signal.getsignal(signal.SIGINT)
-
         # Call /stop and /start service to disable/enable the ROS diff_drive_controller
         # By default this class will control the rbot though PWM (controller stopped). Only in case
         # the controller is needed, it will be enabled.
@@ -91,7 +89,6 @@ class Robot():
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
-
 
     def getDistance(self, sensor):
         dist = self.distance_services[sensor + "_distance"]()
@@ -165,11 +162,8 @@ class Robot():
         #self.move(0, 0)
 
     def signal_handler(self, sig, frame):
-       self.stop()
-       if self.original_sigint_handler == signal.default_int_handler:
-          sys.exit()
-       else:
-          self.original_sigint_handler(sig, frame)
+        self.stop()
+        sys.exit()
 
 # We need a special function to initiate the Robot() because the main.py need to call the 
 # init_node() (see: https://answers.ros.org/question/266612/rospy-init_node-inside-imported-file/)

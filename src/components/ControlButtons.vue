@@ -122,7 +122,7 @@ export default {
           return this.$store.getters.getExecution == "running";
        },
      	 isPauseDisabled: function(){
-          return this.$store.getters.getExecution == "stopped";
+          return this.$store.getters.getExecution != "running";
        },
      	 isStepDisabled: function(){
           return this.$store.getters.getExecution == "stopped";
