@@ -50,6 +50,8 @@ app.use(bodyParser.text());
 var net = require('net');
 var server = net.createServer();
 
+
+
 server.once('error', function(err) {
   if (err.code === 'EADDRINUSE') {
     // port is currently in use, so serve dev
@@ -117,6 +119,15 @@ passport.use('local-login',
     }
   )
 )
+
+// When only one zoef in the network, forward zoef.local to zoef_xxxxxx.local.
+app.get('/',function(req,res,next){
+    if (req.headers.host == "zoef.local" && browser.services.length == 1){
+       res.redirect('http://' + browser.services[0].host.toLowerCase() + "/")
+    } else {
+       next()
+    }
+})
 
 app.get('/api/self', (req, res) => {
   if (req.user){
