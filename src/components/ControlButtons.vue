@@ -63,7 +63,7 @@
             title="upload" 
             @click="openFileWindow"
         >
-            <i class="fa fa-file-upload"></i>
+            <i class="fa fa-upload"></i>
             <input ref="file_input" @change="upload" type="file" name="name" style="display: none;" />
         </button>
 
