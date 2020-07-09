@@ -8,7 +8,6 @@ import atexit
 
 sys.path.append('/usr/local/lib/python2.7/dist-packages/PyMata-2.20-py2.7.egg')  # Needed for jupyter notebooks
 sys.path.append('/usr/local/lib/python2.7/dist-packages/pyserial-3.4-py2.7.egg')
-from PyMata.pymata import PyMata
 
 import message_filters
 from geometry_msgs.msg import Twist
@@ -27,12 +26,11 @@ class Robot():
         # Stop robot when exited
         atexit.register(self.stop)
 
-        self.PWM = PyMata.PWM
-        self.INPUT = PyMata.INPUT
-        self.OUTPUT = PyMata.OUTPUT
-        self.PULLUP = PyMata.PULLUP
-        self.ANALOG = PyMata.ANALOG
-        self.DIGITAL = PyMata.DIGITAL
+        self.PWM = 3 #PrivateConstants.PWM when moving to Python3
+        self.INPUT = 0 
+        self.OUTPUT = 1
+        self.PULLUP = 11
+        self.ANALOG = 2
 
         # Call /stop and /start service to disable/enable the ROS diff_drive_controller
         # By default this class will control the rbot though PWM (controller stopped). Only in case
