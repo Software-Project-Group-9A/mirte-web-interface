@@ -146,14 +146,14 @@
             </value>
          </block>
 			<!--<block type="move"></block>-->
-                        <block type="set_digital_pin_value"></block>
-                        <block type="pwm">
+         <block type="set_digital_pin_value"></block>
+         <block type="pwm">
 					<value name="speed">
 						<block type="math_number">
 							<field name="NUM">0</field>
 						</block>
 					</value>
-                        </block>
+         </block>
 			<!--<block type="display_text"></block>
 			<block type="turn"></block>
 			<block type="turnAngle"></block>-->
