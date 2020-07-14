@@ -2,7 +2,9 @@
   <div id="app">
       <Navbar />
       <div class="content">
-         <router-view />
+         <keep-alive>
+           <router-view />
+         </keep-alive>
       </div>
       <b-modal v-model="loginModalShow" no-close-on-backdrop hide-header-close centered title="Login" :body-text-variant="textVariant" :header-text-variant="textVariant">
       <div class="mt-3">
