@@ -17,6 +17,9 @@ export default {
         linenr_socket: WebSocket,
         term: Terminal
     }),
+    activated: function(){
+        this.term.focus();
+    },
     methods: {
         waitForSocketConnection(){
               const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';

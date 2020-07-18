@@ -55,6 +55,7 @@
 				</block>
 
 				<block type="wait_until"></block>
+                                <block type="get_timestamp"></block>
 			</category>
 
 			<category name="If" colour="%{BKY_FLOW_RGB}">
@@ -145,8 +146,14 @@
             </value>
          </block>
 			<!--<block type="move"></block>-->
-                        <block type="set_digital_pin_value"></block>
-                        <block type="pwm"></block>
+         <block type="set_digital_pin_value"></block>
+         <block type="pwm">
+					<value name="speed">
+						<block type="math_number">
+							<field name="NUM">0</field>
+						</block>
+					</value>
+         </block>
 			<!--<block type="display_text"></block>
 			<block type="turn"></block>
 			<block type="turnAngle"></block>-->
@@ -645,19 +652,19 @@
         return code;
       };
 
-      // Blockly block definition
       Blockly.Blocks['pwm'] = {
         init: function() {
-          this.appendDummyInput()
-            .appendField("set PWM of ")
-            .appendField(new Blockly.FieldDropdown([['left', 'left'], ['right', 'right']]), 'motor')
-            .appendField("motor to value")
-            .appendField(new Blockly.FieldNumber(1), "speed");
+          this.appendValueInput("speed")
+              .setCheck("Number")
+              .appendField("set PWM of")
+              .appendField(new Blockly.FieldDropdown([['left', 'left'], ['right', 'right']]), 'motor')
+              .appendField("motor value to");
+          this.setColour(230);
+          this.setTooltip("");
+          this.setHelpUrl("");
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
           this.setColour("%{BKY_ACTIONS_RGB}");
-      this.setTooltip("");
-      this.setHelpUrl("");
         }
       };
 
@@ -665,10 +672,36 @@
       Blockly.Python['pwm'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
         let motor = block.getFieldValue('motor');
-        let speed = block.getFieldValue('speed');
+        let speed = Blockly.JavaScript.valueToCode(block, 'speed', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setMotorPWM('${motor}', ${speed})\n`;
         return code;
       };
+
+
+      // Blockly generator
+      Blockly.Blocks['get_timestamp'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("get time since")
+            .appendField(new Blockly.FieldDropdown([['start', 'start'], ['call', 'call']]), 'version');
+          this.setOutput(true, null);
+          this.setColour("%{BKY_FLOW_RGB}");
+          this.setTooltip("");
+          this.setHelpUrl("");	
+        }
+      };
+
+      Blockly.Python['get_timestamp'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let version = block.getFieldValue('version');
+        let code = `zoef.getTimestamp()`;
+        if (version.localeCompare("start") != 0){
+           code = `zoef.getTimeSinceLastCall()`;
+        }
+        return [code, Blockly.Python.ORDER_NONE];
+      };
+
+
 
       // Load xml from previous session
       var storage = localStorage.getItem("blockly");
