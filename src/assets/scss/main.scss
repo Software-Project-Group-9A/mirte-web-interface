@@ -92,7 +92,6 @@ nav .btn:hover{
 }
 
 .CodeMirror {
-    border: 1px solid #eee;
     height: auto !important;
     width: 100%;
 }
@@ -107,8 +106,8 @@ nav .btn:hover{
     fill-opacity: 0.6;
 }
 
-.codemirror-wrapper{
-    height: calc(70vh - 55px);
+.CodeMirror-scroll{
+    height: calc(70vh - 55px) !important;
 }
 
 .xterm{
