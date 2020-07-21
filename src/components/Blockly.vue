@@ -541,9 +541,9 @@
       // Blockly block definition
       Blockly.Blocks['wait'] = {
         init: function() {
-          this.appendValueInput("wacht")
+          this.appendValueInput("wait")
               .setCheck("Number")
-              .appendField("wait ");
+              .appendField("wacht ");
           this.appendDummyInput()
               .appendField("seconden");
           this.setInputsInline(true);
@@ -590,7 +590,7 @@
 
         init: function() {
           this.appendDummyInput()
-            .appendField("aftstandwaarde van  ")
+            .appendField("afstandwaarde van ")
             .appendField(new Blockly.FieldDropdown([['links', 'left'], ['rechts', 'right']]), 'sensor');
           this.setOutput(true, null);
           this.setColour("%{BKY_SENSORS_RGB}");
@@ -634,9 +634,9 @@
       Blockly.Blocks['set_digital_pin_value'] = {
         init: function() {
           this.appendDummyInput()
-            .appendField("set value of digital pin ")
+            .appendField("zet waarde van digitale pin ")
             .appendField(new Blockly.FieldNumber(1), "pin")
-            .appendField("to value")
+            .appendField("op")
             .appendField(new Blockly.FieldDropdown([['0', '0'], ['1', '1']]), 'value');
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
