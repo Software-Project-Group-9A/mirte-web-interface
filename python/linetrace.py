@@ -24,7 +24,7 @@ def load_zoef_module(stepper, do_step):
        global do_step
        if event != 'line':
            return
-       #server.send_message_to_all(str(frame.f_lineno))
+       server.send_message_to_all(str(frame.f_lineno))
        while stepper.value and not do_step.value:
           time.sleep(.01)
        do_step.value = False

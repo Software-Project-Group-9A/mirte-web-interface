@@ -15,7 +15,8 @@ export default {
     data: () => ({
         shell_socket: WebSocket,
         linenr_socket: WebSocket,
-        term: Terminal
+        term: Terminal,
+        prev_timestamp: -1000 
     }),
     activated: function(){
         this.term.focus();
@@ -40,7 +41,11 @@ export default {
 
               this.linenr_socket.onmessage = (event) => {
                 if (event.data != 0) {
-                  this.$store.dispatch('setLinenumber', event.data);
+                  // Update linenumber (max of 20Hz = 1000/50)
+                  if (event.timeStamp - this.prev_timestamp > 50) {
+                     this.$store.dispatch('setLinenumber', event.data);
+                     this.prev_timestamp = event.timeStamp;
+                  }
                 } else {
                   this.$store.dispatch('setLinenumber', null);
                   this.$store.dispatch('setExecution', 'stopped');
