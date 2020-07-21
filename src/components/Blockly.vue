@@ -250,6 +250,7 @@
       },
       '$store.getters.getBlockly': function(newVal, oldVal){
         var xml = Blockly.Xml.textToDom(newVal);
+        this.workspace.clear();
         Blockly.Xml.domToWorkspace(xml, this.workspace);
         localStorage.setItem("blockly", newVal);
       },
