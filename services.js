@@ -65,6 +65,7 @@ server.once('listening', function() {
   app.use(express.static('dist'))
 });
 
+
 server.listen(4000);
 
 // Setup passportJS
@@ -128,6 +129,9 @@ app.get('/',function(req,res,next){
        next()
     }
 })
+
+// Serve blockly media
+app.use('/blockly-media', express.static('node_modules/blockly/media'))
 
 app.get('/api/self', (req, res) => {
   if (req.user){
