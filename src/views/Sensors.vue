@@ -74,9 +74,9 @@ export default {
       left_encoder: 0,
       right_encoder: 0,
       left_distance: 0,
-      right_distance: 0
+      right_distance: 0,
       left_intensity: 0,
-      right_intensity: 0
+      right_intensity: 0,
     }
   },
 
