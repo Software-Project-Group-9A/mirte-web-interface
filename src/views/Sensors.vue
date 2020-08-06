@@ -102,13 +102,13 @@ export default {
     
     var left_intensity_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/left_encoder',
+      name : '/zoef/left_intensity',
       messageType : 'zoef_msgs/Intensity'
     });
 
     var right_intensity_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/right_encoder',
+      name : '/zoef/right_intensity',
       messageType : 'zoef_msgs/Intensity'
     });
     
@@ -140,13 +140,12 @@ export default {
       this.right_intensity = message.value
     });
 
-
     left_distance_sub.subscribe((message) => {
-      this.left_distance = message.value
+      this.left_distance = message.range
     });
 
     right_distance_sub.subscribe((message) => {
-      this.right_distance = message.value
+      this.right_distance = message.range
     });
 
 
