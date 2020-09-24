@@ -87,6 +87,7 @@ export default {
       })
 
       var vue_this = this // TODO: can we do this in another way?
+ 
       let websocket = new WebSocket("ws://zoef.local:4567");
       websocket.onmessage = function(event){
          var data = JSON.parse(event.data);
@@ -102,8 +103,8 @@ export default {
                names.push({ value: data[i].name, text: data[i].name })
                if (window.location.href.indexOf(data[i].name.toLowerCase()) !== -1){
                   selected = data[i].name;
-               }
-	         }
+               }            
+            }
             vue_this.username = selected
             vue_this.online = names
          }

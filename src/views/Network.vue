@@ -26,7 +26,13 @@
 						<div class="form-group">
 							<label for="passphrase" class="control-label col-lg-2">passphrase</label>
 							<div class="col-lg-6">
-								<input type='password' class="form-control" name='passphrase'/>
+
+            
+            <input :type="passwordFieldType" class="form-control" name="passphrase">
+            <!-- shows the password -->
+            <a @click="toggleVisibility()" class="notunderlined">hide/show</a>
+
+
 							</div>
 						</div>
 						<div class="form-group">
@@ -55,15 +61,19 @@
 export default {
   data: function () {
     return {
-    	networks: [],
-		security: "wpa",
-		hostname: ""
-	}
+	networks: [],
+        security: "wpa",
+	hostname: "",
+        passwordFieldType: "password"
+    }
   },
   methods: {
 		onChange: function(event) {
 			this.security = event.target.options[event.target.options.selectedIndex].dataset.security;
-		}
+		}, 
+                toggleVisibility() {
+                        this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+                }
   },
   mounted(){
     
@@ -72,8 +82,8 @@ export default {
     	"mode": "cors"})
     .then(res => res.json())
     .then(data => {
-		this.networks = data
-    });
+		this.networks = data.filter(v=>v.ssid!="");
+        });
 
 	this.hostname = location.hostname
 
