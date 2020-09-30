@@ -6,7 +6,7 @@
            <router-view />
          </keep-alive>
       </div>
-      <b-modal v-model="loginModalShow" no-close-on-backdrop hide-header-close centered title="Login" :body-text-variant="textVariant" :header-text-variant="textVariant">
+      <b-modal v-model="loginModalShow" no-close-on-esc no-close-on-backdrop hide-header-close centered title="Login" :body-text-variant="textVariant" :header-text-variant="textVariant">
       <div class="mt-3">
          <form @submit.prevent="handleSubmit">
             <div class="form-group">
@@ -88,26 +88,29 @@ export default {
 
       var vue_this = this // TODO: can we do this in another way?
  
-      let websocket = new WebSocket("ws://zoef.local:4567");
+      let websocket = new WebSocket('ws://' + window.location.hostname + ':4567');
       websocket.onmessage = function(event){
          var data = JSON.parse(event.data);
-         if (data.length == 1 && window.location.href.indexOf(data[0].name.toLowerCase()) === -1){
-            window.location = "http://"  + data[0].name.toLowerCase() + ".local";
-         } else {
-            var names = []
-            if (data.length > 1){
-               names.push({ value: null, text: 'Please select your Zoef' });
-            }
-            var selected = null
-            for (var i in data){
-               names.push({ value: data[i].name, text: data[i].name })
-               if (window.location.href.indexOf(data[i].name.toLowerCase()) !== -1){
-                  selected = data[i].name;
-               }            
-            }
-            vue_this.username = selected
-            vue_this.online = names
+         var names = []
+         if (data.length > 1){
+            names.push({ value: null, text: 'Please select your Zoef' });
          }
+         var selected = null
+         for (var i in data){
+            var hostname = ""
+            if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(window.location.hostname)){
+               hostname = data[i].referer.address
+            } else {
+               hostname = data[i].name
+            }
+
+            names.push({ value: hostname, text: hostname + '(' + data[i].name + ')'});
+            if (window.location.href.indexOf(hostname.toLowerCase()) !== -1){
+               selected = hostname;
+            }            
+         }
+         vue_this.username = selected
+         vue_this.online = names
       }
    },
    computed: {

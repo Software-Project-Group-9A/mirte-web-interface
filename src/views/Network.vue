@@ -12,7 +12,7 @@
 						<div class="form-group">
 							<label for="ssid-select" class="control-label col-lg-2">SSID</label>
 							<div class="col-lg-6">
-								<select id='ssid-select' class="form-control" name='ssid' @change="onChange($event)">
+								<select id='ssid-select' class="form-control" name='ssid' @change="onChange($event)" v-model="selected.ssid">
 									<option v-for="n of networks" v-bind:key="n.ssid" :value="n.ssid" :data-security="n.security">{{n.ssid}}</option>
 								</select>
 							</div>
@@ -20,7 +20,7 @@
 						<div v-show="security == 'enterprise'" class="form-group" id="identity-group">
 							<label for="identity" class="control-label col-lg-2">user</label>
 							<div class="col-lg-6">
-								<input class="form-control" name="identity"/>
+								<input class="form-control" name="identity" v-model="selected.identity"/>
 							</div>
 						</div>
 						<div class="form-group">
@@ -28,7 +28,7 @@
 							<div class="col-lg-6">
 
             
-            <input :type="passwordFieldType" class="form-control" name="passphrase">
+            <input :type="passwordFieldType" class="form-control" name="passphrase" v-model="selected.password">
             <!-- shows the password -->
             <a @click="toggleVisibility()" class="notunderlined">hide/show</a>
 
@@ -37,7 +37,7 @@
 						</div>
 						<div class="form-group">
 							<div class="col-lg-6 col-lg-offset-2">
-								<button type='submit' class='btn btn-success'>Connect</button>
+                                                              <button @click="connect" type="button" class="btn btn-success">connect</button>
 							</div>
 						</div>
 					</form>
@@ -64,6 +64,7 @@ export default {
 	networks: [],
         security: "wpa",
 	hostname: "",
+        selected: {password: "", ssid: "", identity: ""},
         passwordFieldType: "password"
     }
   },
@@ -73,7 +74,23 @@ export default {
 		}, 
                 toggleVisibility() {
                         this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password'
+                },
+                connect() {
+                    var data = new FormData();
+                    data.append("ssid", this.selected.ssid );
+                    data.append("identity", this.selected.identity );
+                    data.append("passphrase", this.selected.password );
+                    fetch(`http://192.168.42.1:8080/connect`, {
+                        "method": "POST",
+                        "mode": "cors",
+                        "body": data})
+                        .then(console.log("send"))
+                        .then(data => {
+                             console.log('received');
+                        });
+
                 }
+
   },
   mounted(){
     
