@@ -99,12 +99,14 @@ export default {
          for (var i in data){
             var hostname = ""
             if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(window.location.hostname)){
-               hostname = data[i].referer.address
+               hostname = data[i].referer.address;
+               names.push({ value: hostname, text: hostname + ' (' + data[i].name + ')'});
             } else {
-               hostname = data[i].name
+               hostname = data[i].name;
+               names.push({ value: hostname, text: hostname});
             }
 
-            names.push({ value: hostname, text: hostname + '(' + data[i].name + ')'});
+            
             if (window.location.href.indexOf(hostname.toLowerCase()) !== -1){
                selected = hostname;
             }            
