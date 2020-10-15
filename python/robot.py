@@ -14,7 +14,7 @@ from geometry_msgs.msg import Twist
 from std_msgs.msg import Int32
 from std_msgs.msg import String
 from std_msgs.msg import Empty
-from zoef_msgs.msg import Encoder, Intensity
+from zoef_msgs.msg import *
 
 from zoef_msgs.srv import *
 from std_srvs.srv import *
@@ -88,6 +88,8 @@ class Robot():
         self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode, persistent=True)
         self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue, persistent=True)
         self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue, persistent=True)
+        self.get_keypad_value_service = rospy.ServiceProxy('/zoef_service_api/get_keypad', GetKeypad, persistent=True)
+        self.set_led_value_service = rospy.ServiceProxy('/zoef/set_led_value', SetLEDValue, persistent=True)
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
@@ -119,6 +121,10 @@ class Robot():
         value = self.set_pin_mode_service(pin, mode, type)
         return value.status
 
+    def getKeypad(self):
+        value = self.get_keypad_value_service()
+        return value.data
+
     def getAnalogPinValue(self, pin):
         print "robot.py: in get analogprint value"
         #self.setPinMode(pin, self.PULLUP, self.ANALOG)
@@ -133,6 +139,10 @@ class Robot():
     def getDigitalPinValue(self, pin):
         value = self.get_pin_value_service(pin, "digital")
         return value.data
+
+    def setLED(self, value):
+        value = self.set_led_value_service(value)
+        return value.status
 
     def setDigitalPinValue(self, pin, value):
         value = self.set_pin_value_service(pin, "digital", value)
