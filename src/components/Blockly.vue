@@ -9,6 +9,7 @@
 			<block type="get_distance"></block>
                         <block type="get_intensity"></block>
 			<block type="get_pin_value"></block>
+                        <block type="get_keypad_value"></block>
 <!--			<block type="get_virtual_color"></block>
 			<block type="get_barcode"></block> -->
 		</category>
@@ -135,7 +136,7 @@
 				<block type="lists_getIndex"></block>
 				<block type="lists_setIndex"></block>
 			</category>
-			<category name="Variablen" custom="VARIABLE" colour="%{BKY_DATA_RGB}">
+			<category name="Variabelen" custom="VARIABLE" colour="%{BKY_DATA_RGB}">
 			</category>
 		</category>
 
@@ -147,6 +148,7 @@
          </block>
 			<!--<block type="move"></block>-->
          <block type="set_digital_pin_value"></block>
+         <block type="set_led"></block>
          <block type="pwm">
 					<value name="speed">
 						<block type="math_number">
@@ -449,6 +451,26 @@
       };
 
       // Blockly generator
+      Blockly.Blocks['get_keypad_value'] = {
+        init: function() {
+          this.appendDummyInput()
+              .appendField("ingedrukte knop")
+          this.setOutput(true, null);
+          this.setColour("%{BKY_SENSORS_RGB}");
+      this.setTooltip("");
+      this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Python['get_keypad_value'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let code = `zoef.getKeypadValue()`;
+        return [code, Blockly.Python.ORDER_NONE];
+      };
+
+
+
+      // Blockly generator
       Blockly.Blocks['get_pin_value'] = {
         init: function() {
           this.appendDummyInput()
@@ -654,6 +676,29 @@
         let code = `zoef.setDigitalPinValue(${pin}, ${value})\n`;
         return code;
       };
+
+      Blockly.Blocks['set_led'] = {
+        init: function() {
+          this.appendValueInput("led_value")
+              .setCheck("Number")
+              .appendField("zet LED waarde op")
+          this.setColour(230);
+          this.setTooltip("");
+          this.setHelpUrl("");
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour("%{BKY_ACTIONS_RGB}");
+        }
+      };
+
+      // Blockly generator
+      Blockly.Python['set_led'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let led_value = Blockly.JavaScript.valueToCode(block, 'led_value', Blockly.JavaScript.ORDER_ATOMIC);
+        let code = `zoef.setLED(${led_value})\n`;
+        return code;
+      };
+
 
       Blockly.Blocks['pwm'] = {
         init: function() {

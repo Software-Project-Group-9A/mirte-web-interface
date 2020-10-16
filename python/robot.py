@@ -121,7 +121,7 @@ class Robot():
         value = self.set_pin_mode_service(pin, mode, type)
         return value.status
 
-    def getKeypad(self):
+    def getKeypadValue(self):
         value = self.get_keypad_value_service()
         return value.data
 
