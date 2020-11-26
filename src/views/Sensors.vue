@@ -4,14 +4,14 @@
     <h1 class="mb-5">Sensoren</h1>
 
     <div class="layoutbox rounded">
-      <div class="text-white p-2 layoutbox-title w-100 background-primary">
+      <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
         Waardes
       </div>
 
       <div class="layoutbox-content">
         <div class="row">
 
-          <div class="col-4 text-cneter ">
+          <div class="col-4">
             <div class="rounded background-green-light p-3">
               <h5>Rotatiesensoren</h5>
                 

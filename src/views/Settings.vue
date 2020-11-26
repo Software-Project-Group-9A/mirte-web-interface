@@ -1,54 +1,113 @@
 <template>
   <div class="container">
 
-    <h3>Device</h3>
-    <table>
-      <tr v-for="[k, v] of Object.entries(params.device)" v-bind:key="k">
-        <td>
-          {{k}}
-        </td>
-        <td>
-          {{v}}
-        </td>
-      </tr>
-    </table>
+    <h1 class="mb-5">Instellingen</h1>
 
-    <h3 class="mt-5">Motors</h3>
-    <table>
-      <tr v-for="[k, v] of Object.entries(params.motor)" v-bind:key="k">
-        <td>
-          {{k}}
-        </td>
-        <td>
-          {{v}}
-        </td>
-      </tr>
-    </table>
+    <div class="layoutbox rounded">
+      <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+        Waardes
+      </div>
 
-    <h3 class="mt-5">Encoders</h3>
-    <table>
-      <tr v-for="[k, v] of Object.entries(params.encoder)" v-bind:key="k">
-        <td>
-          {{k}}
-        </td>
-        <td>
-          {{v}}
-        </td>
-      </tr>
-    </table>
+      <div class="layoutbox-content">
+        <div class="row">
 
-    <h3 class="mt-5">verander wachtwoord</h3>
-    <div class="input-group w-50">
-      <input v-model="password" type="text" class="form-control mr-3" placeholder="new password">
-      <button @click="setPassword" type="button" class="btn btn-danger">change</button>
+          <div class="col-4">
+            <div class="rounded background-green-light p-3">
+              <h5>Apparaat</h5>
+                
+              <div class="rounded background-primary p-2 text-white mb-2">
+                <table>
+                  <tr v-for="[k, v] of Object.entries(params.device)" v-bind:key="k">
+                    <td>
+                      {{k}}
+                    </td>
+                    <td>
+                      {{v}}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="rounded background-green-light p-3">
+              <h5>Lichtsensoren</h5>
+                
+              <div class="rounded background-primary p-2 text-white mb-2">
+                <table>
+                <tr v-for="[k, v] of Object.entries(params.motor)" v-bind:key="k">
+                  <td>
+                    {{k}}
+                  </td>
+                  <td>
+                    {{v}}
+                  </td>
+                </tr>
+              </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-4">
+            <div class="rounded background-green-light p-3">
+              <h5>Afstandsensoren</h5>
+                
+              <div class="rounded background-primary p-2 text-white mb-2">
+                <table>
+                  <tr v-for="[k, v] of Object.entries(params.encoder)" v-bind:key="k">
+                    <td>
+                      {{k}}
+                    </td>
+                    <td>
+                      {{v}}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+            </div>
+          </div>
+          
+        </div>
+      </div>
     </div>
 
-    <h3 class="mt-5">upload stm32 stuurprogramma</h3>
-    <div class="input-group w-50">
-      <button @click="stm32" type="button" class="btn btn-danger">
-        <span v-if="!busy">upload</span>
-        <i v-else class="fa fa-spin fa-stroopwafel"></i>
-      </button>
+
+    <div class="layoutbox rounded mt-5">
+      <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+        Geavanceerde instellingen
+      </div>
+
+      <div class="layoutbox-content">
+
+        <div class="row">
+
+          <div class="col-6">
+            <div class="rounded background-green-light p-3">
+              <h5>verander wachtwoord</h5>
+              <div class="input-group">
+                <input v-model="password" type="text" class="form-control mr-3" placeholder="nieuw wachtwoord">
+                <button @click="setPassword" type="button" class="btn btn-danger">verander</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="rounded background-green-light p-3">
+              <h5>upload stm32 stuurprogramma</h5>
+              <div class="input-group w-50">
+                <button @click="stm32" type="button" class="btn btn-danger">
+                  <span v-if="!busy">upload</span>
+                  <i v-else class="fa fa-spin fa-stroopwafel"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
 
   </div>
