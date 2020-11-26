@@ -1,5 +1,5 @@
 <template>
-    <div class="tutorial_window" >
+    <div class="tutorial_window rounded" >
 
         <button class="btn btn-primary btn-sm" @click="close">
             <i class="fa fa-times-circle"></i>

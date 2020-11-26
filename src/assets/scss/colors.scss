@@ -1,0 +1,22 @@
+$primary: #668284;
+$green-bright: #23a880;
+$green-light: #eff2f2;
+
+$colors: (
+    "primary": $primary,
+    "green-bright": $green-bright,
+    "green-light": $green-light,
+);
+
+
+@each $color, $value in $colors{
+    .text-#{$color}{
+        color: $value;
+    }
+
+    .background-#{$color}{
+        background-color: $value !important;
+    }
+}
+
+

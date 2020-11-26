@@ -1,0 +1,14 @@
+.blocklyToolboxDiv {
+    background-color: $primary;
+    color: white;
+}
+
+.blocklyFlyoutBackground {
+  fill: #458873;
+  fill-opacity: 0.6;
+}
+
+#blocklyArea{
+    width: 100%;
+    height: calc(100vh - 55px);
+}
