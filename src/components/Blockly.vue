@@ -8,8 +8,9 @@
 		<category name="Sensoren" colour="%{BKY_SENSORS_RGB}">
 			<block type="get_distance"></block>
                         <block type="get_intensity"></block>
-			<block type="get_pin_value"></block>
-                        <block type="get_keypad_value"></block>
+                        <block type="get_encoder"></block>
+<!--			<block type="get_pin_value"></block> -->
+                        <block type="get_keypad"></block>
 <!--			<block type="get_virtual_color"></block>
 			<block type="get_barcode"></block> -->
 		</category>
@@ -147,15 +148,31 @@
             </value>
          </block>
 			<!--<block type="move"></block>-->
-         <block type="set_digital_pin_value"></block>
-         <block type="set_led"></block>
-         <block type="pwm">
+<!--         <block type="set_digital_pin_value"></block>  -->
+         <block type="set_led_value">
+                                        <value name="value">
+                                                <block type="math_number">
+                                                        <field name="NUM">0</field>
+                                                </block>
+                                        </value>
+
+         </block>
+         <block type="set_motor_speed">
 					<value name="speed">
 						<block type="math_number">
 							<field name="NUM">0</field>
 						</block>
 					</value>
          </block>
+         <block type="set_servo_angle">
+                                        <value name="angle">
+                                                <block type="math_number">
+                                                        <field name="NUM">0</field>
+                                                </block>
+                                        </value>
+         </block>
+         
+
 			<!--<block type="display_text"></block>
 			<block type="turn"></block>
 			<block type="turnAngle"></block>-->
@@ -451,7 +468,7 @@
       };
 
       // Blockly generator
-      Blockly.Blocks['get_keypad_value'] = {
+      Blockly.Blocks['get_keypad'] = {
         init: function() {
           this.appendDummyInput()
               .appendField("ingedrukte knop")
@@ -462,13 +479,11 @@
         }
       };
 
-      Blockly.Python['get_keypad_value'] = function(block) {
+      Blockly.Python['get_keypad'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
-        let code = `zoef.getKeypadValue()`;
+        let code = `zoef.getKeypad("yellow")`;
         return [code, Blockly.Python.ORDER_NONE];
       };
-
-
 
       // Blockly generator
       Blockly.Blocks['get_pin_value'] = {
@@ -588,7 +603,6 @@
 
       // Blockly generator
       Blockly.Blocks['get_intensity'] = {
-
         init: function() {
           this.appendDummyInput()
             .appendField("lichtwaarde van ")
@@ -609,7 +623,6 @@
 
       // Blockly generator
       Blockly.Blocks['get_distance'] = {
-
         init: function() {
           this.appendDummyInput()
             .appendField("afstandwaarde van ")
@@ -627,6 +640,27 @@
         let code = `zoef.getDistance('${sensor}')`;
         return [code, Blockly.Python.ORDER_NONE];
       };
+
+      // Blockly generator
+      Blockly.Blocks['get_encoder'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("aantal wielbewegingen van ")
+            .appendField(new Blockly.FieldDropdown([['links', 'left'], ['rechts', 'right']]), 'sensor');
+          this.setOutput(true, null);
+          this.setColour("%{BKY_SENSORS_RGB}");
+      this.setTooltip("");
+      this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Python['get_encoder'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let sensor = block.getFieldValue('sensor');
+        let code = `zoef.getEncoder('${sensor}')`;
+        return [code, Blockly.Python.ORDER_NONE];
+      };
+
 
       Blockly.Blocks['wait_until'] = {
         init: function() {
@@ -677,7 +711,7 @@
         return code;
       };
 
-      Blockly.Blocks['set_led'] = {
+      Blockly.Blocks['set_led_value'] = {
         init: function() {
           this.appendValueInput("led_value")
               .setCheck("Number")
@@ -692,7 +726,7 @@
       };
 
       // Blockly generator
-      Blockly.Python['set_led'] = function(block) {
+      Blockly.Python['set_led_value'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
         let led_value = Blockly.JavaScript.valueToCode(block, 'led_value', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setLED(${led_value})\n`;
@@ -700,13 +734,11 @@
       };
 
 
-      Blockly.Blocks['pwm'] = {
+      Blockly.Blocks['set_servo_angle'] = {
         init: function() {
-          this.appendValueInput("speed")
+          this.appendValueInput("angle")
               .setCheck("Number")
-              .appendField("zet PWM van de")
-              .appendField(new Blockly.FieldDropdown([['linker', 'left'], ['rechter', 'right']]), 'motor')
-              .appendField("motor op waarde");
+              .appendField("zet servo op hoek ")
           this.setColour(230);
           this.setTooltip("");
           this.setHelpUrl("");
@@ -717,13 +749,31 @@
       };
 
       // Blockly generator
-      Blockly.Python['pwm'] = function(block) {
+      Blockly.Python['set_servo_angle'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
-        let motor = block.getFieldValue('motor');
-        let speed = Blockly.JavaScript.valueToCode(block, 'speed', Blockly.JavaScript.ORDER_ATOMIC);
-        let code = `zoef.setMotorPWM('${motor}', ${speed})\n`;
+        let led_value = Blockly.JavaScript.valueToCode(block, 'led_value', Blockly.JavaScript.ORDER_ATOMIC);
+        let code = `zoef.setServoAngle(${angle})\n`;
         return code;
       };
+
+
+      Blockly.Blocks['set_motor_speed'] = {
+        init: function() {
+          this.appendValueInput("speed")
+              .setCheck("Number")
+              .appendField("zet snelheid van de")
+              .appendField(new Blockly.FieldDropdown([['linker', 'left'], ['rechter', 'right']]), 'motor')
+              .appendField("motor op ");
+          this.setColour(230);
+          this.setTooltip("");
+          this.setHelpUrl("");
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour("%{BKY_ACTIONS_RGB}");
+        }
+      };
+
+
 
 
       // Blockly generator

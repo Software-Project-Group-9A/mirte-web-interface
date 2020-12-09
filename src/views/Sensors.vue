@@ -92,37 +92,37 @@ export default {
       
     var left_encoder_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/left_encoder',
+      name : '/zoef/encoder/left',
       messageType : 'zoef_msgs/Encoder'
     });
 
     var right_encoder_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/right_encoder',
+      name : '/zoef/encoder/right',
       messageType : 'zoef_msgs/Encoder'
     });
     
     var left_intensity_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/left_intensity',
+      name : '/zoef/intensity/left',
       messageType : 'zoef_msgs/Intensity'
     });
 
     var right_intensity_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/right_intensity',
+      name : '/zoef/intensity/right',
       messageType : 'zoef_msgs/Intensity'
     });
     
     var left_distance_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/left_distance',
+      name : '/zoef/distance/left',
       messageType : 'sensor_msgs/Range'
     });
 
     var right_distance_sub = new ROSLIB.Topic({
       ros : ros,
-      name : '/zoef/right_distance',
+      name : '/zoef/distance/right',
       messageType : 'sensor_msgs/Range'
     });
 

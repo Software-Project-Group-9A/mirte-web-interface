@@ -59,9 +59,10 @@ export default {
    },
    methods: {
       getSelectedItem(item){
-         if (window.location.href.indexOf(item.toLowerCase()) === -1){
-            window.location = "http://"  + item.toLowerCase() + ".local";
-         }
+         //if (window.location.href.indexOf(item.toLowerCase()) === -1){
+         //   console.log('hier');
+         //   window.location = "http://"  + item.toLowerCase() + ".local";
+         //}
       }, 
       checkLogin() {
          this.submitted = true;
@@ -70,7 +71,17 @@ export default {
          if (!(username && password)) {
                return;
          }
-         axios.post("http://" + username + ".local/api/login", {username: username, password: password}, {crossDomain: true, withCredentials: true})    
+         console.log(username + "   "  + password)
+
+         
+
+         var url = "" 
+         if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(window.location.hostname)){
+            url = "http://" + this.online.find(o => o.value === username)["ip"] + "/api/login"
+         } else {
+            url = "http://" + username + ".local/api/login"
+         }
+         axios.post(url, {username: username, password: password}, {crossDomain: true, withCredentials: true})    
          .then((response) => {  
 	         if (response.data.message){
 	            this.error = response.data.message;  
@@ -97,16 +108,9 @@ export default {
          }
          var selected = null
          for (var i in data){
-            var hostname = ""
-            if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(window.location.hostname)){
-               hostname = data[i].referer.address;
-               names.push({ value: hostname, text: hostname + ' (' + data[i].name + ')'});
-            } else {
-               hostname = data[i].name;
-               names.push({ value: hostname, text: hostname});
-            }
+            var hostname = data[i].name;
+            names.push({ value: hostname, text: hostname + ' (' + data[i].referer.address + ')', ip: data[i].referer.address });
 
-            
             if (window.location.href.indexOf(hostname.toLowerCase()) !== -1){
                selected = hostname;
             }            
