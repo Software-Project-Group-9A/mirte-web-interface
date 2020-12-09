@@ -6,8 +6,9 @@ import sys
 import math
 import atexit
 
-sys.path.append('/usr/local/lib/python2.7/dist-packages/PyMata-2.20-py2.7.egg')  # Needed for jupyter notebooks
-sys.path.append('/usr/local/lib/python2.7/dist-packages/pyserial-3.4-py2.7.egg')
+# TODO: check if we need the telemetrix version of this?
+#sys.path.append('/usr/local/lib/python2.7/dist-packages/PyMata-2.20-py2.7.egg')  # Needed for jupyter notebooks
+#sys.path.append('/usr/local/lib/python2.7/dist-packages/pyserial-3.4-py2.7.egg')
 
 import message_filters
 from geometry_msgs.msg import Twist
@@ -27,7 +28,7 @@ class Robot():
         atexit.register(self.stop)
 
         self.PWM = 3 #PrivateConstants.PWM when moving to Python3
-        self.INPUT = 0 
+        self.INPUT = 0
         self.OUTPUT = 1
         self.PULLUP = 11
         self.ANALOG = 2
@@ -41,55 +42,66 @@ class Robot():
         # the controller is needed, it will be enabled.
         self.stop_controller_service = rospy.ServiceProxy('stop', Empty, persistent=True)
         self.start_controller_service = rospy.ServiceProxy('start', Empty, persistent=True)
-        self.stop_controller_service()
+        #self.stop_controller_service()
 
-        # Services for actuators 
-        # Those are not publishers since the connection to the subsriber node can take a lot of
-        # time. Therefore we use the service in the service API which translates it to a publisher
-
-        motors = {}
+        # Service for motor speed
         if rospy.has_param("/zoef/motor"):
             motors = rospy.get_param("/zoef/motor")
-        self.motor_services = {}
-        for motor in motors:
-            self.motor_services[motor] = rospy.ServiceProxy('/zoef_pymata/set_' + motor + '_pwm', SetMotorPWM, persistent=True)
+            self.motor_services = {}
+            for motor in motors:
+                self.motor_services[motor] = rospy.ServiceProxy('/zoef/set_' + motors[motor]["name"] + '_speed', SetMotorPWM, persistent=True)
 
-        self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
-        self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
+#        self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
+#        self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
 
         rospy.init_node('zoef_python_api', anonymous=False)
-
         # Services
-        self.move_service = rospy.ServiceProxy('zoef_navigation/move', Move)
-        self.turn_service = rospy.ServiceProxy('zoef_navigation/turn', Turn)
+#        self.move_service = rospy.ServiceProxy('zoef_navigation/move', Move)
+#        self.turn_service = rospy.ServiceProxy('zoef_navigation/turn', Turn)
 
-        # Services for sensors
-        distance_sensors = {}
+        ## Sensors
+        ## The sensors are now just using a blocking service call. This is intentionally
+        ## since one first needs to learn to program in a synchronous way without events.
+        ## Event based programming is already possible using the ROS topics for the
+        ## same sensors. At a later stage we will expose this as well to this API and
+        ## maybe even to blockly.
+
+        # Services for distance sensors
         if rospy.has_param("/zoef/distance"):
             distance_sensors = rospy.get_param("/zoef/distance")
-        self.distance_services = {}
-        for sensor in distance_sensors:
-            self.distance_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetDistance, persistent=True)
+            self.distance_services = {}
+            for sensor in distance_sensors:
+               self.distance_services[sensor] = rospy.ServiceProxy('/zoef/get_distance_' + distance_sensors[sensor]["name"], GetDistance, persistent=True)
 
-        intensity_sensors = {}
+        # Services for intensity sensors (TODO: how to expose the digital version?)
         if rospy.has_param("/zoef/intensity"):
             intensity_sensors = rospy.get_param("/zoef/intensity")
-        self.intensity_services = {}
-        for sensor in intensity_sensors:
-            self.intensity_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetIntensity, persistent=True)
+            self.intensity_services = {}
+            for sensor in intensity_sensors:
+                self.intensity_services[sensor] = rospy.ServiceProxy('/zoef/get_intensity_' + intensity_sensors[sensor]["name"], GetIntensity, persistent=True)
 
-        encoder_sensors = {}
+        # Services for encoder sensors
         if rospy.has_param("/zoef/encoder"):
             encoder_sensors = rospy.get_param("/zoef/encoder")
-        self.encoder_services = {}
-        for sensor in encoder_sensors:
-            self.encoder_services[sensor] = rospy.ServiceProxy('/zoef_service_api/get_' + sensor, GetEncoder, persistent=True)
+            self.encoder_services = {}
+            for sensor in encoder_sensors:
+                self.encoder_services[sensor] = rospy.ServiceProxy('/zoef/get_encoder_' + encoder_sensors[sensor]["name"], GetEncoder, persistent=True)
 
-        self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode, persistent=True)
-        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue, persistent=True)
-        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue, persistent=True)
-        self.get_keypad_value_service = rospy.ServiceProxy('/zoef_service_api/get_keypad', GetKeypad, persistent=True)
+        # Services for keypad sensores
+        if rospy.has_param("/zoef/keypad"):
+            keypad_sensors = rospy.get_param("/zoef/keypad")
+            self.keypad_services = {}
+            for sensor in keypad_sensors:
+                self.keypad_services[sensor] = rospy.ServiceProxy('/zoef/get_keypad_' + keypad_sensors[sensor]["name"], GetKeypad, persistent=True)
+
+
+
+#        self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode, persistent=True)
+#        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue, persistent=True)
+#        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue, persistent=True)
         self.set_led_value_service = rospy.ServiceProxy('/zoef/set_led_value', SetLEDValue, persistent=True)
+        self.set_servo_angle_service = rospy.ServiceProxy('/zoef/set_servo_angle', SetServoAngle, persistent=True)
+
 
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
@@ -106,23 +118,23 @@ class Robot():
            return time.time() - last_call
 
     def getDistance(self, sensor):
-        dist = self.distance_services[sensor + "_distance"]()
+        dist = self.distance_services[sensor]()
         return dist.data
 
     def getIntensity(self, sensor):
-        value = self.intensity_services[sensor + "_intensity"]()
+        value = self.intensity_services[sensor]()
         return value.data
 
-    def getSpeed(self, sensor):
-        value = self.encoder_services[sensor + "_encoder"](1) # Currently Encoder asks for a timedelta, not used
+    def getEncoder(self, sensor):
+        value = self.encoder_services[sensor]()
         return value.data
 
     def setPinMode(self, pin, mode, type):
         value = self.set_pin_mode_service(pin, mode, type)
         return value.status
 
-    def getKeypadValue(self):
-        value = self.get_keypad_value_service()
+    def getKeypad(self, keypad):
+        value = self.keypad_services[keypad]()
         return value.data
 
     def getAnalogPinValue(self, pin):
@@ -144,6 +156,10 @@ class Robot():
         value = self.set_led_value_service(value)
         return value.status
 
+    def setServoAngle(self, angle):
+        value = self.set_servo_angle_service(angle)
+        return value.status
+
     def setDigitalPinValue(self, pin, value):
         value = self.set_pin_value_service(pin, "digital", value)
         return value.status
@@ -162,8 +178,8 @@ class Robot():
         rospy.loginfo(text)
         self.text_publisher.publish(text)
 
-    def setMotorPWM(self, motor, value):
-        motor = self.motor_services[motor + "_motor"](value)
+    def setMotorSpeed(self, motor, value):
+        motor = self.motor_services[motor](value)
         return motor.status
 
     def getEncoderTicks(self, sensor, time_delta):
@@ -179,8 +195,8 @@ class Robot():
         return move.finished
 
     def stop(self):
-        self.setMotorPWM("left", 0)
-        self.setMotorPWM("right", 0)
+        self.setMotorSpeed("left", 0)
+        self.setMotorSpeed("right", 0)
         #self.start_controller_service() # this cen be replaced as soon as the controller is working properly
         #self.move(0, 0)
 
