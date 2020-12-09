@@ -713,7 +713,7 @@
 
       Blockly.Blocks['set_led_value'] = {
         init: function() {
-          this.appendValueInput("led_value")
+          this.appendValueInput("value")
               .setCheck("Number")
               .appendField("zet LED waarde op")
           this.setColour(230);
@@ -728,7 +728,7 @@
       // Blockly generator
       Blockly.Python['set_led_value'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
-        let led_value = Blockly.JavaScript.valueToCode(block, 'led_value', Blockly.JavaScript.ORDER_ATOMIC);
+        let led_value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setLED(${led_value})\n`;
         return code;
       };
@@ -751,7 +751,7 @@
       // Blockly generator
       Blockly.Python['set_servo_angle'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
-        let led_value = Blockly.JavaScript.valueToCode(block, 'led_value', Blockly.JavaScript.ORDER_ATOMIC);
+        let angle = Blockly.JavaScript.valueToCode(block, 'angle', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setServoAngle(${angle})\n`;
         return code;
       };
@@ -773,8 +773,14 @@
         }
       };
 
-
-
+      // Blockly generator
+      Blockly.Python['set_motor_speed'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let motor = block.getFieldValue('motor');
+        let speed = Blockly.JavaScript.valueToCode(block, 'speed', Blockly.JavaScript.ORDER_ATOMIC);
+        let code = `zoef.setMotorSpeed('${motor}', ${speed})\n`;
+        return code;
+      };
 
       // Blockly generator
       Blockly.Blocks['get_timestamp'] = {
