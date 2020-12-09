@@ -49,7 +49,7 @@ class Robot():
             motors = rospy.get_param("/zoef/motor")
             self.motor_services = {}
             for motor in motors:
-                self.motor_services[motor] = rospy.ServiceProxy('/zoef/set_' + motors[motor]["name"] + '_speed', SetMotorPWM, persistent=True)
+                self.motor_services[motor] = rospy.ServiceProxy('/zoef/set_' + motors[motor]["name"] + '_speed', SetMotorSpeed, persistent=True)
 
 #        self.text_publisher = rospy.Publisher('display_text', String, queue_size=10)
 #        self.velocity_publisher = rospy.Publisher('/mobile_base_controller/cmd_vel', Twist, queue_size=10)
