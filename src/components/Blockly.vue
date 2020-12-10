@@ -8,6 +8,7 @@
 		<category name="Sensoren" colour="%{BKY_SENSORS_RGB}">
 			<block type="get_distance"></block>
                         <block type="get_intensity"></block>
+                        <block type="get_digital_intensity"></block>
                         <block type="get_encoder"></block>
 <!--			<block type="get_pin_value"></block> -->
                         <block type="get_keypad"></block>
@@ -620,6 +621,28 @@
         let code = `zoef.getIntensity('${sensor}')`;
         return [code, Blockly.Python.ORDER_NONE];
       };
+
+
+      // Blockly generator
+      Blockly.Blocks['get_digital_intensity'] = {
+        init: function() {
+          this.appendDummyInput()
+            .appendField("digitale lichtwaarde van ")
+            .appendField(new Blockly.FieldDropdown([['links', 'left'], ['rechts', 'right']]), 'sensor');
+          this.setOutput(true, null);
+          this.setColour("%{BKY_SENSORS_RGB}");
+      this.setTooltip("");
+      this.setHelpUrl("");
+        }
+      };
+
+      Blockly.Python['get_digital_intensity'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let sensor = block.getFieldValue('sensor');
+        let code = `zoef.getIntensity('${sensor}', "digital")`;
+        return [code, Blockly.Python.ORDER_NONE];
+      };
+
 
       // Blockly generator
       Blockly.Blocks['get_distance'] = {

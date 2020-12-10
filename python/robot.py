@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import time
 import rospy
+import rosservice
 import signal
 import sys
 import math
@@ -77,8 +78,18 @@ class Robot():
         if rospy.has_param("/zoef/intensity"):
             intensity_sensors = rospy.get_param("/zoef/intensity")
             self.intensity_services = {}
+
+            # We can not get the types (analog and/or digital) of the intensity sensor
+            # straight from the parameter server (it might be just set as the PCB without
+            # explicit values. We can however deduct what is there by checking the
+            # services.
+            service_list = rosservice.get_service_list()
             for sensor in intensity_sensors:
-                self.intensity_services[sensor] = rospy.ServiceProxy('/zoef/get_intensity_' + intensity_sensors[sensor]["name"], GetIntensity, persistent=True)
+                if "/zoef/get_intensity_" + intensity_sensors[sensor]["name"] in service_list:
+                    self.intensity_services[sensor] = rospy.ServiceProxy('/zoef/get_intensity_' + intensity_sensors[sensor]["name"], GetIntensity, persistent=True)
+                if "/zoef/get_intensity_" + intensity_sensors[sensor]["name"] + "_digital" in service_list:
+                    self.intensity_services[sensor + "_digital"] = rospy.ServiceProxy('/zoef/get_intensity_' + intensity_sensors[sensor]["name"] + "_digital", GetIntensityDigital, persistent=True)
+
 
         # Services for encoder sensors
         if rospy.has_param("/zoef/encoder"):
@@ -121,8 +132,11 @@ class Robot():
         dist = self.distance_services[sensor]()
         return dist.data
 
-    def getIntensity(self, sensor):
-        value = self.intensity_services[sensor]()
+    def getIntensity(self, sensor, type="analog"):
+        if type == "analog":
+           value = self.intensity_services[sensor]()
+        if type == "digital":
+           value = self.intensity_services[sensor + "_digital"]()
         return value.data
 
     def getEncoder(self, sensor):
