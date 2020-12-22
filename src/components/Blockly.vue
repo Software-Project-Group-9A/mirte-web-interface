@@ -10,7 +10,7 @@
                         <block type="get_intensity"></block>
                         <block type="get_digital_intensity"></block>
                         <block type="get_encoder"></block>
-<!--			<block type="get_pin_value"></block> -->
+			<block type="get_pin_value"></block>
                         <block type="get_keypad"></block>
 <!--			<block type="get_virtual_color"></block>
 			<block type="get_barcode"></block> -->
@@ -149,7 +149,22 @@
             </value>
          </block>
 			<!--<block type="move"></block>-->
-<!--         <block type="set_digital_pin_value"></block>  -->
+         <block type="set_digital_pin_value">
+                                        <value name="value">
+                                                <block type="logic_boolean">
+                                                        <field name="BOOL">0</field>
+                                                </block>
+                                        </value>
+
+
+         </block>
+         <block type="set_analog_pin_value">
+                                        <value name="value">
+                                                <block type="math_number">
+                                                        <field name="NUM">0</field>
+                                                </block>
+                                        </value>
+         </block>
          <block type="set_led_value">
                                         <value name="value">
                                                 <block type="math_number">
@@ -490,7 +505,8 @@
       Blockly.Blocks['get_pin_value'] = {
         init: function() {
           this.appendDummyInput()
-              .appendField("analoge waarde van pin")
+              .appendField(new Blockly.FieldDropdown([['analoge', 'analog'], ['digitale', 'digital']]), 'type')
+              .appendField("waarde van pin")
               .appendField(new Blockly.FieldNumber(1), "pin");
           this.setOutput(true, null);
           this.setColour("%{BKY_SENSORS_RGB}");
@@ -503,7 +519,13 @@
         // TODO: Assemble JavaScript into code letiable.
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
         let pin = block.getFieldValue('pin');
-        let code = `zoef.getAnalogPinValue(${pin})`;
+        let type = block.getFieldValue('type');
+        let code = "";
+        if (type == "analog"){
+           code = `zoef.getAnalogPinValue(${pin})`;
+        } else {
+           code = `zoef.getDigitalPinValue(${pin})`;
+        }
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
       };
@@ -712,11 +734,11 @@
       // Blockly block definition
       Blockly.Blocks['set_digital_pin_value'] = {
         init: function() {
-          this.appendDummyInput()
+          this.appendValueInput("value")
+            .setCheck(['Boolean'])
             .appendField("zet waarde van digitale pin ")
-            .appendField(new Blockly.FieldNumber(1), "pin")
+            .appendField(new Blockly.FieldTextInput("D0"), "pin")
             .appendField("op")
-            .appendField(new Blockly.FieldDropdown([['0', '0'], ['1', '1']]), 'value');
           this.setPreviousStatement(true, null);
           this.setNextStatement(true, null);
           this.setColour("%{BKY_ACTIONS_RGB}");
@@ -729,10 +751,38 @@
       Blockly.Python['set_digital_pin_value'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
         let pin = block.getFieldValue('pin');
-        let value = block.getFieldValue('value');
-        let code = `zoef.setDigitalPinValue(${pin}, ${value})\n`;
+        let value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
+        console.log(value)
+        let code = `zoef.setDigitalPinValue('${pin}', ${value})\n`;
         return code;
       };
+
+      // Blockly block definition
+      Blockly.Blocks['set_analog_pin_value'] = {
+        init: function() {
+          this.appendValueInput("value")
+            .setCheck(['Number'])
+            .appendField("zet waarde van analoge pin ")
+            .appendField(new Blockly.FieldTextInput("A0"), "pin")
+            .appendField("op")
+          this.setPreviousStatement(true, null);
+          this.setNextStatement(true, null);
+          this.setColour("%{BKY_ACTIONS_RGB}");
+      this.setTooltip("");
+      this.setHelpUrl("");
+        }
+      };
+
+      // Blockly generator
+      Blockly.Python['set_analog_pin_value'] = function(block) {
+        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        let pin = block.getFieldValue('pin');
+        let value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
+        let code = `zoef.setAnalogPinValue('${pin}', ${value})\n`;
+        return code;
+      };
+
+
 
       Blockly.Blocks['set_led_value'] = {
         init: function() {

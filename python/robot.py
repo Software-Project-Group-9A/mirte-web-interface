@@ -107,9 +107,8 @@ class Robot():
 
 
 
-#        self.set_pin_mode_service = rospy.ServiceProxy('/zoef/set_pin_mode', SetPinMode, persistent=True)
-#        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue, persistent=True)
-#        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue, persistent=True)
+        self.get_pin_value_service = rospy.ServiceProxy('/zoef/get_pin_value', GetPinValue, persistent=True)
+        self.set_pin_value_service = rospy.ServiceProxy('/zoef/set_pin_value', SetPinValue, persistent=True)
         self.set_led_value_service = rospy.ServiceProxy('/zoef/set_led_value', SetLEDValue, persistent=True)
         self.set_servo_angle_service = rospy.ServiceProxy('/zoef/set_servo_angle', SetServoAngle, persistent=True)
 
@@ -152,10 +151,7 @@ class Robot():
         return value.data
 
     def getAnalogPinValue(self, pin):
-        print "robot.py: in get analogprint value"
-        #self.setPinMode(pin, self.PULLUP, self.ANALOG)
         value = self.get_pin_value_service(pin, "analog")
-        print "robot.py: returnig print value" 
         return value.data
 
     def setAnalogPinValue(self, pin, value):
