@@ -74,6 +74,12 @@ class Robot():
             for sensor in distance_sensors:
                self.distance_services[sensor] = rospy.ServiceProxy('/zoef/get_distance_' + distance_sensors[sensor]["name"], GetDistance, persistent=True)
 
+        if rospy.has_param("/zoef/oled"):
+            oleds = rospy.get_param("/zoef/oled")
+            self.oled_services = {}
+            for oled in oleds:
+               self.oled_services[oled] = rospy.ServiceProxy('/zoef/set_' + oleds[oled]["name"] + '_image', SetOLEDImage, persistent=True)
+
         # Services for intensity sensors (TODO: how to expose the digital version?)
         if rospy.has_param("/zoef/intensity"):
             intensity_sensors = rospy.get_param("/zoef/intensity")
@@ -156,6 +162,18 @@ class Robot():
 
     def setAnalogPinValue(self, pin, value):
         value = self.set_pin_value_service(pin, "analog", value)
+        return value.status
+
+    def setOLEDText(self, oled, text):
+        value = self.oled_services[oled]('text', str(text))
+        return value.status
+
+    def setOLEDImage(self, oled, image):
+        value = self.oled_services[oled]('image', image)
+        return value.status
+
+    def setOLEDAnimation(self, oled, animation):
+        value = self.oled_services[oled]('animation', animation)
         return value.status
 
     def getDigitalPinValue(self, pin):
