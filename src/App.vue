@@ -65,18 +65,33 @@ export default {
    },
    methods: {
       captureBlockly(){
-         //var blocklyElement = document.getElementsByClassName("CodeMirror-code");
-         var blocklyElement = document.getElementsByClassName("blocklyBlockCanvas");
-         //html2canvas(blocklyElement[0]).then(function(canvas) {
-            canvasToImage(blocklyElement, {
+         var blocklyElement = document.getElementById("blocklyDiv");
+         html2canvas(blocklyElement).then(function(canvas) {
+            canvasToImage(canvas, {
                name: 'Blockly',
                type: 'png',
                quality: 1
             });
-         //}); 
+         }); 
       },
       capturePython(){
-          console.log("capture python")
+         var blocklyElement = document.getElementsByClassName("CodeMirror-code");
+         html2canvas(blocklyElement[0]).then(function(canvas) {
+            canvasToImage(canvas, {
+               name: 'Python',
+               type: 'png',
+               quality: 1
+            });
+         }); 
+      },
+      captureScreen(){
+         html2canvas(document.body).then(function(canvas) {
+            canvasToImage(canvas, {
+               name: 'Screen',
+               type: 'png',
+               quality: 1
+            });
+         }); 
       },
       getSelectedItem(item){
          //if (window.location.href.indexOf(item.toLowerCase()) === -1){
@@ -146,7 +161,8 @@ export default {
       keymap() {
         return {
           "ctrl+alt+b": this.captureBlockly,
-          "ctrl+alt+p": this.capturePython
+          "ctrl+alt+p": this.capturePython,
+          "ctrl+alt+s": this.captureScreen,
         };
       }
    }
