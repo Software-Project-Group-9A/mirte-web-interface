@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-hotkey="keymap">
       <Navbar />
       <div class="content">
          <keep-alive>
@@ -42,6 +42,12 @@
 // @ is an alias to /src
 import Navbar from '@/components/Navbar.vue'
 import axios from "axios" 
+import VueHotkey from "v-hotkey";
+import Vue from 'vue'
+import html2canvas from 'html2canvas';
+import canvasToImage from 'canvas-to-image'
+
+Vue.use(VueHotkey);
 
 export default {
    data () {
@@ -58,6 +64,20 @@ export default {
       Navbar
    },
    methods: {
+      captureBlockly(){
+         //var blocklyElement = document.getElementsByClassName("CodeMirror-code");
+         var blocklyElement = document.getElementsByClassName("blocklyBlockCanvas");
+         //html2canvas(blocklyElement[0]).then(function(canvas) {
+            canvasToImage(blocklyElement, {
+               name: 'Blockly',
+               type: 'png',
+               quality: 1
+            });
+         //}); 
+      },
+      capturePython(){
+          console.log("capture python")
+      },
       getSelectedItem(item){
          //if (window.location.href.indexOf(item.toLowerCase()) === -1){
          //   console.log('hier');
@@ -122,6 +142,12 @@ export default {
    computed: {
       loginModalShow: function(){
          return this.$store.getters.getUser == "";
+      },
+      keymap() {
+        return {
+          "ctrl+alt+b": this.captureBlockly,
+          "ctrl+alt+p": this.capturePython
+        };
       }
    }
 }
