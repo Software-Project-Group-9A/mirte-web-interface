@@ -7,7 +7,7 @@ sudo apt update
 
 # Install nodeenv
 sudo apt install -y python-pip python-setuptools python-wheel
-sudo -H pip install nodeenv websocket_server
+sudo -H pip install nodeenv
 
 # Install nodeenv (TODO: find out why node-pty and node-sass will not compile correctly on higher versions)
 nodeenv --node=8.17.0 $ZOEF_SRC_DIR/web_interface/node_env
@@ -18,10 +18,6 @@ cd $ZOEF_SRC_DIR/web_interface
 npm install
 npm run build
 deactivate_node
-
-# Set some links for python interface
-grep -qxF "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" /home/zoef/.bashrc || echo "export PYTHONPATH=$PYTHONPATH:$ZOEF_SRC_DIR/web_interface/python" >> /home/zoef/.bashrc
-sudo ln -s $ZOEF_SRC_DIR/web_interface/python/linetrace.py /home/zoef/workdir
 
 # Foward for 80 to 3000
 echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections

@@ -128,7 +128,7 @@ export default {
         // Load env variables
         this.shell_socket.onopen = (ev) => {
             this.setTerminal(false);
-            this.shell_socket.send("export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && cd /home/zoef/workdir/ && source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && pkill -f linetrace || /bin/true && ./linetrace.py & clear\n");
+            this.shell_socket.send("export PYTHONPATH=$PYTHONPATH:/home/zoef/web_interface/python && cd /home/zoef/workdir/ && source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && pkill -f zoef_python.linetrace || /bin/true && python3 -m zoef_python.linetrace & clear\n");
         };
 
         // Autoresize terminal on size change
