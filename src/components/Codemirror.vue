@@ -27,6 +27,9 @@ export default {
       gutters: ["linetracer"],
       viewportMargin: Infinity
     });
+    this.editor.on('change', editor => {
+      this.$store.dispatch('setCode', editor.getValue())
+    });
     this.editor.save()
     this.editor.setValue(this.$store.getters.getCode)
   },
