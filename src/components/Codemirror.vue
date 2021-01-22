@@ -35,7 +35,9 @@ export default {
   },
   watch: { 
     '$store.getters.getCode': function(newVal, oldVal) {
-      this.editor.setValue(newVal)
+       if (newVal != this.editor.getDoc().getValue()){
+          this.editor.setValue(newVal)
+       }
     },
     '$store.getters.getLinenumber': function(newVal, oldVal){
       this.editor.clearGutter("linetracer");
