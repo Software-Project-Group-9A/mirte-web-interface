@@ -432,7 +432,7 @@
 
       // Blockly generator
       Blockly.Python['move'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let direction = block.getFieldValue('direction');
         let speed = block.getFieldValue('speed');
         let code = `zoef.move('${direction}', ${speed})\n`;
@@ -460,7 +460,7 @@
 
       // Blockly generator
       Blockly.Python['turn'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let direction = block.getFieldValue('direction');
         let speed = block.getFieldValue('speed');
         let code = 'zoef.turn(\'' + direction + '\', ' + speed + ')\n';
@@ -484,7 +484,7 @@
 
       // Blockly generator
       Blockly.Python['display_text'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let text = block.getFieldValue('text');
         let code = `zoef.displayText("${text}")\n`;
         return code;
@@ -503,7 +503,7 @@
       };
 
       Blockly.Python['get_keypad'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let code = `zoef.getKeypad("yellow")`;
         return [code, Blockly.Python.ORDER_NONE];
       };
@@ -524,7 +524,7 @@
 
       Blockly.Python['get_pin_value'] = function(block) {
         // TODO: Assemble JavaScript into code letiable.
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let pin = block.getFieldValue('pin');
         let type = block.getFieldValue('type');
         let code = "";
@@ -555,7 +555,7 @@
 
       Blockly.Python['get_virtual_color'] = function(block) {
         // TODO: Assemble JavaScript into code letiable.
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let direction = block.getFieldValue('direction');
         let code = `zoef.getVirtualColor('${direction}')`;
         // TODO: Change ORDER_NONE to the correct strength.
@@ -576,7 +576,7 @@
 
       Blockly.Python['get_barcode'] = function(block) {
         // TODO: Assemble JavaScript into code letiable.
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let code = `zoef.getBarcode()`;
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
@@ -598,7 +598,7 @@
 
       // Blockly generator
       Blockly.Python['turnAngle'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let angle_angle = block.getFieldValue('angle');
         let code = 'zoef.turnAngle(' + angle_angle + ')\n';
         return code;
@@ -645,7 +645,7 @@
       };
 
       Blockly.Python['get_intensity'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let sensor = block.getFieldValue('sensor');
         let code = `zoef.getIntensity('${sensor}')`;
         return [code, Blockly.Python.ORDER_NONE];
@@ -666,7 +666,7 @@
       };
 
       Blockly.Python['get_digital_intensity'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let sensor = block.getFieldValue('sensor');
         let code = `zoef.getIntensity('${sensor}', "digital")`;
         return [code, Blockly.Python.ORDER_NONE];
@@ -687,7 +687,7 @@
       };
 
       Blockly.Python['get_distance'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let sensor = block.getFieldValue('sensor');
         let code = `zoef.getDistance('${sensor}')`;
         return [code, Blockly.Python.ORDER_NONE];
@@ -707,7 +707,7 @@
       };
 
       Blockly.Python['get_encoder'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let sensor = block.getFieldValue('sensor');
         let code = `zoef.getEncoder('${sensor}')`;
         return [code, Blockly.Python.ORDER_NONE];
@@ -756,7 +756,7 @@
 
       // Blockly generator
       Blockly.Python['set_digital_pin_value'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let pin = block.getFieldValue('pin');
         let value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
         console.log(value)
@@ -786,7 +786,7 @@
 
       // Blockly generator
       Blockly.Python['set_oled'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
         let type = block.getFieldValue('type');
         let oled = block.getFieldValue('oled');
@@ -822,7 +822,7 @@
 
       // Blockly generator
       Blockly.Python['set_analog_pin_value'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let pin = block.getFieldValue('pin');
         let value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setAnalogPinValue('${pin}', ${value})\n`;
@@ -847,7 +847,7 @@
 
       // Blockly generator
       Blockly.Python['set_led_value'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let led_value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setLED(${led_value})\n`;
         return code;
@@ -870,7 +870,7 @@
 
       // Blockly generator
       Blockly.Python['set_servo_angle'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let angle = Blockly.JavaScript.valueToCode(block, 'angle', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setServoAngle(${angle})\n`;
         return code;
@@ -895,7 +895,7 @@
 
       // Blockly generator
       Blockly.Python['set_motor_speed'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let motor = block.getFieldValue('motor');
         let speed = Blockly.JavaScript.valueToCode(block, 'speed', Blockly.JavaScript.ORDER_ATOMIC);
         let code = `zoef.setMotorSpeed('${motor}', ${speed})\n`;
@@ -916,7 +916,7 @@
       };
 
       Blockly.Python['get_timestamp'] = function(block) {
-        Blockly.Python.definitions_['import_zoef'] = 'import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let version = block.getFieldValue('version');
         let code = `zoef.getTimestamp()`;
         if (version.localeCompare("start") != 0){
