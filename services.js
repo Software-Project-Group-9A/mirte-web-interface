@@ -188,7 +188,7 @@ expressWs.app.ws('/shell', (ws, req) => {
 // upload stm32 build
 app.get('/api/stm32', (req, res) => {
   const exec = require('child_process').execSync;
-  const stdout = exec('sudo /usr/local/src/zoef/zoef_arduino/run.sh upload_stm32');
+  const stdout = exec('sudo /usr/local/src/zoef/zoef_arduino/run.sh upload Telemetrix4Arduino');
   res.end(stdout);
 })
 
