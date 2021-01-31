@@ -1,4 +1,3 @@
-
 var express = require("express");
 var pty = require('node-pty');
 var app = express();
@@ -72,7 +71,7 @@ server.listen(4000);
 //
 //
 const authMiddleware = (req, res, next) => {
-  if (req.isAuthenticated() || getLocalIP() == "192.168.42.1" || getLocalIP() == "192.168.42.2" || getLocalIP() == "192.168.42.3") {
+  if (req.isAuthenticated() || getLocalIP() == "192.168.42.1" || getLocalIP() == "192.168.43.1" || getLocalIP() == "192.168.44.1") {
     return next()
   } else {
     res.redirect('/#/Login');
@@ -137,7 +136,7 @@ app.use('/blockly-media', express.static('node_modules/blockly/media'))
 app.get('/api/self', (req, res) => {
   if (req.user){
     return res.json(req.user.username);
-  } else if (getLocalIP() == "192.168.42.1" || getLocalIP() == "192.168.42.2" || getLocalIP() == "192.168.42.3"){
+  } else if (getLocalIP() == "192.168.42.1" || getLocalIP() == "192.168.43.1" || getLocalIP() == "192.168.44.1"){
     return res.json(zoef_name);
   } else {
     return res.send("")
