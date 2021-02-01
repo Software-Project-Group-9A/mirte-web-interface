@@ -223,6 +223,7 @@
 <script>
   import Blockly from 'blockly';
   import 'blockly/python';
+  import EventBus from '../event-bus';
   import * as En from 'blockly/msg/en';
   import * as Nl from 'blockly/msg/nl';
   
@@ -368,6 +369,20 @@ zoom: {
           // this.$store.dispatch('setBlockly', xml_text)
         }
       });
+
+
+        // event bus for control functions
+        EventBus.$on('control', (payload) => {
+            switch(payload){
+                case "undo":
+                    this.workspace.undo(false);
+                    break;
+                case "redo":
+                    this.workspace.undo(true);
+                    break;
+            }
+        });
+
 
       
       // Recolor predefined blocks

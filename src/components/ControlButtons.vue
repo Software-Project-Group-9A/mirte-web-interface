@@ -1,6 +1,24 @@
 <template>
     <div>
-        <button :disabled="isPlayDisabled" class="btn btn-outline-light mr-2" 
+        <button :disabled="isUndoDisabled" class="btn btn-outline-light mr-2"
+            v-b-tooltip.hover
+            title="undo"
+            @click="control('undo')"
+        >
+            <i class="fas fa-undo"></i>
+        </button>
+
+        <button :disabled="isRedoDisabled" class="btn btn-outline-light mr-2"
+            v-b-tooltip.hover 
+            title="redo"
+            @click="control('redo')"
+        >
+            <i class="fa fa-redo"></i>
+        </button>
+
+        <span class="nav-spacer"></span>
+
+        <button :disabled="isPlayDisabled" class="btn btn-outline-light mx-2" 
             v-b-tooltip.hover 
             title="play" 
             @click="control('play')"
@@ -32,12 +50,14 @@
             <i class="fa fa-stop"></i>
         </button>
 
-        <button class="btn btn-outline-light mr-2" 
+        <span class="nav-spacer"></span>
+
+        <button class="btn btn-outline-light mx-2" 
             v-b-tooltip.hover 
             title="clear output" 
             @click="control('clear')"
         >
-            <i class="fas fa-redo"></i>
+            <i class="fas fa-sync"></i>
         </button>
 
         <button class="btn btn-outline-light mr-2" 
@@ -118,6 +138,12 @@ export default {
 
     },
     computed: {
+       isUndoDisabled: function(){
+           return false; // TODO: determine strategy 
+       },
+       isRedoDisabled: function(){
+           return false; // TODO: determine strategy
+       },
      	 isPlayDisabled: function(){
           return this.$store.getters.getExecution == "running";
        },
