@@ -18,37 +18,33 @@
 
         <span class="nav-spacer"></span>
 
+        <span v-b-tooltip title="play" style="display: inline-block;">
         <button :disabled="isPlayDisabled" class="btn btn-outline-light mx-2" 
-            v-b-tooltip.hover 
-            title="play" 
-            @click="control('play')"
-        >
+            @click="control('play')">
             <i class="fas fa-play"></i>
         </button>
+        </span>
 
-        <button :disabled="isPauseDisabled" class="btn btn-outline-light mr-2" 
-            v-b-tooltip.hover 
-            title="pause" 
-            @click="control('pause')"
-        >
+        <span v-b-tooltip title="pause" style="display: inline-block;">
+        <button :disabled="isPauseDisabled" 
+            @click="control('pause')" class="btn btn-outline-light mr-2">
             <i class="fa fa-pause"></i>
         </button>
+        </span>
 
+        <span v-b-tooltip title="step" style="display: inline-block;">
         <button :disabled="isStepDisabled" class="btn btn-outline-light mr-2" 
-            v-b-tooltip.hover 
-            title="step" 
-            @click="control('step')"
-        >
+            @click="control('step')">
             <i class="fa fa-step-forward"></i>
         </button>
+        </span>
 
-		<button :disabled="isStopDisabled" class="btn btn-outline-light mr-2" 
-            v-b-tooltip.hover 
-            title="stop" 
-            @click="control('stop')"
-        >
+        <span v-b-tooltip title="stop" style="display: inline-block;">
+	<button :disabled="isStopDisabled" class="btn btn-outline-light mr-2" 
+            @click="control('stop')">
             <i class="fa fa-stop"></i>
         </button>
+        </span>
 
         <span class="nav-spacer"></span>
 
