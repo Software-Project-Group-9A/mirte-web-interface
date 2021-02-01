@@ -313,7 +313,17 @@
       var blocklyDiv = this.$refs.blocklyDiv;
       this.workspace = Blockly.inject(blocklyDiv,
           {toolbox: this.$refs.toolbox,
-           media: 'blockly-media/' });
+           media: 'blockly-media/',
+zoom: {
+        controls: true,
+        wheel: true,
+        startScale: 0.8,
+        maxScale: 3,
+        minScale: 0.3,
+        scaleSpeed: 1.2
+      },
+           renderer: 'zelos'
+           });
       var onresize = (e) => {
         // Compute the absolute coordinates and dimensions of blocklyArea.
         var element = blocklyArea;
