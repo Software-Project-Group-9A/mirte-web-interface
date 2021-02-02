@@ -100,10 +100,11 @@ export default {
               this.shell_socket.send("stty echo && PS1='\\[\\e]0;\\u@\\h: \\w\\a\\]${debian_chroot:+($debian_chroot)}\\[\\033[01;32m\\]\\u@\\h\\[\\033[00m\\]:\\[\\033[01;34m\\]\\w\\[\\033[00m\\]\\$ ' && clear\n");
               this.term.setOption('disableStdin', false);
            } else {
-              this.term.setOption('theme', { background: '#e2e8e9', foreground: '#000000' });
+              this.term.setOption('theme', { background: '#e2e8e9', foreground: '#e2e8e9', cursor: '#e2e8e9' });
               this.shell_socket.send("stty -echo && PS1='' && clear\n");
               this.shell_socket.send("clear\n");
               this.term.setOption('disableStdin', true);
+              this.term.setOption('theme', { background: '#e2e8e9', foreground: '#000000', cursor: '#e2e8e9' });
            }
         },
         toggleTerminal() {
@@ -119,7 +120,7 @@ export default {
         this.shell_socket = new WebSocket(shell_socketUrl);
 
         // The terminal
-        this.term = new Terminal();
+        this.term = new Terminal({theme: { background: '#e2e8e9', foreground: '#e2e8e9', cursor: '#e2e8e9' }});
         const fitAddon = new FitAddon();
         this.term.loadAddon(new AttachAddon(this.shell_socket));
         this.term.loadAddon(fitAddon);
@@ -129,7 +130,8 @@ export default {
         
         // Load env variables
         this.shell_socket.onopen = (ev) => {
-            this.setTerminal(false);
+            this.shell_socket.send("stty -echo && PS1='' && clear\n");
+            this.shell_socket.send("clear\n");
             this.shell_socket.send("cd /home/zoef/workdir/ && source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && pkill -f zoef_robot.linetrace || /bin/true && python3 -m zoef_robot.linetrace & clear\n");
         };
 
@@ -143,6 +145,7 @@ export default {
         EventBus.$on('control', (payload) => {
             switch(payload){
                 case "play":
+                    this.term.setOption('theme', { background: '#e2e8e9', foreground: '#000000', cursor: '#e2e8e9' });
                     this.playCode()
                     break;
                 case "stop":
