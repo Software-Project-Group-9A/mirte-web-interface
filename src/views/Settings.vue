@@ -1,78 +1,163 @@
 <template>
   <div class="container">
 
-    <h1 class="mb-5">Instellingen</h1>
-
-    <div class="layoutbox rounded">
-      <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-        Waardes
-      </div>
-
-      <div class="layoutbox-content">
-        <div class="row">
-
-          <div class="col-4">
-            <div class="rounded background-green-light p-3">
-              <h5>Apparaat</h5>
-                
-              <div class="rounded background-primary p-2 text-white mb-2">
-                <table>
-                  <tr v-for="[k, v] of Object.entries(params.device)" v-bind:key="k">
-                    <td>
-                      {{k}}
-                    </td>
-                    <td>
-                      {{v}}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="col-4">
-            <div class="rounded background-green-light p-3">
-              <h5>Lichtsensoren</h5>
-                
-              <div class="rounded background-primary p-2 text-white mb-2">
-                <table>
-                <tr v-for="[k, v] of Object.entries(params.motor)" v-bind:key="k">
-                  <td>
-                    {{k}}
-                  </td>
-                  <td>
-                    {{v}}
-                  </td>
-                </tr>
-              </table>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-4">
-            <div class="rounded background-green-light p-3">
-              <h5>Afstandsensoren</h5>
-                
-              <div class="rounded background-primary p-2 text-white mb-2">
-                <table>
-                  <tr v-for="[k, v] of Object.entries(params.encoder)" v-bind:key="k">
-                    <td>
-                      {{k}}
-                    </td>
-                    <td>
-                      {{v}}
-                    </td>
-                  </tr>
-                </table>
-              </div>
-
-            </div>
-          </div>
-          
+    <h1 class="mb-5">Hardware Instellingen</h1>
+    
+      <div class="row">
+        <div class="col-4">
+        <div class="layoutbox rounded">
+        <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+          Board
         </div>
+
+         <div class="row">
+
+
+           <div class="col-6">  
+               <b-form-radio v-model="board" name="board" value="Zoef" selected>Zoef PCB</b-form-radio>
+           </div>
+           <div class="col-6">
+               <b-form-radio v-model="board" name="board" value="Breadboard">Breadboard</b-form-radio>
+           </div>
+<!--
+           <div class="col-4">
+               <b-form-radio v-model="board" name="board" value="LEGO" disabled>LEGO</b-form-radio>
+           </div>
+-->
+
+
+         </div>
+
+        </div>
+        </div>
+
+        <div class="col-4">
+        <div class="layoutbox rounded">
+        <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+            Microcontroller
+                <button @click="stm32" type="button" class="btn btn-danger float-right">
+                  <span v-if="!busy">upload</span>
+                  <i v-else class="fa fa-spin fa-stroopwafel"></i>
+                </button>
+        </div>
+
+
+         <div class="row">
+           <div class="col-6">  
+               <b-form-radio v-model="mcu" name="mcu" value="STM32">STM32</b-form-radio>
+           </div>
+           <div class="col-6">
+               <b-form-radio v-model="mcu" name="mcu" value="Nano" :disabled='this.board=="Zoef"'>Arduino Nano</b-form-radio>
+           </div>
+         </div>
+
+        </div>
+        </div> 
+
+        <div class="col-4">
+        <div class="layoutbox rounded">
+        <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+          Motorcontroller
+        </div>
+
+
+         <div class="row">
+
+
+           <div class="col-6">  
+               <b-form-radio v-model="motorcontroller" name="motorcontroller" value="L9110S">L9110S</b-form-radio>
+           </div>
+           <div class="col-6">
+               <b-form-radio v-model="motorcontroller" name="motorcontroller" value="L298N" :disabled='this.board=="Zoef"'>L298N</b-form-radio>
+           </div>
+         </div>
+
+
+   
+
+        </div>
+        </div> 
       </div>
+   
+
+
+
+ <div class="row">
+        <div class="col-6">
+        <div class="layoutbox rounded mt-5">
+        <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+          Bedrading
+                <button @click="saveConfiguration" type="button" class="btn btn-danger float-right">
+                  <span v-if="!busy">save</span>
+                  <i v-else class="fa fa-spin fa-stroopwafel"></i>
+                </button>
+        </div>
+
+
+  <div>
+    <b-table striped hover :fields="fields" :items="items">
+
+
+    <template #head(type)="data">
+     <div>
+      <b-dropdown id="dropdown-1" text="+" class="m-md-2">
+        <b-dropdown-item @click="addHardware('motor')">Motor</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('encoder')">Wielencoder</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('IR')">Licht-sensor</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('distance')">Afstands-sensor</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('OLED')">OLED scherm</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('servo')">Servo</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('keypad')">Keypad</b-dropdown-item>
+        <b-dropdown-divider></b-dropdown-divider>
+        <b-dropdown-item @click="addHardware('usb_camera')" disabled>USB Camera</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('web_camera')" disabled>Web Camera</b-dropdown-item>
+        <b-dropdown-item @click="addHardware('web_imu')" disabled>Web IMU</b-dropdown-item>
+      </b-dropdown>
     </div>
+     </template>
+
+      <template #cell(type)="data">
+          <button @click="delete_item(data.index)" type="button" class="btn float-left">
+                  <span class="fa fa-trash"> </span>
+          </button>
+          {{ data.item.type }}
+      </template>
+
+      <template #cell(name)="data">
+          <b-form-input v-model="data.item.name" placeholder="variable name"></b-form-input>
+      </template>
+
+      <template #cell(pin)="data">
+         <b-form-select v-model="data.item.pin" :options="pin_options.pcb[data.item.type]"></b-form-select>
+      </template>
+
+      <template #cell(freq)="data">
+          <b-form-input v-model="data.item.freq"></b-form-input>
+      </template>
+
+
+    </b-table>
+  </div>
+
+        </div>
+        </div>
+
+        <div class="col-6">
+        <div class="layoutbox rounded mt-5 h-100">
+        <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
+          Informatie types
+ </div>
+
+
+
+
+
+
+       
+        </div>
+        </div>
+ </div>
+
 
 
     <div class="layoutbox rounded mt-5">
@@ -94,17 +179,6 @@
             </div>
           </div>
 
-          <div class="col-6">
-            <div class="rounded background-green-light p-3">
-              <h5>upload stm32 stuurprogramma</h5>
-              <div class="input-group w-50">
-                <button @click="stm32" type="button" class="btn btn-danger">
-                  <span v-if="!busy">upload</span>
-                  <i v-else class="fa fa-spin fa-stroopwafel"></i>
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -116,33 +190,34 @@
 <script>
 
 import ROSLIB from 'roslib'
+import YAML from 'js-yaml'
 
 export default {
   data: function () {
     return {
+      board: 'Zoef',
+      mcu: 'STM32',
+      motorcontroller: 'L9110S',
+      fields: [
+         { key: 'type', label: 'type', tdClass:'vw-100' },
+         { key: 'name', label: 'Naam', tdClass:'vw-100'},
+         { key: 'pin', label: 'Pin', tdClass:'vw-100'},
+       //  { key: 'freq', label: 'Hz', tdClass:'vw-100'}
+         ],
+      items: [{ type: 'motor', name: '', pin: '', freq: '10' }],
       busy: false,
       password: null,
-
-      // placeholder data
-      params: {
-        motor: {
-          left: {
-            pins: [1,2,3],
-          }
-        },
-        encoder: {
-          left: {
-            pins: [1,2,3],
-          }
-        },
-        device: {
-          left: {
-            virtual: true,
-            device: 'zoef'
-          }
-        }
+      pin_options: {
+         pcb: {
+           motor: ['MA', 'MB'],
+           encoder: ['ENCA', 'ENCB'],
+           IR: ['IR1', 'IR2'],
+           distance: ['SRF1', 'SRF2'],
+           OLED: ['I2C1', 'I2C2'],
+           servo: ['servo1', 'servo2'],
+           keypad: ['keypad']
+         }
       }
-      //params: {}
     }
   },
 
@@ -162,6 +237,33 @@ export default {
           console.log(data)
         });
       }
+    },
+    addHardware(type){
+       this.items.push({ type: type, name: '', pin: '', freq: '' })
+    },
+    saveConfiguration(){
+       var restructured = {devices: [{name: this.board, type: this.board, mcu: this.mcu }]}
+       for (var j in this.items){
+          var i = Object.assign({}, this.items[j]);
+          var type = i['type'];
+          delete i['type'];
+          if (type == 'motor'){
+             i['type'] = this.motorcontroller
+          }
+          if (!restructured.hasOwnProperty(type)){
+             restructured[type] = [];
+          }
+          restructured[type].push(i);
+       }
+       var henk = YAML.load(JSON.stringify(restructured));
+       console.log(YAML.dump(henk));
+       //var test = JSON.stringify(henk, null, 2)
+
+    },
+    delete_item(index){
+       console.log(JSON.stringify(this.items));
+       this.items.splice(index, 1);
+       console.log(JSON.stringify(this.items));
     },
     stm32(){
       if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
@@ -199,6 +301,8 @@ export default {
     params.get((res) => {
       this.params = res
     });
+ 
+    this.items.pop();
 
   }
 }

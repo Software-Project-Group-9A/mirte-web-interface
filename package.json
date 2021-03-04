@@ -9,6 +9,7 @@
     "build_on_pi": "node --max-old-space-size=400 node_modules/@vue/cli-service/bin/vue-cli-service.js build"
   },
   "dependencies": {
+    "js-yaml": "^4.0.0",
     "vue": "^2.6.11",
     "vue-moveable": "^1.8.5",
     "vue-router": "^3.1.5",

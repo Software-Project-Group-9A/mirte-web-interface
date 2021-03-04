@@ -75,6 +75,14 @@ body{
     background-color: white !important;
     color: $primary !important;
 }
+
+.vh-100 {
+    min-height: 100vh;
+}
+
+.vw-100{
+    min-width: 30px;
+}
   
 nav .btn:hover{
     color: $primary;
