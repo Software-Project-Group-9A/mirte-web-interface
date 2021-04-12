@@ -10,7 +10,7 @@
                         <block type="get_intensity"></block>
                         <block type="get_digital_intensity"></block>
                         <block type="get_encoder"></block>
-			<block type="get_pin_value"></block>
+<!--			<block type="get_pin_value"></block> -->
                         <block type="get_keypad"></block>
 <!--			<block type="get_virtual_color"></block>
 			<block type="get_barcode"></block> -->
@@ -148,8 +148,11 @@
                <block type="text"></block>
             </value>
          </block>
+
+
+
 			<!--<block type="move"></block>-->
-         <block type="set_digital_pin_value">
+<!--         <block type="set_digital_pin_value">
                                         <value name="value">
                                                 <block type="logic_boolean">
                                                         <field name="BOOL">0</field>
@@ -164,14 +167,10 @@
                                                         <field name="NUM">0</field>
                                                 </block>
                                         </value>
-         </block>
-         <block type="set_led_value">
-                                        <value name="value">
-                                                <block type="math_number">
-                                                        <field name="NUM">0</field>
-                                                </block>
-                                        </value>
-         </block>
+         </block> -->
+
+
+
 
          <block type="set_oled">
             <value name="value">
@@ -187,6 +186,7 @@
 						</block>
 					</value>
          </block>
+
          <block type="set_servo_angle">
                                         <value name="angle">
                                                 <block type="math_number">
@@ -195,6 +195,14 @@
                                         </value>
          </block>
          
+         <block type="set_led_value">
+                                        <value name="value">
+                                                <block type="math_number">
+                                                        <field name="NUM">0</field>
+                                                </block>
+                                        </value>
+         </block>
+
 
 			<!--<block type="display_text"></block>
 			<block type="turn"></block>
@@ -883,7 +891,9 @@ zoom: {
         init: function() {
           this.appendValueInput("angle")
               .setCheck("Number")
-              .appendField("zet servo op hoek ")
+              .appendField("zet servo ")
+              .appendField(new Blockly.FieldDropdown([['links', 'left'], ['rechts', 'right']]), 'servo')
+              .appendField("op hoek ")
           this.setColour(230);
           this.setTooltip("");
           this.setHelpUrl("");
@@ -896,8 +906,9 @@ zoom: {
       // Blockly generator
       Blockly.Python['set_servo_angle'] = function(block) {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
+        let servo = block.getFieldValue('servo');
         let angle = Blockly.JavaScript.valueToCode(block, 'angle', Blockly.JavaScript.ORDER_ATOMIC);
-        let code = `zoef.setServoAngle(${angle})\n`;
+        let code = `zoef.setServoAngle(${servo}, ${angle})\n`;
         return code;
       };
 
@@ -906,9 +917,9 @@ zoom: {
         init: function() {
           this.appendValueInput("speed")
               .setCheck("Number")
-              .appendField("zet snelheid van de")
-              .appendField(new Blockly.FieldDropdown([['linker', 'left'], ['rechter', 'right']]), 'motor')
-              .appendField("motor op ");
+              .appendField("zet snelheid van motor ")
+              .appendField(new Blockly.FieldDropdown([['links', 'left'], ['rechts', 'right']]), 'motor')
+              .appendField("op ");
           this.setColour(230);
           this.setTooltip("");
           this.setHelpUrl("");
