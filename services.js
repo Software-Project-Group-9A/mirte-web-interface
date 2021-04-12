@@ -27,7 +27,7 @@ function getLocalIP(){
 }
 
 var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
-var zoef_password = fs.readFileSync('/etc/wifi_pwd', 'utf8').trim();
+var zoef_password = fs.readFileSync('/home/zoef/.wifi_pwd', 'utf8').trim();
 
 app.use(bodyParser.json())
 app.use(cookieSession({
@@ -211,7 +211,7 @@ app.post('/api/passwd', (req, res) => {
   var pass = req.body
 
   const fs = require('fs');
-  fs.writeFile("/etc/wifi_pwd", pass, (err) => {
+  fs.writeFile("/home/zoef/.wifi_pwd", pass, (err) => {
       if(err) {
           console.log(err);
           res.end("something went wrong changing the password");
