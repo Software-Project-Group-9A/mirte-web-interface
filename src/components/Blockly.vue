@@ -908,7 +908,7 @@ zoom: {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let servo = block.getFieldValue('servo');
         let angle = Blockly.JavaScript.valueToCode(block, 'angle', Blockly.JavaScript.ORDER_ATOMIC);
-        let code = `zoef.setServoAngle(${servo}, ${angle})\n`;
+        let code = `zoef.setServoAngle('${servo}', ${angle})\n`;
         return code;
       };
 
