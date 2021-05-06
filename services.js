@@ -191,6 +191,12 @@ app.get('/api/stm32', (req, res) => {
   res.end(stdout);
 })
 
+// shutdown
+app.get('/api/shutdown', (req, res) => {
+  res.end("done");   // TODO: sutdown could fail?
+  const exec = require('child_process').execSync;
+  const stdout = exec('sudo shutdown now');
+})
 
 // catch python files from the web interface and save them
 app.post('/api/python', (req, res) => {
