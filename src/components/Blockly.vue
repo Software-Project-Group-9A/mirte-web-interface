@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <div id="blocklyArea" ref="blocklyArea" class="blocklyArea">
-      <div id="blocklyDiv" ref="blocklyDiv" style="height: 480px; width: 600px;"></div>
+  <div style="height: 100%; background: red;" >
+    
+    <div id="blocklyArea" ref="blocklyArea" style="height: 100%; background: green;">
+      <div id="blocklyDiv" ref="blocklyDiv" style="height: 100%; background: yellow;" ></div>  
+    <!--  <div style="height:100%; background: yellow;"/> -->
     </div>
 
     <xml id="toolbox" ref="toolbox" style="display: none">
@@ -323,7 +325,7 @@
       this.workspace = Blockly.inject(blocklyDiv,
           {toolbox: this.$refs.toolbox,
            media: 'blockly-media/',
-zoom: {
+        zoom: {
         controls: true,
         wheel: true,
         startScale: 0.8,

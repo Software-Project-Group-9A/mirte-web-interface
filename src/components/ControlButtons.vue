@@ -48,24 +48,6 @@
 
         <span class="nav-spacer"></span>
 
-        <button class="btn btn-outline-light mx-2" 
-            v-b-tooltip.hover 
-            title="clear output" 
-            @click="control('clear')"
-        >
-            <i class="fas fa-sync"></i>
-        </button>
-
-        <button class="btn btn-outline-light mr-2" 
-            v-b-tooltip.hover 
-            title="toggle output/terminal" 
-            @click="control('terminal')"
-        >
-            <i class="fa fa-terminal"></i>
-        </button>
-
-        <span class="nav-spacer"></span>
-
         <button href="#" class="btn btn-outline-light mx-2" 
             v-b-tooltip.hover 
             title="download" 

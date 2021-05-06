@@ -1,11 +1,18 @@
 <template>
-  <div id="app" v-hotkey="keymap">
-      <Navbar />
-      <div class="content">
+  <div id="app" v-hotkey="keymap" class=" " style=" display: flex; flex-flow: column; height: 100vh;" >
+
+     <div class="m-2" >
+       <Navbar/>
+     </div>
+
+    <div class="bg-white flex-grow-1" style="overflow: hidden;">
          <keep-alive>
            <router-view />
          </keep-alive>
-      </div>
+     </div> 
+
+
+ 
       <b-modal v-model="loginModalShow" no-close-on-esc no-close-on-backdrop hide-header-close centered title="Login" :body-text-variant="textVariant" :header-text-variant="textVariant">
       <div class="mt-3">
          <form @submit.prevent="handleSubmit">
