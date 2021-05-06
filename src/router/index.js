@@ -1,10 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Advanced from '../views/Advanced.vue'
+import Programming from '../views/Programming.vue'
 import Settings from '../views/Settings.vue'
-import Network from '../views/Network.vue'
-import Sensors from '../views/Sensors.vue'
+import Control from '../views/Control.vue'
 import Tutorials from '../views/Tutorials.vue'
 
 Vue.use(VueRouter)
@@ -12,13 +11,8 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Control panel',
-    component: Advanced
-  },
-  {
-    path: '/Network',
-    name: 'Network',
-    component: Network
+    name: 'Programming',
+    component: Programming
   },
   {
     path: '/Settings',
@@ -26,9 +20,9 @@ const routes = [
     component: Settings
   },
   {
-    path: '/Sensors',
-    name: 'Sensors',
-    component: Sensors
+    path: '/Control',
+    name: 'Control',
+    component: Control
   },
   {
     path: '/Tutorials',

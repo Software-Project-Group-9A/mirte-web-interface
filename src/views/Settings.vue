@@ -75,6 +75,9 @@
     </div>
 
 
+    <Network/>
+
+
     <div class="layoutbox rounded mt-5">
       <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
         Geavanceerde instellingen
@@ -116,8 +119,13 @@
 <script>
 
 import ROSLIB from 'roslib'
+import Network from '@/components/Network.vue'
+
 
 export default {
+  components: {
+    Network
+  },
   data: function () {
     return {
       busy: false,

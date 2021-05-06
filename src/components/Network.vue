@@ -2,7 +2,6 @@
 	<div>
     	<div class="container">
 
-			<h1 class="mb-5">Netwerk</h1>
 
 			<div class="layoutbox rounded">
 				<div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
