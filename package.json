@@ -6,10 +6,9 @@
     "interface": "vue-cli-service serve --port 4000",
     "shell": "node services.js",
     "build": "vue-cli-service build",
-    "build_on_pi": "node --max-old-space-size=400 node_modules/@vue/cli-service/bin/vue-cli-service.js build"
+    "build_on_pi": "node --max-old-space-size=350 node_modules/@vue/cli-service/bin/vue-cli-service.js build"
   },
   "dependencies": {
-    "js-yaml": "^4.0.0",
     "vue": "^2.6.11",
     "vue-moveable": "^1.8.5",
     "vue-router": "^3.1.5",
@@ -38,13 +37,12 @@
     "hotkeys-js": "^3.8.1",
     "http-proxy-middleware": "^1.0.4",
     "jquery": "^3.4.1",
+    "js-yaml": "^4.0.0",
     "net": "^1.0.2",
     "node-pty": "^0.9.0",
     "node-sass": "^4.12.0",
-    "popper.js": "^1.16.1",
     "roslib": "^1.1.0",
     "sass-loader": "^8.0.2",
-    "vue-codemirror": "^4.0.6",
     "vue-template-compiler": "^2.6.11",
     "ws": "^7.2.3",
     "xterm": "^4.4.0",
