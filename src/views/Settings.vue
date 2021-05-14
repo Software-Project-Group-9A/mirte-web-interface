@@ -91,6 +91,10 @@
                   <span v-if="!busy">save</span>
                   <i v-else class="fa fa-spin fa-stroopwafel"></i>
                 </button>
+                <button @click="createPeripheral('FOOBAR')" type="button" class="btn btn-danger float-right">
+                  <span v-if="!busy">test</span>
+                  <i v-else class="fa fa-spin fa-stroopwafel"></i>
+                </button>
         </div>
 
 
