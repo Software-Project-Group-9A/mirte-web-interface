@@ -97,24 +97,13 @@
   <div>
     <b-table striped hover :fields="fields" :items="items">
 
-
-    <template #head(type)="data">
-     <div>
-      <b-dropdown id="dropdown-1" text="+" class="m-md-2">
-        <b-dropdown-item @click="addHardware('motor')">Motor</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('encoder')">Wielencoder</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('IR')">Licht-sensor</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('distance')">Afstands-sensor</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('OLED')">OLED scherm</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('servo')">Servo</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('keypad')">Keypad</b-dropdown-item>
-        <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item @click="addHardware('usb_camera')" disabled>USB Camera</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('web_camera')" disabled>Web Camera</b-dropdown-item>
-        <b-dropdown-item @click="addHardware('web_imu')" disabled>Web IMU</b-dropdown-item>
-      </b-dropdown>
-    </div>
-     </template>
+      <template #head(type)="data">
+        <div>
+          <b-dropdown id="dropdown-1" text="add" class="m-md-2">
+            <b-dropdown-item v-for="i in peripherals" ref="i.a" @click="addHardware(i.a)">{{ i.a }}</b-dropdown-item>
+          </b-dropdown>
+        </div>
+      </template>
 
       <template #cell(type)="data">
           <button @click="delete_item(data.index)" type="button" class="btn float-left">
@@ -148,12 +137,6 @@
           Informatie types
  </div>
 
-
-
-
-
-
-       
         </div>
         </div>
  </div>
@@ -203,7 +186,16 @@ export default {
          { key: 'name', label: 'Naam', tdClass:'vw-100'},
          { key: 'pin', label: 'Pin', tdClass:'vw-100'},
        //  { key: 'freq', label: 'Hz', tdClass:'vw-100'}
-         ],
+      ],
+      peripherals: [
+        { a: 'motor' },
+        { a: 'encoder' },
+        { a: 'IR' },
+        { a: 'distance' },
+        { a: 'OLED' },
+        { a: 'servo' },
+        { a: 'keypad' }
+      ],
       items: [{ type: 'motor', name: '', pin: '', freq: '10' }],
       busy: false,
       password: null,
@@ -222,7 +214,7 @@ export default {
   },
 
   methods:{
-    setPassword(){
+      setPassword(){
       if (confirm('Weet je zeker dat je het wachtwoord wilt veranderen?')) {
         fetch(`http://${location.hostname}:3000/api/passwd`, {
           method: 'POST',
