@@ -47,7 +47,7 @@
               <b-form-radio v-model="mcu" name="mcu" value="STM32">STM32</b-form-radio>
             </div>
             <div class="col-6">
-              <b-form-radio v-model="mcu" name="mcu" value="Nano" :disabled='this.board=="Zoef"'>Arduino Nano
+              <b-form-radio v-model="mcu" name="mcu" value="Nano" :disabled='this.board==="Zoef"'>Arduino Nano
               </b-form-radio>
             </div>
           </div>
@@ -55,29 +55,6 @@
         </div>
       </div>
 
-      <div class="col-4">
-        <div class="layoutbox rounded">
-          <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-            Motorcontroller
-          </div>
-
-
-          <div class="row">
-
-
-            <div class="col-6">
-              <b-form-radio v-model="motorcontroller" name="motorcontroller" value="L9110S">L9110S</b-form-radio>
-            </div>
-            <div class="col-6">
-              <b-form-radio v-model="motorcontroller" name="motorcontroller" value="L298N"
-                            :disabled='this.board=="Zoef"'>L298N
-              </b-form-radio>
-            </div>
-          </div>
-
-
-        </div>
-      </div>
     </div>
 
 
@@ -99,8 +76,8 @@
               <template #head(type)="data">
                 <div>
                   <b-dropdown id="dropdown-1" text="add" class="m-md-2">
-                    <b-dropdown-item v-for="i in peripherals" ref="i.a" @click="addHardware(i.name)">{{
-                        i.name
+                    <b-dropdown-item v-for="i in Object.keys(peripherals)" ref="i" @click="addHardware(i)">{{
+                        peripherals[i].name
                       }}
                     </b-dropdown-item>
                   </b-dropdown>
@@ -118,16 +95,19 @@
                 <b-form-input v-model="data.item.name" placeholder="variable name"></b-form-input>
               </template>
 
-              <template #cell(pin)="data">
-                <b-form-select v-model="data.item.pin" :options="pin_options.pcb[data.item.type]"></b-form-select>
-              </template>
+              <template #cell(pins)="data">
 
-              <template #cell(freq)="data">
-                <b-form-input v-model="data.item.freq"></b-form-input>
-              </template>
+                <b-form-select v-for="p in Object.keys(peripherals[data.item.type].pins)" v-model="data.item[p]"
+                               :options="getValidPinBinds(data.item.type, p)">
+                  <template #first>
+                    <b-form-select-option :value="null" disabled>{{ p }}</b-form-select-option>
+                  </template>
+                </b-form-select>
 
+              </template>
 
             </b-table>
+
           </div>
 
         </div>
@@ -175,37 +155,27 @@
 
 import ROSLIB from 'roslib'
 import YAML from 'js-yaml'
-import properties
-  from "C:\\Users\\Nathan\\Documents\\Projects\\key2soft\\zoef_repo\\web_interface\\src\\properties.json"
+import properties_ph
+  from "C:\\Users\\Nathan\\Documents\\Projects\\key2soft\\zoef_repo\\web_interface\\src\\properties_ph.json"
+import properties_mc
+  from "C:\\Users\\Nathan\\Documents\\Projects\\key2soft\\zoef_repo\\web_interface\\src\\properties_mc.json"
 
 export default {
 
   data: function () {
-    return  {
+    return {
+      peripherals: properties_ph,
+      microcontrollers: properties_mc,
       board: 'Zoef',
-      mcu: 'STM32',
-      motorcontroller: 'L9110S',
+      mcu: "arduino-nano",
       fields: [
-         { key: 'type', label: 'type', tdClass:'vw-100' },
-         { key: 'name', label: 'Naam', tdClass:'vw-100'},
-         { key: 'pin', label: 'Pin', tdClass:'vw-100'},
-       //  { key: 'freq', label: 'Hz', tdClass:'vw-100'}
+        {key: 'type', label: 'type'},
+        {key: 'name', label: 'Naam'},
+        {key: 'pins', label: 'Pins'}
       ],
-      peripherals: properties,
-      items: [{ type: 'motor', name: '', pin: '', freq: '10' }],
+      items: [],
       busy: false,
-      password: null,
-      pin_options: {
-         pcb: {
-           motor: ['MA', 'MB'],
-           encoder: ['ENCA', 'ENCB'],
-           IR: ['IR1', 'IR2'],
-           distance: ['SRF1', 'SRF2'],
-           OLED: ['I2C1', 'I2C2'],
-           servo: ['servo1', 'servo2'],
-           keypad: ['keypad']
-         }
-      }
+      password: null
     }
   },
 
@@ -227,31 +197,50 @@ export default {
       }
     },
     addHardware(type) {
-      this.items.push({type: type, name: '', pin: '', freq: ''})
+      const binds = {...this.peripherals[type].pins}
+      Object.keys(binds).forEach(function (key) {
+        binds[key] = null
+      })
+      this.items.push(Object.assign({
+            type: type,
+            name: ''
+          },
+          binds
+      ))
+    },
+    getValidPinBinds(type, pin) {
+      let pinMap = Object.entries({...this.microcontrollers[this.mcu].pin_map})
+      if (this.peripherals[type].pins[pin] === "analogue") {
+        pinMap = pinMap.filter(([_, value]) => value >= this.microcontrollers[this.mcu].analog_offset)
+      }
+      const options = []
+      for (let p of pinMap) options.push({ value: p[1], text: p[0] })
+      return options
     },
     saveConfiguration() {
-      var restructured = {devices: [{name: this.board, type: this.board, mcu: this.mcu}]}
-      for (var j in this.items) {
-        var i = Object.assign({}, this.items[j]);
-        var type = i['type'];
+      console.log(this.peripherals)
+      console.log(Object.keys(this.peripherals))
+      const restructured = {devices: [{name: this.board, type: this.board, mcu: this.mcu}]};
+      for (const j in this.items) {
+        const i = Object.assign({}, this.items[j]);
+        const type = i['type'];
         delete i['type'];
-        if (type == 'motor') {
-          i['type'] = this.motorcontroller
-        }
+        // if (type == 'motor') {
+        //   i['type'] = this.motorcontroller
+        // }
+        i['type'] = "L9110S"
         if (!restructured.hasOwnProperty(type)) {
           restructured[type] = [];
         }
         restructured[type].push(i);
       }
-      var henk = YAML.load(JSON.stringify(restructured));
+      const henk = YAML.load(JSON.stringify(restructured));
       console.log(YAML.dump(henk));
       //var test = JSON.stringify(henk, null, 2)
 
     },
     delete_item(index) {
-      console.log(JSON.stringify(this.items));
       this.items.splice(index, 1);
-      console.log(JSON.stringify(this.items));
     },
     stm32() {
       if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
