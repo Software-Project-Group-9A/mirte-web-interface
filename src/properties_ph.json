@@ -29,17 +29,5 @@
       "trig": "digital"
     },
     "rel_path": "Sensors\\IR_sensor\\OSOYOO_IR\\OSOYOO_IR.py"
-  },
-  "FOOBAR": {
-    "name": "FOOBAR",
-    "pins": {
-      "echo": "digital",
-      "a": "digital",
-      "v": "digital",
-      "c": "digital",
-      "s": "digital",
-      "d": "digital"
-    },
-    "rel_path": "Sensors\\IR_sensor\\OSOYOO_IR\\OSOYOO_IR.py"
   }
 }

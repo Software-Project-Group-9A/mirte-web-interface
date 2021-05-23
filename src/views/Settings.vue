@@ -4,35 +4,31 @@
     <h1 class="mb-5">Hardware Instellingen</h1>
 
     <div class="row">
-      <div class="col-4">
+      <div class="col-6">
         <div class="layoutbox rounded">
+
           <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
             Board
           </div>
 
           <div class="row">
-
-
             <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="Zoef" selected>Zoef PCB</b-form-radio>
+              <b-form-radio v-model="board" name="board" value="Breadboard" selected>Breadboard</b-form-radio>
             </div>
             <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="Breadboard">Breadboard</b-form-radio>
+              <b-form-radio v-model="board" name="board" value="Zoef" disabled>Zoef PCB</b-form-radio>
             </div>
-            <!--
-                       <div class="col-4">
-                           <b-form-radio v-model="board" name="board" value="LEGO" disabled>LEGO</b-form-radio>
-                       </div>
-            -->
-
-
+            <!--            <div class="col-4">-->
+            <!--              <b-form-radio v-model="board" name="board" value="LEGO" disabled>LEGO</b-form-radio>-->
+            <!--            </div>-->
           </div>
 
         </div>
       </div>
 
-      <div class="col-4">
+      <div class="col-6">
         <div class="layoutbox rounded">
+
           <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
             Microcontroller
             <button @click="stm32" type="button" class="btn btn-danger float-right">
@@ -44,10 +40,13 @@
 
           <div class="row">
             <div class="col-6">
-              <b-form-radio v-model="mcu" name="mcu" value="STM32">STM32</b-form-radio>
+              <b-form-radio v-model="mcu" value="stm32" data-label="STM32">
+                STM32
+              </b-form-radio>
             </div>
             <div class="col-6">
-              <b-form-radio v-model="mcu" name="mcu" value="Nano" :disabled='this.board==="Zoef"'>Arduino Nano
+              <b-form-radio v-model="mcu" value="arduino-nano" data-label="Nano">
+                Arduino Nano
               </b-form-radio>
             </div>
           </div>
@@ -221,21 +220,26 @@ export default {
       return options
     },
     saveConfiguration() {
-      const restructured = {
+      const yaml = {
         name: 'Zoef',
         type: this.board,
         mcu: this.mcu,
         peripherals: []
       }
-      for (const p of this.items) {
-        console.log(p)
-        var a = {
-          super: "Actuator",
-          abstract: "MotorController"
+      for (const item of this.items) {
+        const peripheral = {
+          [item.type]: {
+            super: this.peripherals[item.type].rel_path.split("\\")[0],
+            abstract: this.peripherals[item.type].rel_path.split("\\")[1],
+            pinBinds: []
+          }
         }
-        restructured["peripherals"].push(p)
+        for (let key in this.peripherals[item.type].pins) {
+          peripheral[item.type].pinBinds.push({[key]: item[key]})
+        }
+        yaml["peripherals"].push(peripheral)
       }
-      const henk = YAML.load(JSON.stringify(restructured))
+      const henk = YAML.load(JSON.stringify(yaml))
       console.log(YAML.dump(henk))
     },
     stm32() {
