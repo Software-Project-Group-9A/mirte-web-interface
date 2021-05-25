@@ -13,7 +13,7 @@
 
           <div class="row">
             <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="Breadboard" selected>Breadboard</b-form-radio>
+              <b-form-radio v-model="board" name="board" value="Breadboard">Breadboard</b-form-radio>
             </div>
             <div class="col-6">
               <b-form-radio v-model="board" name="board" value="Zoef" disabled>Zoef PCB</b-form-radio>
@@ -155,9 +155,9 @@
 import ROSLIB from 'roslib'
 import YAML from 'js-yaml'
 import properties_ph
-  from "C:\\Users\\Nathan\\Documents\\Projects\\key2soft\\zoef_repo\\web_interface\\src\\properties_ph.json"
+  from "../assets/json/properties_ph.json"
 import properties_mc
-  from "C:\\Users\\Nathan\\Documents\\Projects\\key2soft\\zoef_repo\\web_interface\\src\\properties_mc.json"
+  from "../assets/json/properties_mc.json"
 
 export default {
 
@@ -165,7 +165,7 @@ export default {
     return {
       peripherals: properties_ph,
       microcontrollers: properties_mc,
-      board: 'Zoef',
+      board: 'Breadboard',
       mcu: "arduino-nano",
       fields: [
         {key: 'type', label: 'type'},
@@ -223,21 +223,23 @@ export default {
       const yaml = {
         name: 'Zoef',
         type: this.board,
-        mcu: this.mcu,
-        peripherals: []
+        mcu: {
+          type: this.mcu,
+          max_pwm_value: this.microcontrollers[this.mcu].max_pwm_value,
+          analog_offset: this.microcontrollers[this.mcu].analog_offset
+        },
+        peripherals: {}
       }
       for (const item of this.items) {
-        const peripheral = {
-          [item.type]: {
-            super: this.peripherals[item.type].rel_path.split("\\")[0],
-            abstract: this.peripherals[item.type].rel_path.split("\\")[1],
-            pinBinds: []
-          }
+        yaml.peripherals[item.name] = {
+          super: this.peripherals[item.type].rel_path.split("\\")[0],
+          abstract: this.peripherals[item.type].rel_path.split("\\")[1],
+          type: item.type,
+          pinBinds: []
         }
         for (let key in this.peripherals[item.type].pins) {
-          peripheral[item.type].pinBinds.push({[key]: item[key]})
+          yaml["peripherals"][item.name].pinBinds.push({[key]: item[key]})
         }
-        yaml["peripherals"].push(peripheral)
       }
       const henk = YAML.load(JSON.stringify(yaml))
       console.log(YAML.dump(henk))
