@@ -169,8 +169,6 @@ export default {
 }
 </script>
 
-</script>
-
 <style lang="scss">
 $fa-font-path: "../node_modules/@fortawesome/fontawesome-free";
 
