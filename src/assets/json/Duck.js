@@ -1,6 +1,4 @@
-import Blockly from "blockly";
-
-export function init (Blockly) {
+export function load(Blockly) {
     Blockly.Blocks['quack'] = {
         init: function () {
             this.appendValueInput("wait")

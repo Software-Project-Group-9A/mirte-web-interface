@@ -266,8 +266,11 @@ export default {
         this.setColour(rgb_color)
       }
     },
-    LoadBlockly: function() {
-
+    ReloadLocalWorkspace: function () {
+    const storage = localStorage.getItem("blockly")
+    if (storage !== null) {
+      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(storage), this.workspace)
+    }
     }
   },
 
@@ -287,25 +290,32 @@ export default {
 
   mounted: function () {
 
-    // Set default language
+    for (let PBM of Object.keys(this.blocks)) {
+      import(`../assets/json/${PBM}.js`)
+          .then(blk => blk.load(Blockly))
+          .catch(err => console.log(err))
+    }
+
+
+    // Set default languages
     Blockly.setLocale(NL)
 
     //workspace init
     const blocklyArea = this.$refs.blocklyArea
     const blocklyDiv = this.$refs.blocklyDiv
     this.workspace = Blockly.inject(blocklyDiv, {
-          toolbox: this.$refs.toolbox,
-          media: 'blockly-media/',
-          zoom: {
-            controls: true,
-            wheel: true,
-            startScale: 0.8,
-            maxScale: 3,
-            minScale: 0.3,
-            scaleSpeed: 1.2
-          },
-          renderer: 'zelos'
-        })
+      toolbox: this.$refs.toolbox,
+      media: 'blockly-media/',
+      zoom: {
+        controls: true,
+        wheel: true,
+        startScale: 0.8,
+        maxScale: 3,
+        minScale: 0.3,
+        scaleSpeed: 1.2
+      },
+      renderer: 'zelos'
+    })
 
     //workspace configuration
     this.workspace.toolbox_.flyout_.autoClose = false
@@ -364,12 +374,6 @@ export default {
           break
       }
     })
-
-    // Workspace cache restore
-    const storage = localStorage.getItem("blockly")
-    if (storage !== null) {
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(storage), this.workspace)
-    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //                                 Block definitions                                  //
@@ -489,6 +493,9 @@ export default {
       }
       return [code, Blockly.Python.ORDER_NONE];
     };
+
+    //Reload stored workspace, will not work with PBM currently
+    //this.ReloadLocalWorkspace();
 
     // Set block colors
     // for (let blockId in predefined_blocks.flow) {
