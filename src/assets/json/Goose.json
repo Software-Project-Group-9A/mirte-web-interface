@@ -1,0 +1,55 @@
+{
+  "Goose": {
+    "name": "Guus",
+    "blocks": {
+      "quack": {
+        "format": [
+          {
+            "type": "ValueInput",
+            "id": "wait",
+            "check": "Number",
+            "field": "wacht "
+          },
+          {
+            "type": "Dummy",
+            "field": "wacht "
+          }
+        ],
+        "output": {
+          "enabled": true,
+          "opt_check": null
+        },
+        "previous_statement": {
+          "enabled": true,
+          "opt_check": null
+        },
+        "next_statement": {
+          "enabled": true,
+          "opt_check": null
+        },
+        "tooltip": "",
+        "help_url": "",
+        "colour": null,
+        "code": "zoef.setMotorSpeed('${motor}', ${speed})\n"
+      },
+      "waddle": {
+        "message0": "set %1 to %2",
+        "args0": [
+          {
+            "type": "field_variable",
+            "name": "VAR",
+            "variable": "item",
+            "variableTypes": [
+              ""
+            ]
+          },
+          {
+            "type": "input_value",
+            "name": "VALUE"
+          }
+        ]
+      }
+    },
+    "blockly_module_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.py"
+  }
+}

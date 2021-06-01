@@ -1,0 +1,18 @@
+{
+  "Duck": {
+    "name": "Duck",
+    "functions": {
+      "quack": "info?",
+      "waddle": "info?"
+    },
+    "blockly_module_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.py"
+  },
+  "cat_agent": {
+    "name": "Cute Kitten",
+    "functions": {
+      "Meow": "info?",
+      "Infiltrate": "info?"
+    },
+    "blockly_module_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.py"
+  }
+}
