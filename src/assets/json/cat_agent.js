@@ -18,7 +18,6 @@ export function load (Blockly) {
       Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
       let pin = block.getFieldValue('pin');
       let value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-      console.log(value)
       let code = `zoef.setDigitalPinValue('${pin}', ${value})\n`;
       return code;
     };

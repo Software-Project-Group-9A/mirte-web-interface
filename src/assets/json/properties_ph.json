@@ -1,33 +1,45 @@
 {
   "Inductor_motor": {
-    "name": "Inductor Motor",
     "pins": {
       "forward": "analogue",
       "backward": "analogue"
     },
-    "rel_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.py"
+    "functions": {
+      "quack": "info?",
+      "waddle": "info?"
+    },
+    "block_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.js"
   },
   "Qunqi": {
-    "name": "Qunqi",
     "pins": {
       "drive": "pwm"
     },
-    "rel_path": "Actuators\\Motor_Controller\\Qunqi\\Qunqi.py"
+    "functions": {
+      "quack": "info?",
+      "waddle": "info?"
+    },
+    "block_path": "Actuators\\Motor_Controller\\Qunqi\\Qunqi.js"
   },
   "HiLetgo_IR": {
-    "name": "HiLetgo IR",
     "pins": {
       "echo": "digital",
       "trig": "digital"
     },
-    "rel_path": "Sensors\\IR_sensor\\HiLetgo_IR\\HiLetgo_IR.py"
+    "functions": {
+      "quack": "info?",
+      "waddle": "info?"
+    },
+    "block_path": "Sensors\\IR_sensor\\HiLetgo_IR\\HiLetgo_IR.js"
   },
   "OSOYOO_IR": {
-    "name": "OSOYOO IR",
     "pins": {
       "echo": "digital",
       "trig": "digital"
     },
-    "rel_path": "Sensors\\IR_sensor\\OSOYOO_IR\\OSOYOO_IR.py"
+    "functions": {
+      "quack": "info?",
+      "waddle": "info?"
+    },
+    "block_path": "Sensors\\IR_sensor\\OSOYOO_IR\\OSOYOO_IR.js"
   }
 }

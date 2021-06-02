@@ -160,7 +160,7 @@ import Blockly from 'blockly'
 import 'blockly/python'
 import EventBus from '../event-bus'
 import * as NL from 'blockly/msg/nl'
-import properties_bl from "../assets/json/properties_bl.json"
+import properties_bl from "../assets/json/properties_ph.json"
 
 // const predefined_blocks = {
 //   "flow" : [
@@ -219,6 +219,7 @@ Blockly.Msg.MODULES_RGB = "#5b8c5a"
 export default {
   data: () => ({
     blocks: properties_bl,
+    peripheralConfig: JSON.parse(localStorage.getItem("peripheralConfig")),
     workspace: Object,
     prefix: ""
   }),
@@ -268,9 +269,9 @@ export default {
     },
     ReloadLocalWorkspace: function () {
     const storage = localStorage.getItem("blockly")
-    if (storage !== null) {
-      Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(storage), this.workspace)
-    }
+      if (storage !== null) {
+        Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(storage), this.workspace)
+      }
     }
   },
 
@@ -285,17 +286,20 @@ export default {
       this.workspace.clear()
       Blockly.Xml.domToWorkspace(xml, this.workspace)
       localStorage.setItem("blockly", newVal)
-    },
+    }
   },
 
-  mounted: function () {
+  created() {
+
+  },
+
+  mounted() {
 
     for (let PBM of Object.keys(this.blocks)) {
       import(`../assets/json/${PBM}.js`)
           .then(blk => blk.load(Blockly))
           .catch(err => console.log(err))
     }
-
 
     // Set default languages
     Blockly.setLocale(NL)

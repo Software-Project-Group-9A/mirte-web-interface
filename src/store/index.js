@@ -1,66 +1,64 @@
 export default {
 
-	state: {
-           code: "",
-           tutorial: null,
-           blockly: "",
-           linenumber: 0,
-           execution: "stopped", //TODO: enum?
-           user: "none" // TODO: at the moment it can not be empty on start
-	},
+    state: {
+        code: "",
+        tutorial: null,
+        blockly: "",
+        linenumber: 0,
+        execution: "stopped",   // TODO: enum?
+        user: "none"           // TODO: at the moment it can not be empty on start
+    },
 
-	getters: {
-        getCode(state){ 
+    getters: {
+        getCode(state) {
             return state.code
         },
 
-        getTutorial(state){ 
+        getTutorial(state) {
             return state.tutorial
         },
 
-        getBlockly(state){ 
+        getBlockly(state) {
             return state.blockly
         },
 
-        getLinenumber(state){ 
+        getLinenumber(state) {
             return state.linenumber
         },
 
-        getExecution(state){
+        getExecution(state) {
             return state.execution
         },
 
-        getUser(state){
+        getUser(state) {
             return state.user
-        },
-
+        }
     },
 
-	actions: {
-        setCode({commit, getters}, code){
+    actions: {
+        setCode({commit, getters}, code) {
             commit('code', code)
         },
 
-        setTutorial({commit, getters}, tutorial){
+        setTutorial({commit, getters}, tutorial) {
             commit('tutorial', tutorial)
         },
 
-        setBlockly({commit, getters}, blockly){
+        setBlockly({commit, getters}, blockly) {
             commit('blockly', blockly)
         },
-        setLinenumber({commit, getters}, linenumber){
+        setLinenumber({commit, getters}, linenumber) {
             commit('linenumber', linenumber)
         },
-        setExecution({commit, getters}, execution){
+        setExecution({commit, getters}, execution) {
             commit('execution', execution)
         },
-        setUser({commit, getters}, user){
+        setUser({commit, getters}, user) {
             commit('user', user)
-        },
-
+        }
     },
 
-	mutations: {
+    mutations: {
         code(state, code) {
             return state.code = code
         },
@@ -83,7 +81,6 @@ export default {
 
         user(state, user) {
             return state.user = user
-        },
-
-	}
+        }
+    }
 }

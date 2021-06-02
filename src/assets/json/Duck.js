@@ -39,7 +39,7 @@ export function load(Blockly) {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
         let motor = block.getFieldValue('motor');
         let speed = Blockly.JavaScript.valueToCode(block, 'speed', Blockly.JavaScript.ORDER_ATOMIC);
-        let code = `zoef.setMotorSpeed('${motor}', ${speed})\n`;
+        let code = `zoef['${motor}'].setMotorSpeed(${speed})\n`;
         return code;
     };
 }
