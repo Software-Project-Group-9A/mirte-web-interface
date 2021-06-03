@@ -179,7 +179,7 @@ export default {
         {key: 'name', label: 'Naam'},
         {key: 'pins', label: 'Pins'}
       ],
-      items: [],
+      items: this.$store.getters.getPConfig,
       busy: false,
       password: null
     }
@@ -194,7 +194,9 @@ export default {
       })
       this.items.push(Object.assign({
             type: type,
-            name: ''
+            name: '',
+            block_path: this.peripherals[type].block_path,
+            functions: this.peripherals[type].functions
           },
           binds
       ))
@@ -239,20 +241,9 @@ export default {
       console.log(YAML.dump(YAML.load(JSON.stringify(yaml))))
       return YAML.load(JSON.stringify(yaml))
     },
-    // Load PConfig (Peripheral Configuration) from local storage
-    loadPConfig() {
-      let PConfig = JSON.parse(localStorage.getItem("PConfig"))
-      if (PConfig !== null) this.items = PConfig
-      console.log(localStorage.getItem("PConfig"))
-    },
-    // And Save current peripheral configuration to local memory, so it can persists between sessions.
-    savePConfig() {
-      localStorage.setItem("PConfig", JSON.stringify(this.items))
-      console.log(localStorage.getItem("PConfig"))
-    },
     // Requests from the server to update the ROS params with the generated YAML file of the configured Peripherals
     uploadYAML() {
-      if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
+      if (confirm('Weet je zeker dat je de hardware instellingen wilt updaten?')) {
         this.busy = true
         // fetch(`http://${location.hostname}:3000/api/settings`, {
         //   method: 'POST',
@@ -271,7 +262,7 @@ export default {
         //       }
         //
         //     })
-        this.savePConfig()
+        this.$store.commit("updatePConfig", this.items)
         this.busy = false
       }
     },
@@ -313,10 +304,8 @@ export default {
     }
   },
 
-  // On mount (page open) only thing to do is reading PConfig (see method loadPConfig() )
   mounted() {
-    this.loadPConfig()
-
+    console.log(this.items)
     // const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
     // const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
     //

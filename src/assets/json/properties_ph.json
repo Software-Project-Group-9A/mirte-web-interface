@@ -4,20 +4,14 @@
       "forward": "analogue",
       "backward": "analogue"
     },
-    "functions": {
-      "quack": "info?",
-      "waddle": "info?"
-    },
+    "functions": ["Woof", "Drive"],
     "block_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.js"
   },
   "Qunqi": {
     "pins": {
       "drive": "pwm"
     },
-    "functions": {
-      "quack": "info?",
-      "waddle": "info?"
-    },
+    "functions": ["Meow"],
     "block_path": "Actuators\\Motor_Controller\\Qunqi\\Qunqi.js"
   },
   "HiLetgo_IR": {
@@ -25,10 +19,7 @@
       "echo": "digital",
       "trig": "digital"
     },
-    "functions": {
-      "quack": "info?",
-      "waddle": "info?"
-    },
+    "functions": ["dab"],
     "block_path": "Sensors\\IR_sensor\\HiLetgo_IR\\HiLetgo_IR.js"
   },
   "OSOYOO_IR": {
@@ -36,10 +27,7 @@
       "echo": "digital",
       "trig": "digital"
     },
-    "functions": {
-      "quack": "info?",
-      "waddle": "info?"
-    },
+    "functions": ["waddle"],
     "block_path": "Sensors\\IR_sensor\\OSOYOO_IR\\OSOYOO_IR.js"
   }
 }
