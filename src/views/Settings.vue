@@ -262,7 +262,7 @@ export default {
         //       }
         //
         //     })
-        this.$store.commit("updatePConfig", this.items)
+        this.$store.dispatch('setPConfig', this.items)
         this.busy = false
       }
     },

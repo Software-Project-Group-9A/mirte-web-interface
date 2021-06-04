@@ -248,8 +248,6 @@ export default {
   },
   mounted() {
 
-    console.log(this.blocks)
-
     // Blockly configuration
     Blockly.setLocale(NL)
 

@@ -1,3 +1,5 @@
+
+
 export default {
 
     state: {
@@ -32,7 +34,6 @@ export default {
         getPConfig(state) {
             let PC = JSON.parse(state.PConfig)
             if (PC !== null) return PC
-            state.commit('updatePConfig', JSON.stringify([]))
             return []
         }
     },
@@ -40,6 +41,9 @@ export default {
     actions: {
         setCode({commit, getters}, code) {
             commit('code', code)
+        },
+        setPConfig({commit, getters}, PConfig) {
+            commit('PConfig', PConfig)
         }
     },
 
@@ -62,9 +66,10 @@ export default {
         user(state, user) {
             return state.user = user
         },
-        updatePConfig(state, PConfig) {
-            state.PConfig = JSON.stringify(PConfig)
-            localStorage.setItem("PConfig", JSON.stringify(PConfig))
+        PConfig(state, PConfig) {
+            PConfig = JSON.stringify(PConfig)
+            localStorage.setItem("PConfig", PConfig)
+            return state.PConfig = PConfig
         }
     }
 }
