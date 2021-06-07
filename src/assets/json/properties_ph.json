@@ -4,14 +4,14 @@
       "forward": "analogue",
       "backward": "analogue"
     },
-    "functions": ["Woof", "Drive"],
+    "functions": ["drive", "stop"],
     "block_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.js"
   },
   "Qunqi": {
     "pins": {
       "drive": "pwm"
     },
-    "functions": ["Meow"],
+    "functions": ["move"],
     "block_path": "Actuators\\Motor_Controller\\Qunqi\\Qunqi.js"
   },
   "HiLetgo_IR": {

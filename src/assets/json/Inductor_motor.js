@@ -1,13 +1,13 @@
-import Blockly from "blockly";
-
-export function load (Blockly) {
-    Blockly.Blocks['Woof'] = {
+export function load (Blockly, instances) {
+    Blockly.Blocks['drive'] = {
         init: function () {
-        this.appendValueInput("value")
-            .setCheck(['Number'])
-            .appendField("zet waarde van analoge pin ")
-            .appendField(new Blockly.FieldTextInput("A0"), "pin")
-            .appendField("op")
+        this.appendDummyInput()
+            .appendField("Laat motor ")
+            //.appendField(instances, 'instance')
+            .appendField(new Blockly.FieldDropdown(instances), 'instance')
+            .appendField(" rijden met snelheid ");
+        this.appendValueInput("speed")
+            .setCheck("Number")
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour("%{BKY_ACTIONS_RGB}");
@@ -16,20 +16,19 @@ export function load (Blockly) {
         }
     };
 
-    Blockly.Python['Woof'] = function (block) {
+    Blockly.Python['drive'] = function (block) {
       Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
-      let pin = block.getFieldValue('pin');
-      let value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
-      return `zoef.setAnalogPinValue('${pin}', ${value})\n`;
+      let instance = block.getFieldValue('instance');
+      let speed = Blockly.JavaScript.valueToCode(block, 'speed', Blockly.JavaScript.ORDER_ATOMIC);
+      return `zoef['${instance}'].drive(${speed})\n`;
     };
 
-    Blockly.Blocks['Drive'] = {
+    Blockly.Blocks['stop'] = {
         init: function () {
-        this.appendValueInput("value")
-            .setCheck(['Number'])
-            .appendField("I DRIVE ")
-            .appendField(new Blockly.FieldTextInput("A0"), "pin")
-            .appendField("op")
+        this.appendDummyInput()
+            .appendField("Laat motor ")
+            .appendField(new Blockly.FieldDropdown(instances), 'instance')
+            .appendField(" stoppen");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour("%{BKY_ACTIONS_RGB}");
@@ -38,10 +37,9 @@ export function load (Blockly) {
         }
     };
 
-    Blockly.Python['Drive'] = function (block) {
+    Blockly.Python['stop'] = function (block) {
       Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
-      let pin = block.getFieldValue('pin');
-      let value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
-      return `zoef.setAnalogPinValue('${pin}', ${value})\n`;
+      let instance = block.getFieldValue('instance');
+      return `zoef['${instance}'].stop()\n`;
     };
 }
