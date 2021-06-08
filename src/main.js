@@ -12,11 +12,16 @@ Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 
+
+import i18n from './i18n'
+
+
 const store = new Vuex.Store(
   storeData
 )
 
 new Vue({
+  i18n,
   router,
   store,
   render: function (h) { return h(App) }

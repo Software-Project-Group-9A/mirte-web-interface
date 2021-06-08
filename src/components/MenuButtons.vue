@@ -8,6 +8,13 @@
             <i class="fas fa-power-off"></i>
         </button>
 
+  <div class="locale-changer">
+    <select v-model="$i18n.locale">
+      <option v-for="(lang, i) in langs" :key="`Lang${i}`" :value="lang">{{ lang }}</option>
+    </select>
+  </div>
+
+
     </div>
 </template>
 
@@ -15,7 +22,10 @@
 import EventBus from '../event-bus';
 
 export default {
-
+  name: 'locale-changer',
+  data () {
+    return { langs: ['en', 'nl'] }
+  },
     methods: {
       shutdown(){
         if (confirm('Weet je zeker dat je wilt afsluiten?')) {

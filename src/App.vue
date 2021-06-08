@@ -54,6 +54,7 @@ import Vue from 'vue'
 import html2canvas from 'html2canvas';
 import canvasToImage from 'canvas-to-image'
 
+
 Vue.use(VueHotkey);
 
 export default {
@@ -64,7 +65,7 @@ export default {
          submitted: false,
          error: '',
          online: [],
-         textVariant: 'dark'
+         textVariant: 'dark',
       }
    },
    components: {
