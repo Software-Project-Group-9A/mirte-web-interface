@@ -221,15 +221,15 @@ const predefined_blocks = {
 
 // Loads in configured blockly modules
 async function load_blockly_modules(PConfig) {
-    await import(`../assets/blockly/default_blocks.js`)
-        .then(blk => blk.load(Blockly))
-    for (let PBM of Object.keys(properties_ph)) {
-      await import(`../assets/json/${PBM}.js`)
-          .then(blk => blk.load(Blockly, PConfig
-              .filter(T => T.type === PBM).map(T => [T.name, T.name]))
-              // We use [T.name, T.name] here because the dropdown menu generator
-              //of blockly requires an array as [showSelectOption, resultValue].
-          )
+  await import(`../assets/blockly/default_blocks.js`)
+      .then(blk => blk.load(Blockly))
+  for (let PBM of Object.keys(properties_ph)) {
+    await import(`../assets/blockly/${PBM}.js`)
+        .then(blk => blk.load(Blockly,
+            PConfig.filter(T => T.type === PBM).map(T => [T.name, T.name]))
+            // We use [T.name, T.name] here because the dropdown menu generator
+            // of blockly requires an array as [showSelectOption, resultValue].
+        )
   }
 }
 
