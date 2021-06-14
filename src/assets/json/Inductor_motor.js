@@ -9,7 +9,7 @@ export function load (Blockly, instances) {
         this.appendDummyInput()
             .appendField("Laat ")
             .appendField(new Blockly.FieldDropdown(instances), 'instance')
-            .appendField(" MYRTE rijden voor ");
+            .appendField(" MIRTE rijden voor ");
         this.appendValueInput("duration")
             .setCheck("Number")
             .appendField(" seconded met snelheid ");
