@@ -1,22 +1,25 @@
 export function load (Blockly, instances) {
 
-    Blockly.Blocks['dab'] = {
+    if (instances.length == 0) {
+        instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
+    }
+
+    Blockly.Blocks['get_value'] = {
         init: function () {
         this.appendDummyInput()
-            .appendField("Laat motor ")
-            .appendField(new Blockly.FieldDropdown(instances), 'instance')
-            .appendField(" stoppen");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour("%{BKY_ACTIONS_RGB}");
+            .appendField("lichtwaarde van ")
+            .appendField(new Blockly.FieldDropdown(instances), 'instance');
+        this.setOutput(true, null);
+        this.setColour("%{BKY_SENSORS_RGB}");
         this.setTooltip("");
         this.setHelpUrl("");
         }
     };
 
-    Blockly.Python['dab'] = function (block) {
-      Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
+    Blockly.Python['get_value'] = function (block) {
+      Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nMIRTE=robot.createRobot()';
       let instance = block.getFieldValue('instance');
-      return `zoef['${instance}'].stop()\n`;
+      let code = `MIRTE['${instance}'].get_intensity()`;
+      return [code, Blockly.Python.ORDER_NONE]
     };
 }

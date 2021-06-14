@@ -44,7 +44,10 @@ export default {
         },
         setPConfig({commit, getters}, PConfig) {
             commit('PConfig', PConfig)
-        }
+        },
+        setBlockly({commit, getters}, blockly) {
+            commit('blockly', blockly)
+        },
     },
 
     mutations: {

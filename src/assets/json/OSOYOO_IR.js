@@ -1,5 +1,9 @@
 export function load (Blockly, instances) {
 
+    if (instances.length == 0) {
+        instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
+    }
+
     Blockly.Blocks['waddle'] = {
         init: function () {
         this.appendDummyInput()

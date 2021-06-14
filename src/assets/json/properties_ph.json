@@ -11,7 +11,7 @@
     "pins": {
       "drive": "pwm"
     },
-    "functions": ["move"],
+    "functions": ["set_speed", "stop"],
     "block_path": "Actuators\\Motor_Controller\\Qunqi\\Qunqi.js"
   },
   "HiLetgo_IR": {
@@ -19,7 +19,7 @@
       "echo": "digital",
       "trig": "digital"
     },
-    "functions": ["dab"],
+    "functions": ["get_value"],
     "block_path": "Sensors\\IR_sensor\\HiLetgo_IR\\HiLetgo_IR.js"
   },
   "OSOYOO_IR": {
