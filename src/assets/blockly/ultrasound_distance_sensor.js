@@ -1,10 +1,10 @@
 export function load (Blockly, instances) {
 
-    if (instances.length == 0) {
+    if (instances.length === 0) {
         instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
     }
 
-    Blockly.Blocks['get_value'] = {
+    Blockly.Blocks['get_value_ultrasound_distance_sensor'] = {
         init: function () {
         this.appendDummyInput()
             .appendField("lichtwaarde van ")
@@ -16,10 +16,10 @@ export function load (Blockly, instances) {
         }
     };
 
-    Blockly.Python['get_value'] = function (block) {
-      Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nMIRTE=robot.createRobot()';
+    Blockly.Python['get_value_ultrasound_distance_sensor'] = function (block) {
+      Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
       let instance = block.getFieldValue('instance');
-      let code = `MIRTE['${instance}'].get_intensity()`;
+      let code = `mirte['${instance}'].get_intensity()`;
       return [code, Blockly.Python.ORDER_NONE]
     };
 }

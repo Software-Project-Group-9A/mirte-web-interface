@@ -148,14 +148,18 @@
       <category name="Signalen" colour="%{BKY_SENSORS_RGB}">
         <category v-for="sensor in getPByKind('Sensors')" v-bind:name="sensor"
                   colour="%{BKY_SENSORS_RGB}">
-          <block v-for="func in peripherals[sensor].functions" :type="func"></block>
+          <block v-for="func in peripherals[sensor].functions"
+                 :type="func.concat('_').concat(sensor)">
+          </block>
         </category>
       </category>
 
       <category name="Acties" colour="%{BKY_ACTIONS_RGB}">
         <category v-for="actuator in getPByKind('Actuators')" v-bind:name="actuator"
                   colour="%{BKY_SENSORS_RGB}">
-          <block v-for="func in peripherals[actuator].functions" :type="func"></block>
+          <block v-for="func in peripherals[actuator].functions"
+                 :type="func.concat('_').concat(actuator)">
+          </block>
         </category>
       </category>
 
@@ -230,6 +234,7 @@ async function load_blockly_modules(PConfig) {
             // We use [T.name, T.name] here because the dropdown menu generator
             // of blockly requires an array as [showSelectOption, resultValue].
         )
+    console.log(PConfig)
   }
 }
 
@@ -281,7 +286,7 @@ export default {
     getPByKind(kind) {
       const AP = new Set()
       for (let p of this.$store.getters.getPConfig) {
-        if (p.block_path.split("\\")[0] === kind) {
+        if (p.rel_path.split("\\")[0] === kind) {
           AP.add(p.type)
         }
       }
@@ -389,10 +394,8 @@ export default {
       }
     }
 
-    //this.load_components(this.$store.getters.getPConfig, this.workspace)
     load_blockly_modules(this.$store.getters.getPConfig)
         .then(() => {
-          console.log("quack")
           const storage = localStorage.getItem("blockly")
           if (storage !== null) {
             Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom(storage), this.workspace)

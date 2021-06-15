@@ -1,33 +1,33 @@
 {
-  "Inductor_motor": {
+  "pwm_motor": {
     "pins": {
       "forward": "analogue",
       "backward": "analogue"
     },
-    "functions": ["drive", "stop"],
-    "block_path": "Actuators\\Motor\\Inductor_motor\\Inductor_motor.js"
+    "functions": ["set_speed", "stop"],
+    "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py"
   },
-  "Qunqi": {
+  "1298motor": {
     "pins": {
       "drive": "pwm"
     },
     "functions": ["set_speed", "stop"],
-    "block_path": "Actuators\\Motor_Controller\\Qunqi\\Qunqi.js"
+    "rel_path": "Actuators\\Motor_Controller\\1298motor\\1298motor.py"
   },
-  "HiLetgo_IR": {
+  "digital_ir_sensor": {
     "pins": {
       "echo": "digital",
       "trig": "digital"
     },
     "functions": ["get_value"],
-    "block_path": "Sensors\\IR_sensor\\HiLetgo_IR\\HiLetgo_IR.js"
+    "rel_path": "Sensors\\IR_sensor\\digital_ir_sensor\\digital_ir_sensor.py"
   },
-  "OSOYOO_IR": {
+  "ultrasound_distance_sensor": {
     "pins": {
       "echo": "digital",
       "trig": "digital"
     },
-    "functions": ["waddle"],
-    "block_path": "Sensors\\IR_sensor\\OSOYOO_IR\\OSOYOO_IR.js"
+    "functions": ["get_value"],
+    "rel_path": "Sensors\\IR_sensor\\ultrasound_distance_sensor\\ultrasound_distance_sensor.py"
   }
 }

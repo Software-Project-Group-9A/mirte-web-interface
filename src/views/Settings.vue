@@ -195,7 +195,7 @@ export default {
       this.items.push(Object.assign({
             type: type,
             name: '',
-            block_path: this.peripherals[type].block_path,
+            rel_path: this.peripherals[type].rel_path,
             functions: this.peripherals[type].functions
           },
           binds
@@ -306,6 +306,7 @@ export default {
 
   mounted() {
     console.log(this.items)
+
     // const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
     // const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
     //
