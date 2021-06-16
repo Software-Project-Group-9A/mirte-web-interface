@@ -165,6 +165,7 @@
 import YAML from 'js-yaml'
 import properties_ph from "../assets/json/properties_ph.json"
 import properties_mc from "../assets/json/properties_mc.json"
+console.log(properties_ph)
 
 export default {
 
@@ -306,7 +307,6 @@ export default {
 
   mounted() {
     console.log(this.items)
-
     // const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
     // const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
     //
