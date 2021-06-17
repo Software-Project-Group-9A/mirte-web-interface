@@ -53,6 +53,7 @@ export default {
               };
         },
         playCode() {
+          console.log("playCode")
             if (this.$store.getters.getExecution == "paused"){
                this.linenr_socket.send("c");
                this.$store.dispatch('setExecution', 'running');
@@ -143,8 +144,10 @@ export default {
 
         // event bus for control functions
         EventBus.$on('control', (payload) => {
+
             switch(payload){
                 case "play":
+                    console.log("case play")
                     this.term.setOption('theme', { background: '#e2e8e9', foreground: '#000000', cursor: '#e2e8e9' });
                     this.playCode()
                     break;
