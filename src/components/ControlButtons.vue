@@ -93,7 +93,6 @@ export default {
 
     methods: {
         control(command) {
-            console.log('clicked');
             EventBus.$emit('control', command);
         },
 

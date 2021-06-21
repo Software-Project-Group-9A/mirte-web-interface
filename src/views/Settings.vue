@@ -165,7 +165,6 @@
 import YAML from 'js-yaml'
 import properties_ph from "../assets/json/properties_ph.json"
 import properties_mc from "../assets/json/properties_mc.json"
-console.log(properties_ph)
 
 export default {
 
@@ -246,23 +245,22 @@ export default {
     uploadYAML() {
       if (confirm('Weet je zeker dat je de hardware instellingen wilt updaten?')) {
         this.busy = true
-        // fetch(`http://${location.hostname}:3000/api/settings`, {
-        //   method: 'POST',
-        //   // body: JSON.stringify(this.yaml)
-        //   body: this.generateYAML()
-        // })
-        //     .then(res => res.text())
-        //     .then(data => {
-        //       console.log(data)
-        //       this.busy = false
-        //
-        //       if (data.toLowerCase().includes("download done")) {
-        //         alert("Uploaden is succesvol afgerond")
-        //       } else {
-        //         alert("Er is een fout opgetreden:\n\n" + data)
-        //       }
-        //
-        //     })
+        fetch(`http://${location.hostname}:3000/api/settings`, {
+          method: 'POST',
+          body: this.generateYAML()
+        })
+            .then(res => res.text())
+            .then(data => {
+              console.log(data)
+              this.busy = false
+
+              if (data.toLowerCase().includes("download done")) {
+                alert("Uploaden is succesvol afgerond")
+              } else {
+                alert("Er is een fout opgetreden:\n\n" + data)
+              }
+
+            })
         this.$store.dispatch('setPConfig', this.items)
         this.busy = false
       }
@@ -307,6 +305,7 @@ export default {
 
   mounted() {
     console.log(this.items)
+
     // const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
     // const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
     //
