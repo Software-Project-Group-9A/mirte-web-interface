@@ -1,0 +1,7 @@
+{
+  "main": {
+    "sensors": "Sensors",
+    "programming": "Programming",
+    "actuators": "Actuators"
+  }
+}

@@ -1,89 +1,123 @@
+
 <template>
-  <div class="container">
+  
+     <div class="layoutbox-content">
 
-    <h1 class="mb-5">Sensoren</h1>
 
-    <div class="layoutbox rounded">
-      <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-        Waardes
-      </div>
 
-      <div class="layoutbox-content">
-        <div class="row">
 
-          <div class="col-3">
-            <div class="rounded background-green-light p-3">
-              <h5>Rotatiesensoren</h5>
-                
+        
+         <div class="rounded background-green-light p-3 mb-2">
+         <h5>Rotatiesensoren</h5>
+               
+           <div class="row">
+              <div class="col-4"> 
+                <img class="center-div w-75" src="@/assets/images/rotary_encoder.jpg">
+              </div>
+
+             <div class="col-8"> 
               <div class="rounded background-primary p-2 text-white mb-2">
                 Links: {{left_encoder}}
               </div>
-
+         
               <div class="rounded background-primary p-2 text-white">
                 Rechts: {{right_encoder}}
               </div>
             </div>
 
-            <img class="center-div w-75" src="@/assets/images/rotary_encoder.jpg">
-          </div>
+            
+           </div>         
 
-          <div class="col-3">
-            <div class="rounded background-green-light p-3">
+        </div>
+
+
+
+
+     
+        
+            <div class="rounded background-green-light p-3 mb-2">
               <h5>Lichtsensor</h5>
                 
-              <div class="rounded background-primary p-2 text-white mb-2">
-                Links: {{left_intensity}}
+              <div class="row">
+                <div class="col-4"> 
+                  <img class="center-div w-75" src="@/assets/images/ir_sensor.webp">
+                </div>
+
+                <div class="col-8"> 
+                <div class="rounded background-primary p-2 text-white mb-2">
+                  Links: {{left_intensity}}
+                </div>
+      
+                <div class="rounded background-primary p-2 text-white">
+                  Rechts: {{right_intensity}}
+                </div>
+                </div>
               </div>
 
-              <div class="rounded background-primary p-2 text-white">
-                Rechts: {{right_intensity}}
-              </div>
+            
             </div>
+               
 
-            <img class="center-div w-75" src="@/assets/images/ir_sensor.webp">
-          </div>
-
-          <div class="col-3">
-            <div class="rounded background-green-light p-3">
+      
+            <div class="rounded background-green-light p-3 mb-2">
               <h5>Afstandsensor</h5>
                 
-              <div class="rounded background-primary p-2 text-white mb-2">
-                Links: {{left_distance}}
-              </div>
+              <div class="row">
+                <div class="col-4"> 
+                  <img class="center-div w-75" src="@/assets/images/us_sensor.jpg">
+                </div>
 
-              <div class="rounded background-primary p-2 text-white">
-                Rechts: {{right_distance}}
-              </div>
-            </div>
 
-            <img class="center-div w-75" src="@/assets/images/us_sensor.jpg">
+                <div class="col-8"> 
+                  <div class="rounded background-primary p-2 text-white mb-2">
+                    Links: {{left_distance}}
+                  </div>
+      
+                  <div class="rounded background-primary p-2 text-white">
+                    Rechts: {{right_distance}}
+                  </div>
+                </div>
+
+             </div>
           </div>
-          
-          <div class="col-3">
+            
+        
+
+   
             <div class="rounded background-green-light p-3">
               <h5>Knoppen</h5>
                 
-              <div class="rounded background-primary p-2 text-white mb-2">
-                Knoppen: {{keypad}}
-              </div>
-            </div>
+               <div class="row">
+                <div class="col-4">
+                 <img class="center-div w-75" src="@/assets/images/keypad.jpg">
+                </div>
 
-            <img class="center-div w-75" src="@/assets/images/keypad.jpg">
+                 <div class="col-8">
+                  <div class="rounded background-primary p-2 text-white">
+                    Knoppen: {{keypad}}
+                  </div>
+                 </div>
+
+             </div>
           </div>
 
 
-        </div>
-      </div>
     </div>
 
-  </div>
+
+
 </template>
 
 <script>
-
+import MenuButtons from '@/components/MenuButtons.vue'
 import ROSLIB from 'roslib'
 
+
 export default {
+  name: 'sensors',
+  components: {
+    MenuButtons
+  },
   data() {
     return {
       left_encoder: 0,
@@ -92,56 +126,58 @@ export default {
       right_distance: 0,
       left_intensity: 0,
       right_intensity: 0,
-      keypad: 0,
+      keypad: "",
+      left_speed: 0,
+      right_speed: 0,
+      ros: {},
     }
   },
-
   mounted(){
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
     const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`;
       
-    var ros = new ROSLIB.Ros({
+    this.ros = new ROSLIB.Ros({
       url : ros_socketUrl
     });
       
     var left_encoder_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/encoder/left',
       messageType : 'zoef_msgs/Encoder'
     });
 
     var right_encoder_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/encoder/right',
       messageType : 'zoef_msgs/Encoder'
     });
     
     var left_intensity_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/intensity/left',
       messageType : 'zoef_msgs/Intensity'
     });
 
     var right_intensity_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/intensity/right',
       messageType : 'zoef_msgs/Intensity'
     });
     
     var left_distance_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/distance/left',
       messageType : 'sensor_msgs/Range'
     });
 
     var right_distance_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/distance/right',
       messageType : 'sensor_msgs/Range'
     });
 
     var keypad_sub = new ROSLIB.Topic({
-      ros : ros,
+      ros : this.ros,
       name : '/zoef/keypad/keypad',
       messageType : 'zoef_msgs/Keypad'
     });
@@ -176,5 +212,7 @@ export default {
 
 
   }
+
+
 }
 </script>

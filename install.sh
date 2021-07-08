@@ -6,11 +6,11 @@ ZOEF_SRC_DIR=/usr/local/src/zoef
 sudo apt update
 
 # Install nodeenv
-sudo apt install -y python-pip python-setuptools python-wheel
+sudo apt install -y python3-pip python3-setuptools python3-wheel
 sudo -H pip install nodeenv
 
-# Install nodeenv (TODO: find out why node-pty and node-sass will not compile correctly on higher versions)
-nodeenv --node=8.17.0 $ZOEF_SRC_DIR/web_interface/node_env
+# Install nodeenv
+nodeenv --node=16.2.0 $ZOEF_SRC_DIR/web_interface/node_env
 
 # Install web interface
 . $ZOEF_SRC_DIR/web_interface/node_env/bin/activate

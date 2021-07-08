@@ -3,9 +3,14 @@
 @import "@/assets/scss/codemirror.scss";
 @import "@/assets/scss/blockly.scss";
 
+
 @font-face {
     font-family: 'Rubik';
     src:  url('assets/fonts/Rubik.woff2') format('woff2');
+}
+
+html, body {
+
 }
 
 body{
@@ -13,17 +18,23 @@ body{
 }
 
 body{
-    overflow: hidden;
     background-color: $primary !important;
+
 }
+
+.min-100 {
+    min-height: 100%;
+}
+
 
 .content{
     background-color: white;
-    height: 100vh;
+    height: 20vh;
 }
 
 .container{
     padding: 2em 0; 
+    width: 100vw;
 }
 
 .tutorial_window{
@@ -110,7 +121,7 @@ $percentages: (
     border: 4px solid $primary;
 
     .layoutbox-content{
-        padding: 2em;
+        padding: 1em;
     }
 }
 

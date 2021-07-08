@@ -9,7 +9,7 @@
 .xterm {
     font-family: monospace;
     font-feature-settings: "liga" 0;
-    position: relative;
+    position: relative;  
     user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
@@ -99,7 +99,7 @@
 
 .xterm {
     cursor: text;
-    position: absolute;
+/*    position: absolute;  */
     bottom: 0px;
 }
 

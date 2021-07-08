@@ -1,5 +1,5 @@
 var express = require("express");
-var pty = require('node-pty');
+var pty = require('node-pty-prebuilt-multiarch');
 var app = express();
 var expressWs = require('express-ws')(app);  // TODO: decide on which websocket lib we use (probably express)
 var cors = require('cors')
@@ -27,7 +27,7 @@ function getLocalIP(){
 }
 
 var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
-var zoef_password = "zoef_zoef"; //fs.readFileSync('/etc/wifi_pwd', 'utf8').trim();
+var zoef_password = fs.readFileSync('/home/zoef/.wifi_pwd', 'utf8').trim();
 
 app.use(bodyParser.json())
 app.use(cookieSession({
@@ -191,15 +191,12 @@ app.get('/api/stm32', (req, res) => {
   res.end(stdout);
 })
 
-app.get('/api/reload_rosparam', (req, res) => {
+// shutdown
+app.get('/api/shutdown', (req, res) => {
+  res.end("done");   // TODO: sutdown could fail?
   const exec = require('child_process').execSync;
-
-  let cmd = '/opt/ros/melodic/bin/rosnode kill /zoef_telemetrix_zoef && /opt/ros/melodic/bin/rosrun zoef_ros_package ROS_telemetrix';
-  const stdout = exec(cmd);
-  res.end(stdout);
+  const stdout = exec('sudo shutdown now');
 })
-
-
 
 // catch python files from the web interface and save them
 app.post('/api/python', (req, res) => {
@@ -255,7 +252,7 @@ app.post('/api/passwd', (req, res) => {
   var pass = req.body
 
   const fs = require('fs');
-  fs.writeFile("/etc/wifi_pwd", pass, (err) => {
+  fs.writeFile("/home/zoef/.wifi_pwd", pass, (err) => {
       if(err) {
           console.log(err);
           res.end("something went wrong changing the password");

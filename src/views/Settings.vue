@@ -132,6 +132,9 @@
     </div>
 
 
+    <Network/>
+
+
     <div class="layoutbox rounded mt-5">
       <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
         Geavanceerde instellingen
@@ -165,9 +168,12 @@
 import YAML from 'js-yaml'
 import properties_ph from "../assets/json/properties_ph.json"
 import properties_mc from "../assets/json/properties_mc.json"
+import Network from '@/components/Network.vue'
 
 export default {
-
+  components: {
+    Network
+  },
   data: function () {
     return {
       peripherals: properties_ph,
