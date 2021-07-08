@@ -1,5 +1,5 @@
 {
-  "arduino-nano": {
+  "nano": {
     "pin_map": {
       "RX0": 0,
       "TX1": 1,

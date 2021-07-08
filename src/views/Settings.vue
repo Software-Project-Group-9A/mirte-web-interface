@@ -13,10 +13,10 @@
 
           <div class="row">
             <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="Breadboard">Breadboard</b-form-radio>
+              <b-form-radio v-model="board" name="board" value="breadboard">Breadboard</b-form-radio>
             </div>
             <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="Zoef" disabled>Zoef PCB</b-form-radio>
+              <b-form-radio v-model="board" name="board" value="zoef" disabled>Zoef PCB</b-form-radio>
             </div>
             <!--            <div class="col-4">-->
             <!--              <b-form-radio v-model="board" name="board" value="LEGO" disabled>LEGO</b-form-radio>-->
@@ -45,7 +45,7 @@
               </b-form-radio>
             </div>
             <div class="col-6">
-              <b-form-radio v-model="mcu" value="arduino-nano" data-label="Nano">
+              <b-form-radio v-model="mcu" value="nano" data-label="Nano">
                 Arduino Nano
               </b-form-radio>
             </div>
@@ -86,7 +86,7 @@
                 <div>
                   <b-dropdown id="dropdown-1" text="add" class="m-md-2">
                     <b-dropdown-item v-for="i in Object.keys(peripherals)" ref="i" @click="add_item(i)">
-                      {{i.replace("_", " ")}}
+                      {{ peripherals[i].text }}
                     </b-dropdown-item>
                   </b-dropdown>
                 </div>
@@ -96,7 +96,7 @@
                 <button @click="delete_item(data.index)" type="button" class="btn float-left">
                   <span class="fa fa-trash"> </span>
                 </button>
-                {{ data.item.type.replace("_", " ") }}
+                {{ peripherals[data.item.type].text }}
               </template>
 
               <template #cell(name)="data">
@@ -172,8 +172,8 @@ export default {
     return {
       peripherals: properties_ph,
       microcontrollers: properties_mc,
-      board: 'Breadboard',
-      mcu: "arduino-nano",
+      board: 'breadboard',
+      mcu: "stm32",
       fields: [
         {key: 'type', label: 'type'},
         {key: 'name', label: 'Naam'},
@@ -207,12 +207,55 @@ export default {
     // Depending on selected microcontroller gives peripheral configuration table valid pin binds
     getValidPinBinds(type, pin) {
       let pinMap = Object.entries({...this.microcontrollers[this.mcu].pin_map})
-      if (this.peripherals[type].pins[pin] === "analogue") {
+      if (this.peripherals[type].pins[pin] === "analog") {
         pinMap = pinMap.filter(([_, value]) => value >= this.microcontrollers[this.mcu].analog_offset)
       }
       const options = []
-      for (let p of pinMap) options.push({value: p[1], text: p[0]})
+      for (let p of pinMap) options.push({value: p[0], text: p[0]})
       return options
+    },
+    // Should be using generateYAML() as soon as we move to the plugin manager
+    saveConfiguration(){
+       var tthis = this
+       tthis.params_busy = true;
+       var restructured = {device: {}};
+       restructured['device']['zoef'] = {type: this.board, mcu: this.mcu };
+       for (var j in this.items){
+          var i = Object.assign({}, this.items[j]);
+          var type = i['type'];
+          i['device'] = 'zoef';
+          delete i['type'];
+          var newtype = type;
+          if (type == 'motor_l9110s'){
+             i['type'] = "l9110s"
+             newtype = "motor"
+          }
+          if (type == 'motor_l298n'){
+             i['type'] = "l298n"
+             newtype = "motor"
+          }
+          if (this.board == "zoef_pcb"){
+             delete i['pins']
+          } else {
+             delete i['connector']
+          }
+          
+          // Add pins to pins sub
+          i['pins'] = {}
+          for (var k in i){
+             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type"){
+                i['pins'][k] = i[k]
+                delete i[k]
+             }
+          }
+
+          if (!restructured.hasOwnProperty(newtype)){
+             restructured[newtype] = {};
+          }
+          restructured[newtype][i['name']] = i;
+       }
+       var henk = YAML.load(JSON.stringify(restructured));
+       return henk;
     },
     // Constructs the YAML file to be used and uploaded to ROS as its params
     generateYAML() {
@@ -245,21 +288,24 @@ export default {
     uploadYAML() {
       if (confirm('Weet je zeker dat je de hardware instellingen wilt updaten?')) {
         this.busy = true
+        var yaml = this.saveConfiguration();
+       
+
         fetch(`http://${location.hostname}:3000/api/settings`, {
           method: 'POST',
-          body: this.generateYAML()
+          body: YAML.dump(yaml)
         })
             .then(res => res.text())
             .then(data => {
               console.log(data)
               this.busy = false
 
-              if (data.toLowerCase().includes("download done")) {
+/*              if (data.toLowerCase().includes("download done")) {
                 alert("Uploaden is succesvol afgerond")
               } else {
                 alert("Er is een fout opgetreden:\n\n" + data)
               }
-
+*/
             })
         this.$store.dispatch('setPConfig', this.items)
         this.busy = false

@@ -1,33 +1,72 @@
 {
-  "pwm_motor": {
+  "motor_l9110s": {
+    "text": "Motor (L9110S)",
     "pins": {
-      "forward": "analogue",
-      "backward": "analogue"
+      "1a": "pwm",
+      "1b": "pwm"
     },
     "functions": ["set_speed", "stop"],
     "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py"
   },
-  "1298motor": {
+  "motor_l298n": {
+    "text": "Motor (L298N)",
     "pins": {
-      "drive": "pwm"
+      "1a": "digital",
+      "1b": "digital",
+      "en": "pwm"
     },
     "functions": ["set_speed", "stop"],
-    "rel_path": "Actuators\\Motor_Controller\\1298motor\\1298motor.py"
+    "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py"
   },
-  "digital_ir_sensor": {
+  "intensity": {
+    "text": "IR Sensor",
     "pins": {
-      "echo": "digital",
-      "trig": "digital"
+      "digital": "digital",
+      "analog": "analog"
     },
     "functions": ["get_value"],
     "rel_path": "Sensors\\IR_sensor\\digital_ir_sensor\\digital_ir_sensor.py"
   },
-  "ultrasound_distance_sensor": {
+  "distance": {
+    "text": "Ultrasonic Sensor",
     "pins": {
-      "echo": "digital",
-      "trig": "digital"
+      "trigger": "digital",
+      "echo": "digital"
     },
     "functions": ["get_value"],
     "rel_path": "Sensors\\IR_sensor\\ultrasound_distance_sensor\\ultrasound_distance_sensor.py"
+  },
+  "servo": {
+    "text": "Servo",
+    "pins": {
+       "pin": "digital"
+    },
+    "functions": ["set_angle"],
+    "rel_path": "Sensors\\Servo\\servo\\servo.py"
+  },
+  "oled": {
+    "text": "OLED",
+    "pins": {
+       "scl": "digital",
+       "sda": "digital"
+    },
+    "functions": ["set_text", "set_image", "set_animation"],
+    "rel_path": "Actuators\\OLED\\oled\\oled.py"
+  },
+  "keypad": {
+    "text": "Keypad",
+    "pins": {
+       "pin": "analog"
+    },
+    "functions": ["get_button"],
+    "rel_path": "Sensors\\Keypad\\keypad\\keypad.py"
+  },
+  "encoder": {
+    "text": "Wheel encoder",
+    "pins": {
+       "pin": "digital"
+    },
+    "functions": ["get_ticks"],
+    "rel_path": "Sensors\\Encoder\\encoder\\enoder.py"
   }
 }
