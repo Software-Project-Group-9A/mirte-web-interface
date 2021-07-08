@@ -155,6 +155,13 @@
       </category>
 
       <category name="Acties" colour="%{BKY_ACTIONS_RGB}">
+
+        <block type="text_print">
+            <value name="TEXT">
+               <block type="text"></block>
+            </value>
+        </block>
+
         <category v-for="actuator in getPByKind('Actuators')" v-bind:name="actuator"
                   colour="%{BKY_SENSORS_RGB}">
           <block v-for="func in peripherals[actuator].functions"
