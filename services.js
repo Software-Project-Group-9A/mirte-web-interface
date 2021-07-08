@@ -221,20 +221,17 @@ app.post('/api/settings', (req, res) => {
     var source = req.body
 
     const fs = require('fs');
-    fs.writeFile("/home/zoef/zoef_ws/src/zoef_ros_package/config/zoef_user_settings.yaml", source, (err) => {
+    fs.writeFile("/home/zoef/zoef_ws/src/zoef_ros_package/config/zoef_user_config.yaml", source, (err) => {
         if(err) {
             console.log(err);
             res.end("something went wrong writing the file");
         }
-       const stdout = "file saved";
-//        res.end("the file was saved");
-        const exec = require('child_process').execSync;
-
-//        const stdout = exec('rosnode list');
-//        const stdout = exec('rosnode kill /zoef_telemetrix_zoef && rosrun zoef_ros_package ROS_telemetrix_api.py __name:=zoef_telemetrix_zoef');
-        res.end(stdout);
+        const exec = require('child_process').execFile;
+        const stdout = exec("/usr/local/src/zoef/web_interface/reload_params.sh");
+        res.end("done");
     });
 });
+
 
 // catch robot settings (ROS params) from the web interface and save them
 app.get('/api/settings', (req, res) => {
