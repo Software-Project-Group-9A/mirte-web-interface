@@ -37,19 +37,31 @@ export default {
             return []
         }
     },
-
     actions: {
-        setCode({commit, getters}, code) {
+        setCode({commit, getters}, code){
             commit('code', code)
+        },
+
+        setTutorial({commit, getters}, tutorial){
+            commit('tutorial', tutorial)
+        },
+
+        setBlockly({commit, getters}, blockly){
+            commit('blockly', blockly)
+        },
+        setLinenumber({commit, getters}, linenumber){
+            commit('linenumber', linenumber)
+        },
+        setExecution({commit, getters}, execution){
+            commit('execution', execution)
+        },
+        setUser({commit, getters}, user){
+            commit('user', user)
         },
         setPConfig({commit, getters}, PConfig) {
             commit('PConfig', PConfig)
-        },
-        setBlockly({commit, getters}, blockly) {
-            commit('blockly', blockly)
-        },
+        }
     },
-
     mutations: {
         code(state, code) {
             return state.code = code
