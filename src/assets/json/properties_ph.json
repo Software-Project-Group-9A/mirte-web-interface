@@ -42,7 +42,7 @@
        "pin": "digital"
     },
     "functions": ["set_angle"],
-    "rel_path": "Sensors\\Servo\\servo\\servo.py"
+    "rel_path": "Actuators\\Servo\\servo\\servo.py"
   },
   "oled": {
     "text": "OLED",
@@ -50,7 +50,7 @@
        "scl": "digital",
        "sda": "digital"
     },
-    "functions": ["set_text", "set_image", "set_animation"],
+    "functions": ["set_oled"],
     "rel_path": "Actuators\\OLED\\oled\\oled.py"
   },
   "keypad": {
@@ -67,6 +67,6 @@
        "pin": "digital"
     },
     "functions": ["get_ticks"],
-    "rel_path": "Sensors\\Encoder\\encoder\\enoder.py"
+    "rel_path": "Sensors\\Encoder\\encoder\\encoder.py"
   }
 }

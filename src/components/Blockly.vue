@@ -7,6 +7,23 @@
 
     <xml id="toolbox" ref="toolbox" style="display: none">
 
+
+      <category name="Sensoren" colour="%{BKY_SENSORS_RGB}">
+
+         <category name="Robot" colour="%{BKY_SENSORS_RGB}">
+            <block type="get_pin_value"></block>
+         </category>
+
+         <category v-for="sensor in getPByKind('Sensors')" v-bind:name="sensor"
+                  colour="%{BKY_SENSORS_RGB}">
+          <block v-for="func in peripherals[sensor].functions"
+                 :type="func.concat('_').concat(sensor)">
+          </block>
+        </category>
+      </category>
+
+
+
       <category name="Flow" colour="%{BKY_FLOW_RGB}" expanded="true">
 
         <category name="Lussen" colour="%{BKY_FLOW_RGB}">
@@ -140,35 +157,27 @@
 
       </category>
 
-      <category name="Robot" colour="%{BKY_MODULES_RGB}">
-        <block type="set_analog_pin_value"></block>
-        <block type="get_pin_value"></block>
-      </category>
-
-      <category name="Signalen" colour="%{BKY_SENSORS_RGB}">
-        <category v-for="sensor in getPByKind('Sensors')" v-bind:name="sensor"
-                  colour="%{BKY_SENSORS_RGB}">
-          <block v-for="func in peripherals[sensor].functions"
-                 :type="func.concat('_').concat(sensor)">
-          </block>
-        </category>
-      </category>
-
       <category name="Acties" colour="%{BKY_ACTIONS_RGB}">
 
-        <block type="text_print">
-            <value name="TEXT">
-               <block type="text"></block>
-            </value>
-        </block>
+         <category name="Robot" colour="%{BKY_ACTIONS_RGB}">
+
+            <block type="text_print">
+              <value name="TEXT">
+                <block type="text"></block>
+              </value>
+            </block> 
+
+            <block type="set_analog_pin_value"></block>
+
+         </category>
 
         <category v-for="actuator in getPByKind('Actuators')" v-bind:name="actuator"
-                  colour="%{BKY_SENSORS_RGB}">
+                  colour="%{BKY_ACTIONS_RGB}">
           <block v-for="func in peripherals[actuator].functions"
                  :type="func.concat('_').concat(actuator)">
           </block>
         </category>
-      </category>
+     </category>
 
     </xml>
 
@@ -229,6 +238,7 @@ const predefined_blocks = {
   lists_indexOf: "%{BKY_DATA_RGB}",
   lists_getIndex: "%{BKY_DATA_RGB}",
   lists_setIndex: "%{BKY_DATA_RGB}",
+  text_print: "%{BKY_ACTIONS_RGB}",
 }
 
 export default {

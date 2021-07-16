@@ -4,7 +4,7 @@ export function load (Blockly, instances) {
         instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
     }
 
-    Blockly.Blocks['set_speed_pwm_motor'] = {
+    Blockly.Blocks['set_speed_motor_l9110s'] = {
         init: function () {
         this.appendDummyInput()
             .appendField("Zet de snelheid van ")
@@ -20,14 +20,14 @@ export function load (Blockly, instances) {
         }
     };
 
-    Blockly.Python['set_speed_pwm_motor'] = function (block) {
+    Blockly.Python['set_speed_motor_l9110s'] = function (block) {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
         let instance = block.getFieldValue('instance');
         let speed = Blockly.Python.valueToCode(block, 'speed', Blockly.Python.ORDER_ATOMIC)
-        return `mirte['${instance}'].set_speed(${speed})\n`;
+        return `mirte.setMotorSpeed('${instance}', ${speed})\n`;
     };
 
-    Blockly.Blocks['stop_pwm_motor'] = {
+    Blockly.Blocks['stop_motor_l9110s'] = {
         init: function () {
         this.appendDummyInput()
             .appendField("Stop ")
@@ -40,9 +40,9 @@ export function load (Blockly, instances) {
         }
     };
 
-    Blockly.Python['stop_pwm_motor'] = function (block) {
+    Blockly.Python['stop_motor_l9110s'] = function (block) {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
         let instance = block.getFieldValue('instance');
-        return `mirte['${instance}'].set_speed(0)\n`;
+        return `mirte.setMotorSpeed('${instance}', 0)\n`;
     };
 }
