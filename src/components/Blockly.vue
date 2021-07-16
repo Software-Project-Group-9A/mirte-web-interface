@@ -14,7 +14,7 @@
             <block type="get_pin_value"></block>
          </category>
 
-         <category v-for="sensor in getPByKind('Sensors')" v-bind:name="sensor"
+         <category v-for="sensor in getPByKind('Sensors')" v-bind:name="peripherals[sensor].text"
                   colour="%{BKY_SENSORS_RGB}">
           <block v-for="func in peripherals[sensor].functions"
                  :type="func.concat('_').concat(sensor)">
@@ -171,7 +171,7 @@
 
          </category>
 
-        <category v-for="actuator in getPByKind('Actuators')" v-bind:name="actuator"
+        <category v-for="actuator in getPByKind('Actuators')" v-bind:name="peripherals[actuator].text"
                   colour="%{BKY_ACTIONS_RGB}">
           <block v-for="func in peripherals[actuator].functions"
                  :type="func.concat('_').concat(actuator)">
