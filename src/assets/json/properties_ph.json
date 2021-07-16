@@ -25,7 +25,9 @@
       "analog": "analog"
     },
     "functions": ["get_value"],
-    "rel_path": "Sensors\\IR_sensor\\digital_ir_sensor\\digital_ir_sensor.py"
+    "rel_path": "Sensors\\IR_sensor\\digital_ir_sensor\\digital_ir_sensor.py",
+    "message_type": "zoef_msgs/Intensity",
+    "message_value": "value"
   },
   "distance": {
     "text": "Ultrasonic Sensor",
@@ -34,7 +36,9 @@
       "echo": "digital"
     },
     "functions": ["get_value"],
-    "rel_path": "Sensors\\IR_sensor\\ultrasound_distance_sensor\\ultrasound_distance_sensor.py"
+    "rel_path": "Sensors\\IR_sensor\\ultrasound_distance_sensor\\ultrasound_distance_sensor.py",
+    "message_type": "sensor_msgs/Range",
+    "message_value": "range"
   },
   "servo": {
     "text": "Servo",
@@ -59,7 +63,9 @@
        "pin": "analog"
     },
     "functions": ["get_button"],
-    "rel_path": "Sensors\\Keypad\\keypad\\keypad.py"
+    "rel_path": "Sensors\\Keypad\\keypad\\keypad.py",
+    "message_type": "zoef_msgs/Keypad",
+    "message_value": "key"
   },
   "encoder": {
     "text": "Wheel encoder",
@@ -67,6 +73,8 @@
        "pin": "digital"
     },
     "functions": ["get_ticks"],
-    "rel_path": "Sensors\\Encoder\\encoder\\encoder.py"
+    "rel_path": "Sensors\\Encoder\\encoder\\encoder.py",
+    "message_type": "zoef_msgs/Encoder",
+    "message_value": "value"
   }
 }

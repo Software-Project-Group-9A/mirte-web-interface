@@ -2,116 +2,31 @@
 <template>
   
      <div class="layoutbox-content">
-
-
-
-
-        
-         <div class="rounded background-green-light p-3 mb-2">
-         <h5>Rotatiesensoren</h5>
-               
-           <div class="row">
-              <div class="col-4"> 
-                <img class="center-div w-75" src="@/assets/images/rotary_encoder.jpg">
-              </div>
-
-             <div class="col-8"> 
-              <div class="rounded background-primary p-2 text-white mb-2">
-                Links: {{left_encoder}}
-              </div>
-         
-              <div class="rounded background-primary p-2 text-white">
-                Rechts: {{right_encoder}}
-              </div>
-            </div>
-
-            
-           </div>         
-
-        </div>
-
-
-
-
-     
-        
-            <div class="rounded background-green-light p-3 mb-2">
-              <h5>Lichtsensor</h5>
-                
+        <div v-for="sensor in getSensors()"  class="rounded background-green-light p-3 mb-2">
+              <h5>{{ peripherals[sensor].text }}</h5>
               <div class="row">
-                <div class="col-4"> 
-                  <img class="center-div w-75" src="@/assets/images/ir_sensor.webp">
-                </div>
-
-                <div class="col-8"> 
-                <div class="rounded background-primary p-2 text-white mb-2">
-                  Links: {{left_intensity}}
-                </div>
-      
-                <div class="rounded background-primary p-2 text-white">
-                  Rechts: {{right_intensity}}
-                </div>
-                </div>
-              </div>
-
-            
-            </div>
-               
-
-      
-            <div class="rounded background-green-light p-3 mb-2">
-              <h5>Afstandsensor</h5>
-                
-              <div class="row">
-                <div class="col-4"> 
-                  <img class="center-div w-75" src="@/assets/images/us_sensor.jpg">
-                </div>
-
-
-                <div class="col-8"> 
-                  <div class="rounded background-primary p-2 text-white mb-2">
-                    Links: {{left_distance}}
-                  </div>
-      
-                  <div class="rounded background-primary p-2 text-white">
-                    Rechts: {{right_distance}}
-                  </div>
-                </div>
-
-             </div>
-          </div>
-            
-        
-
-   
-            <div class="rounded background-green-light p-3">
-              <h5>Knoppen</h5>
-                
-               <div class="row">
+ 
                 <div class="col-4">
-                 <img class="center-div w-75" src="@/assets/images/keypad.jpg">
+                  <img class="center-div w-75" :src="getSensorImage(sensor)">
                 </div>
 
-                 <div class="col-8">
-                  <div class="rounded background-primary p-2 text-white">
-                    Knoppen: {{keypad}}
+                <div class="col-8">
+
+                  <div v-for="instance in getInstancesOfSensor(sensor)" class="rounded background-primary p-2 text-white mb-2">
+                     {{instance}}: {{ sensor_values[sensor][instance] }}
                   </div>
-                 </div>
-
-             </div>
-          </div>
-
-
+                </div>
+              </div>
+        </div>
     </div>
-
-
 
 </template>
 
 <script>
+import properties_ph from "../assets/json/properties_ph.json"
 import MenuButtons from '@/components/MenuButtons.vue'
 import ROSLIB from 'roslib'
-
+import Vue from 'vue'
 
 export default {
   name: 'sensors',
@@ -120,97 +35,56 @@ export default {
   },
   data() {
     return {
-      left_encoder: 0,
-      right_encoder: 0,
-      left_distance: 0,
-      right_distance: 0,
-      left_intensity: 0,
-      right_intensity: 0,
-      keypad: "",
-      left_speed: 0,
-      right_speed: 0,
-      ros: {},
+      peripherals: properties_ph,
+      sensor_values: {},
+    }
+  },
+  methods: {
+    //separates peripheral items into sensors and actuators
+    getSensors() {
+      const AP = new Array()
+      for (let p of this.$store.getters.getPConfig) {
+        if (p.rel_path.split("\\")[0] === "Sensors" && !AP.includes(p.type)) {
+          AP.push(p.type)
+        }
+      }
+      return AP
+    },
+    getInstancesOfSensor(type){
+      var PConfig = this.$store.getters.getPConfig;
+      var filtered = PConfig.filter(T => T.type === type).map(T => T.name);
+      return filtered;
+    },
+    getSensorImage(type){
+      var images = require.context('../assets/images/', false, /\.jpg$/)
+      return images('./' + 'encoder' + ".jpg")
     }
   },
   mounted(){
+
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
     const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`;
       
-    this.ros = new ROSLIB.Ros({
+    const ros = new ROSLIB.Ros({
       url : ros_socketUrl
     });
-      
-    var left_encoder_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/encoder/left',
-      messageType : 'zoef_msgs/Encoder'
-    });
 
-    var right_encoder_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/encoder/right',
-      messageType : 'zoef_msgs/Encoder'
-    });
-    
-    var left_intensity_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/intensity/left',
-      messageType : 'zoef_msgs/Intensity'
-    });
-
-    var right_intensity_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/intensity/right',
-      messageType : 'zoef_msgs/Intensity'
-    });
-    
-    var left_distance_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/distance/left',
-      messageType : 'sensor_msgs/Range'
-    });
-
-    var right_distance_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/distance/right',
-      messageType : 'sensor_msgs/Range'
-    });
-
-    var keypad_sub = new ROSLIB.Topic({
-      ros : this.ros,
-      name : '/zoef/keypad/keypad',
-      messageType : 'zoef_msgs/Keypad'
-    });
-
-    left_encoder_sub.subscribe((message) => {
-      this.left_encoder = message.value
-    });
-
-    right_encoder_sub.subscribe((message) => {
-      this.right_encoder = message.value
-    });
-    
-    left_intensity_sub.subscribe((message) => {
-      this.left_intensity = message.value
-    });
-
-    right_intensity_sub.subscribe((message) => {
-      this.right_intensity = message.value
-    });
-
-    left_distance_sub.subscribe((message) => {
-      this.left_distance = message.range
-    });
-
-    right_distance_sub.subscribe((message) => {
-      this.right_distance = message.range
-    });
-
-    keypad_sub.subscribe((message) => {
-      this.keypad = message.key
-    });
-
-
+    var sensors = this.getSensors();
+    for (let sensor in sensors){
+       Vue.set(this.sensor_values, sensors[sensor], {});
+       var instances = this.getInstancesOfSensor(sensors[sensor]);
+       for (let instance in instances){
+          Vue.set(this.sensor_values[sensors[sensor]], instances[instance], -1);
+          var topic = new ROSLIB.Topic({
+             ros : ros,
+             name : '/zoef/' + sensors[sensor] + '/' + instances[instance],
+             messageType : this.peripherals[sensors[sensor]].message_type
+          });
+          topic.subscribe((message) => {
+             this.sensor_values[sensors[sensor]][instances[instance]] = message[this.peripherals[sensors[sensor]].message_value];
+          });
+       }
+    }
   }
 
 
