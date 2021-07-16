@@ -132,7 +132,7 @@ export default {
         this.shell_socket.onopen = (ev) => {
             this.shell_socket.send("stty -echo && PS1='' && clear\n");
             this.shell_socket.send("clear\n");
-            this.shell_socket.send("cd /home/zoef/workdir/ && source /opt/ros/melodic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && pkill -f zoef_robot.linetrace || /bin/true && python3 -m zoef_robot.linetrace & clear\n");
+            this.shell_socket.send("cd /home/zoef/workdir/ && source /opt/ros/noetic/setup.bash && source /home/zoef/zoef_ws/devel/setup.bash && pkill -f zoef_robot.linetrace || /bin/true && python3 -m zoef_robot.linetrace & clear\n");
         };
 
         // Autoresize terminal on size change
