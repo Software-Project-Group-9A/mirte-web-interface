@@ -6,7 +6,10 @@
       "1b": "pwm"
     },
     "functions": ["set_speed", "stop"],
-    "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py"
+    "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py",
+    "service_type": "zoef_msgs/SetMotorSpeed",
+    "service_value": "speed",
+    "service_name": "speed"
   },
   "motor_l298n": {
     "text": "Motor (L298N)",
@@ -16,7 +19,10 @@
       "en": "pwm"
     },
     "functions": ["set_speed", "stop"],
-    "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py"
+    "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py",
+    "service_type": "zoef_msgs/SetMotorSpeed",
+    "service_value": "speed",
+    "sercice_name": "speed"
   },
   "intensity": {
     "text": "IR Sensor",
@@ -46,7 +52,10 @@
        "pin": "digital"
     },
     "functions": ["set_angle"],
-    "rel_path": "Actuators\\Servo\\servo\\servo.py"
+    "rel_path": "Actuators\\Servo\\servo\\servo.py",
+    "service_type": "zoef_msgs/SetServoAngle",
+    "service_value": "angle",
+    "service_name": "servo_angle"
   },
   "oled": {
     "text": "OLED",
@@ -55,7 +64,9 @@
        "sda": "digital"
     },
     "functions": ["set_oled"],
-    "rel_path": "Actuators\\OLED\\oled\\oled.py"
+    "rel_path": "Actuators\\OLED\\oled\\oled.py",
+    "service_type": "zoef_msgs/SetOLEDImage",
+    "service_name": "image"
   },
   "keypad": {
     "text": "Keypad",

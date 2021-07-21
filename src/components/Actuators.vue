@@ -2,6 +2,9 @@
       <div class="layoutbox-content" style="height: 100% !important">
 
 
+
+      <div v-if="programming">
+
             <div class="rounded background-green-light h5 p-3 mb-2">
               Output 
                 <div class="float-right">
@@ -31,7 +34,7 @@
 
               <Xterm/>
            </div>    
-
+      </div>
 
 
            <div class="rounded background-green-light p-3 mb-2">
@@ -122,108 +125,47 @@
 
               </div>  
 
-
-
            </div>
 
 
-            <div class="rounded background-green-light p-3 mb-2">
-              <h5>Motoren</h5> 
-              
 
-              <div class="rounded background-primary p-2 text-white mb-2">
-                  <div class="row">
-                     <div class="col-4">
-                       Links: {{ left_motor_speed }}
+      <div v-for="actuator in getActuators()"  class="rounded background-green-light p-3 mb-2">
+              <h5>{{ peripherals[actuator].text }}</h5>
+
+                  <div v-for="instance in getInstancesOfActuator(actuator)" class="rounded background-primary p-2 text-white mb-2">
+                     <div v-if="actuator === 'servo'">
+                          <div>
+                            {{instance}}: {{ actuator_values[actuator][instance] }}
+                          </div>
+                          <div>
+                              <b-form-input id="range-1" v-model="actuator_values[actuator][instance]" @change="sendData(actuator, instance)" type="range" min="0" max="180"></b-form-input>
+                          </div>
                      </div>
-                     <div class="col-8">
-                         <b-form-input id="range-1" v-model="left_motor_speed" @change="send_motor_speed('left')" type="range" min="-100" max="100"></b-form-input>
+
+                     <div v-if="actuator === 'oled'">
+                       <div class="row">
+                         <div class="col-2">
+                           {{instance}}
+                         </div>
+                         <div class="col-5">
+                             <b-form-select v-model="actuator_values[actuator][instance].type" :options="oled_options"></b-form-select>
+                         </div>
+                         <div class="col-5">
+                             <b-form-input v-model="actuator_values[actuator][instance].value" @change="set_oled(actuator, instance)" placeholder=""></b-form-input>
+                         </div>
+                       </div>
                      </div>
+
+                     <div v-if="actuator === 'motor_l9110s'">
+                          <div>
+                            {{instance}}: {{ actuator_values[actuator][instance] }}
+                          </div>
+                          <div>
+                              <b-form-input id="range-1" v-model="actuator_values[actuator][instance]" @change="sendData(actuator, instance)" type="range" min="-100" max="100"></b-form-input>
+                          </div>
+                     </div>
+
                   </div>
-               </div>
-
-               <div class="rounded background-primary p-2 text-white mb-2">
-                  <div class="row">
-                     <div class="col-4">
-                       Rechts: {{ right_motor_speed }}
-                     </div>
-                     <div class="col-8">
-                         <b-form-input id="range-1" v-model="right_motor_speed" @change="send_motor_speed('right')" type="range" min="-100" max="100"></b-form-input>
-                     </div>
-                  </div>
-
-              </div>  
-
-
-           </div>         
-
-
-
-            <div class="rounded background-green-light p-3 mb-2">
-              <h5>Servos</h5>   
-
-              <div class="rounded background-primary p-2 text-white mb-2">
-                  <div class="row">
-                     <div class="col-4">
-                       Links: {{ left_servo_angle }}
-                     </div>
-                     <div class="col-8">
-                         <b-form-input id="range-1" v-model="left_servo_angle" @change="send_servo_value('left')" type="range" min="0" max="180"></b-form-input>
-                     </div>
-                  </div>
-               </div>
-
-               <div class="rounded background-primary p-2 text-white mb-2">
-                  <div class="row">
-                     <div class="col-4">
-                       Rechts: {{ right_servo_angle }}
-                     </div>
-                     <div class="col-8">
-                         <b-form-input id="range-1" v-model="right_servo_angle" @change="send_servo_value('right')" type="range" min="0" max="180"></b-form-input>
-                     </div>
-                  </div>
-
-              </div>
-
-
-           </div>
-
-            <div class="rounded background-green-light p-3 mb-2">
-              <h5>Schermpjes</h5>   
-
-              <div class="rounded background-primary p-2 text-white mb-2">
-                  <div class="row">
-                     <div class="col-2">
-                       Links
-                     </div>
-                     <div class="col-5">
-                          <b-form-select v-model="left_oled_type" :options="oled_options"></b-form-select>
-                     </div>
-                     <div class="col-5">
-                          <b-form-input v-model="left_oled_value" @change="set_oled('left')" placeholder=""></b-form-input>
-                     </div>
-                  </div>
-               </div>
-
-
-
-
-              <div class="rounded background-primary p-2 text-white mb-2">
-                  <div class="row">
-                     <div class="col-2">
-                       Rechts
-                     </div>
-                     <div class="col-5">
-                          <b-form-select v-model="right_oled_type" :options="oled_options"></b-form-select>
-                     </div>
-                     <div class="col-5">
-                          <b-form-input v-model="right_oled_value" @change="set_oled('right')" placeholder=""></b-form-input>
-                     </div>
-                  </div>
-               </div>
-
-
-
            </div>
 
 
@@ -234,6 +176,8 @@
 <script>
 import ROSLIB from 'roslib'
 import Xterm from '@/components/Xterm.vue'
+import properties_ph from "../assets/json/properties_ph.json"
+import Vue from 'vue'
 
 
 export default {
@@ -242,52 +186,32 @@ export default {
     Xterm
   },
   methods: {
-        set_oled(type){
-          switch(type) {
-             case "left":
-               var request = new ROSLIB.ServiceRequest({
-                 type: this.left_oled_type,
-                 value: this.left_oled_value
-               });
-               this.left_oled_srv.callService(request, function(result) {});
-
-             case "right":
-               var request = new ROSLIB.ServiceRequest({
-                 type: this.right_oled_type,
-                 value: this.right_oled_value
-               });
-               this.right_oled_srv.callService(request, function(result) {});
+        getActuators() {
+          const AP = new Array()
+          for (let p of this.$store.getters.getPConfig) {
+            if (p.rel_path.split("\\")[0] === "Actuators" && !AP.includes(p.type)) {
+              AP.push(p.type)
+            }
           }
+          return AP
         },
-        send_motor_speed(type) {
-          switch(type) {
-             case "left":
-               var request = new ROSLIB.ServiceRequest({
-                 speed : parseInt(this.left_motor_speed),
-               });
-               this.left_motor_srv.callService(request, function(result) {});
-
-             case "right":
-               var request = new ROSLIB.ServiceRequest({
-                 speed : parseInt(this.right_motor_speed),
-               });
-               this.right_motor_srv.callService(request, function(result) {});
-          }
+        getInstancesOfActuator(type){
+           var PConfig = this.$store.getters.getPConfig;
+           var filtered = PConfig.filter(T => T.type === type).map(T => T.name);
+           return filtered;
         },
-        send_servo_value(type) {
-          switch(type) {
-             case "left": 
-               var request = new ROSLIB.ServiceRequest({
-                 angle : parseInt(this.left_servo_angle),
-               });
-               this.left_servo_srv.callService(request, function(result) {});
-
-             case "right":
-               var request = new ROSLIB.ServiceRequest({
-                 angle : parseInt(this.right_servo_angle),
-               });
-               this.right_servo_srv.callService(request, function(result) {});
-          }
+        sendData(actuator, instance){
+           var data = {};
+           data[this.peripherals[actuator].service_value] = parseInt(this.actuator_values[actuator][instance]);
+           var request = new ROSLIB.ServiceRequest(data);
+           this.actuator_services[actuator][instance].callService(request, function(result) {});
+        },
+        set_oled(actuator, instance){
+           var request = new ROSLIB.ServiceRequest({
+              type: this.actuator_values[actuator][instance].type,
+              value: this.actuator_values[actuator][instance].value
+           });
+           this.actuator_services[actuator][instance].callService(request, function(result) {});
         },
         control(command) {
             console.log(command);
@@ -329,28 +253,34 @@ export default {
   },
   data() {
     return {
+      programming: true,
+      peripherals: properties_ph,
+      actuator_values: {},
+      actuator_services: {},
       oled_options: ["text", "image", "animation"],
-      animation_options: ["eye"],
-      image_options: ["zoef_logo"],
-      left_oled_type: "",
-      left_oled_value: "",
-      left_oled_srv: {},
-      right_oled_type: "",
-      right_oled_value: "",
-      right_oled_srv: {},
       cmd_vel: {},
-      left_servo_srv: {},
-      right_servo_srv: {},
-      left_motor_srv: {},
-      right_motor_srv: {},
       linear_speed: 0.5,
       angular_speed: 0.5,
       ros: {},
-      left_servo_angle: 90,
-      right_servo_angle: 90,
-      left_motor_speed: 0,
-      right_motor_speed: 0
     }
+  },
+  beforeMount(){
+     // Instansiate all actuators in this.actuator_values
+
+     const actuators = this.getActuators();
+     for (var actuator in actuators){
+        Vue.set(this.actuator_values, actuators[actuator], {});
+        const instances = this.getInstancesOfActuator(actuators[actuator]);
+        for (var instance in instances){
+           if (actuators[actuator] == "oled"){
+              Vue.set(this.actuator_values[actuators[actuator]], instances[instance], {});
+              Vue.set(this.actuator_values[actuators[actuator]][instances[instance]], 'type', '');
+              Vue.set(this.actuator_values[actuators[actuator]][instances[instance]], 'value', '');
+           } else {
+              Vue.set(this.actuator_values[actuators[actuator]], instances[instance], 0);
+           }
+        }
+     }
   },
   mounted(){
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
@@ -366,43 +296,20 @@ export default {
        messageType : 'geometry_msgs/Twist'
     });
 
-    this.left_servo_srv = new ROSLIB.Service({
-      ros : this.ros,
-      name : '/zoef/set_left_servo_angle',
-      serviceType : 'zoef_msgs/SetServoAngle'
-    });
 
-    this.right_servo_srv = new ROSLIB.Service({
-      ros : this.ros,
-      name : '/zoef/set_right_servo_angle',
-      serviceType : 'zoef_msgs/SetServoAngle'
-    });
-
-    this.left_motor_srv = new ROSLIB.Service({
-      ros : this.ros,
-      name : '/zoef/set_left_speed',
-      serviceType : 'zoef_msgs/SetMotorSpeed'
-    });
-
-    this.right_motor_srv = new ROSLIB.Service({
-      ros : this.ros,
-      name : '/zoef/set_right_speed',
-      serviceType : 'zoef_msgs/SetMotorSpeed'
-    });
-
-    this.left_oled_srv = new ROSLIB.Service({
-      ros : this.ros,
-      name : '/zoef/set_left_image',
-      serviceType : 'zoef_msgs/SetOLEDImage'
-    });
-
-    this.right_oled_srv = new ROSLIB.Service({
-      ros : this.ros,
-      name : '/zoef/set_right_image',
-      serviceType : 'zoef_msgs/SetOLEDImage'
-    });
-
- 
+    var actuators = this.getActuators();
+    for (let actuator in actuators){
+       Vue.set(this.actuator_services, actuators[actuator], {});
+       var instances = this.getInstancesOfActuator(actuators[actuator]);
+       for (let instance in instances){
+          Vue.set(this.actuator_services[actuators[actuator]], instances[instance], {});
+          this.actuator_services[actuators[actuator]][instances[instance]] = new ROSLIB.Service({
+              ros : this.ros,
+              name : '/zoef/set_' + instances[instance] + '_' + this.peripherals[actuators[actuator]].service_name,
+              serviceType : this.peripherals[actuators[actuator]].service_type
+          });
+       }
+    }
   }
 
 
