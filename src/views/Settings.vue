@@ -39,19 +39,28 @@
 
 
           <div class="row">
-            <div class="col-6">
               <b-form-radio v-model="mcu" value="stm32" data-label="STM32">
-                STM32
+                Robotdyn STM32 Black Pill (arduino bootloader)
               </b-form-radio>
-            </div>
-            <div class="col-6">
-              <b-form-radio v-model="mcu" value="nano" data-label="Nano">
+          </div>
+          <div class="row">
+              <b-form-radio v-model="mcu" value="nano" data-label="Arduino Nano">
                 Arduino Nano
               </b-form-radio>
-            </div>
+          </div>
+          <div class="row">
+              <b-form-radio v-model="mcu" value="nano_old" data-label="Arduino Nano (old bootloader)">
+                Arduino Nano (old bootloader)
+              </b-form-radio>
+          </div>
+          <div class="row">
+              <b-form-radio v-model="mcu" value="uno" data-label="Arduino Uno)">
+                Arduino Uno
+              </b-form-radio>
           </div>
 
-        </div>
+       </div>
+        
       </div>
 
     </div>
@@ -320,9 +329,14 @@ export default {
 
     //Old out of scope server request functions
     uploadMCU() {
-      if (confirm('Weet je zeker dat je de stm32 wilt updaten?')) {
+      if (confirm('Weet je zeker dat je de microcontroller wilt updaten?')) {
         this.busy = true
-        fetch(`http://${location.hostname}:3000/api/stm32`)
+        var body = {};
+        body["mcu"] = this.mcu;
+        fetch(`http://${location.hostname}:3000/api/upload_telemetrix`, {
+           method: 'POST',
+           body: JSON.stringify(body) 
+        } )
             .then(res => res.text())
             .then(data => {
               console.log(data)

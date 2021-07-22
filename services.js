@@ -184,12 +184,33 @@ expressWs.app.ws('/shell', (ws, req) => {
     });
 });
 
-// upload stm32 build
-app.get('/api/stm32', (req, res) => {
-  const exec = require('child_process').execSync;
-  const stdout = exec('sudo /usr/local/src/zoef/zoef_arduino/run.sh upload Telemetrix4Arduino');
-  res.end(stdout);
+
+
+const exec = require('child_process').exec;
+function upload_telemetrix (res, mcu) {
+   return new Promise((resolve, reject) => {
+     exec('/usr/local/src/zoef/zoef_arduino/run.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
+       if (error) {
+         reject(stderr);
+       } else {
+         resolve(stderr)
+       }
+     });
+   });
+}
+
+
+// upload telemetrix to mcu
+app.post('/api/upload_telemetrix', async function (req, res) {
+  var mcu = JSON.parse(req.body).mcu;
+  const ret = await upload_telemetrix(res, mcu);
+  if(ret.toLowerCase().includes("error")){
+     res.end('download error');
+  } else {
+     res.end('download done');
+  }
 })
+
 
 // shutdown
 app.get('/api/shutdown', (req, res) => {
