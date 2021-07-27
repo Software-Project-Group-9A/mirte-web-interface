@@ -4,36 +4,69 @@ export function load (Blockly, instances) {
         instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
     }
 
+    Blockly.Extensions.register('dynamic_instances_extension_oled',
+    function() {
+      this.getInput('INSTANCE')
+      .appendField(new Blockly.FieldDropdown(instances), 'INSTANCE');
+    });
+
     Blockly.Blocks['set_oled_oled'] = {
         init: function () {
-          this.appendValueInput("value")
-            .setCheck(['String'])
-            .appendField("laat op de ")
-            .appendField(new Blockly.FieldDropdown(instances), 'instance')
-            .appendField("OLED de ")
-            .appendField(new Blockly.FieldDropdown([['tekst', 'text'], ['afbeelding', 'image'], ['animatie', 'animation']]), 'type')
-            .appendField("zien ")
-          this.setPreviousStatement(true, null);
-          this.setNextStatement(true, null);
-          this.setColour("%{BKY_ACTIONS_RGB}");
-          this.setTooltip("");
-          this.setHelpUrl("");
+            this.jsonInit({
+		  "type": "block_type",
+		  "message0": "%{BKY_SET_OLED}",
+		  "args0": [
+		    {
+		      "type": "input_dummy",
+		      "name": "INSTANCE",
+		    },
+		    {
+		      "type": "field_dropdown",
+		      "name": "TYPE",
+		      "options": [
+		        [
+		          "text",
+		          "TEXT"
+		        ],
+		        [
+		          "image",
+		          "IMAGE"
+		        ],
+		        [
+		          "animation",
+		          "ANIMATION"
+		        ]
+		      ]
+		    },
+		    {
+		      "type": "input_value",
+		      "name": "VALUE",
+		      "check": "String"
+		    }
+		  ],
+		  "inputsInline": true,
+		  "previousStatement": null,
+		  "nextStatement": null,
+                  "colour": "%{BKY_ACTIONS_RGB}",
+                  "extensions": ["dynamic_instances_extension_oled"]
+            });
         }
     };
 
+
     Blockly.Python['set_oled_oled'] = function (block) {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
-        let value = Blockly.Python.valueToCode(block, 'value', Blockly.Python.ORDER_ATOMIC);
-        let type = block.getFieldValue('type');
-        let instance = block.getFieldValue('instance');
+        let value = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_ATOMIC);
+        let type = block.getFieldValue('TYPE');
+        let instance = block.getFieldValue('INSTANCE');
         let code = '';
-        if (type == "text"){
+        if (type == "TEXT"){
            code = `mirte.setOLEDText('${instance}', ${value})\n`;
         }
-        if (type == "image"){
+        if (type == "IMAGE"){
            code = `mirte.setOLEDImage('${instance}', ${value})\n`;
         }
-        if (type == "animation"){
+        if (type == "ANIMATION"){
            code = `mirte.setOLEDAnimation('${instance}', ${value})\n`;
         }
         return code;

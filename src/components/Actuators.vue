@@ -6,7 +6,7 @@
       <div v-if="programming">
 
             <div class="rounded background-green-light h5 p-3 mb-2">
-              Output 
+              {{ $t('actuators.output') }}              
                 <div class="float-right">
 
 <!--
@@ -38,14 +38,14 @@
 
 
            <div class="rounded background-green-light p-3 mb-2">
-              <h5>Besturing</h5> 
+              <h5>{{ $t('actuators.control') }}</h5> 
 
                <div class="row mb-4">
 
                 <div class="col-1 offset-6">
                 <button class="btn btn-outline-dark mr-2"
                    v-b-tooltip.hover
-                   title="forward"
+                   :title="$t('actuators.move_forward')"
                    @click="control('forward')"
                  >
                  <i class="fa fa-arrow-up"></i>
@@ -57,7 +57,7 @@
                 <div class="col-1 offset-4">
                 <button class="btn btn-outline-dark mr-2"
                    v-b-tooltip.hover
-                   title="turn left"
+                   :title="$t('actuators.move_left')"
                    @click="control('left')"
                  >
                  <i class="fa fa-arrow-left"></i>
@@ -67,7 +67,7 @@
                 <div class="col-2 offset-1">
                 <button class="btn btn-outline-dark mr-2"
                    v-b-tooltip.hover
-                   title="stop"
+                   :title="$t('actuators.move_stop')"
                    @click="control('stop')"
                  >
                  <i class="fa fa-times-circle"></i>
@@ -77,7 +77,7 @@
                 <div class="col-1 mb-2">
                 <button class="btn btn-outline-dark mr-2"
                    v-b-tooltip.hover
-                   title="turn right"
+                   :title="$t('actuators.move_right')"
                    @click="control('right')"
                  >
                  <i class="fa fa-arrow-right"></i>
@@ -93,7 +93,7 @@
                 <div class="col-1 offset-6">
                 <button class="btn btn-outline-dark mr-2"
                    v-b-tooltip.hover
-                   title="backward"
+                   :title="$t('actuators.move_backward')"
                    @click="control('backward')"
                  >
                  <i class="fa fa-arrow-down"></i>
@@ -105,7 +105,7 @@
               <div class="rounded background-primary p-2 text-white mb-2">
                   <div class="row">
                      <div class="col-4">
-                       Snelheid: {{ linear_speed }}
+                       {{ $t('actuators.speed') }}: {{ linear_speed }}
                      </div>
                      <div class="col-8">
                          <b-form-input id="range-1" v-model="linear_speed" type="range" min="0" max=".1" step="0.01"></b-form-input>
@@ -116,7 +116,7 @@
                <div class="rounded background-primary p-2 text-white mb-2">
                   <div class="row">
                      <div class="col-4">
-                       Draaisnelheid: {{ angular_speed }}
+                       {{ $t('actuators.angular_speed') }}: {{ angular_speed }}
                      </div>
                      <div class="col-8">
                          <b-form-input id="range-1" v-model="angular_speed" type="range" min="0" max="1" step="0.01"></b-form-input>
@@ -130,7 +130,7 @@
 
 
       <div v-for="actuator in getActuators()"  class="rounded background-green-light p-3 mb-2">
-              <h5>{{ peripherals[actuator].text }}</h5>
+              <h5>{{ $t('peripherals.' + peripherals[actuator].text) }}</h5>
 
                   <div v-for="instance in getInstancesOfActuator(actuator)" class="rounded background-primary p-2 text-white mb-2">
                      <div v-if="actuator === 'servo'">
@@ -164,6 +164,16 @@
                               <b-form-input id="range-1" v-model="actuator_values[actuator][instance]" @change="sendData(actuator, instance)" type="range" min="-100" max="100"></b-form-input>
                           </div>
                      </div>
+
+                     <div v-if="actuator === 'motor_l298n'">
+                          <div>
+                            {{instance}}: {{ actuator_values[actuator][instance] }}
+                          </div>
+                          <div>
+                              <b-form-input id="range-1" v-model="actuator_values[actuator][instance]" @change="sendData(actuator, instance)" type="range" min="-100" max="100"></b-form-input>
+                          </div>
+                     </div>
+
 
                   </div>
            </div>

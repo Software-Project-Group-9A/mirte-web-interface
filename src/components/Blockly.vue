@@ -8,13 +8,14 @@
     <xml id="toolbox" ref="toolbox" style="display: none">
 
 
-      <category name="Sensoren" colour="%{BKY_SENSORS_RGB}">
+      <category name="%{BKY_SENSORS}" colour="%{BKY_SENSORS_RGB}" expanded=true>
 
-         <category name="Robot" colour="%{BKY_SENSORS_RGB}">
+         <category name="%{BKY_ROBOT}" colour="%{BKY_SENSORS_RGB}">
             <block type="get_pin_value"></block>
          </category>
 
-         <category v-for="sensor in getPByKind('Sensors')" v-bind:name="peripherals[sensor].text"
+
+        <category v-for="sensor in getPByKind('Sensors')" :name="$t('peripherals.' + peripherals[sensor].text)"
                   colour="%{BKY_SENSORS_RGB}">
           <block v-for="func in peripherals[sensor].functions"
                  :type="func.concat('_').concat(sensor)">
@@ -24,9 +25,9 @@
 
 
 
-      <category name="Flow" colour="%{BKY_FLOW_RGB}" expanded="true">
+      <category name="%{BKY_FLOW}" colour="%{BKY_FLOW_RGB}" expanded="true">
 
-        <category name="Lussen" colour="%{BKY_FLOW_RGB}">
+        <category name="%{BKY_LOOPS}" colour="%{BKY_FLOW_RGB}">
           <block type="controls_repeat_ext">
             <value name="TIMES">
               <block type="math_number">
@@ -57,7 +58,7 @@
           <block type="controls_flow_statements"></block>
         </category>
 
-        <category name="Tijd" colour="%{BKY_FLOW_RGB}">
+        <category name="%{BKY_TIME}" colour="%{BKY_FLOW_RGB}">
           <block type="wait">
             <value name="wait">
               <block type="math_number">
@@ -69,7 +70,7 @@
           <block type="get_timestamp"></block>
         </category>
 
-        <category name="Als/Dan" colour="%{BKY_FLOW_RGB}">
+        <category name="%{BKY_CONDITIONS}" colour="%{BKY_FLOW_RGB}">
           <block type="controls_if"></block>
           <block type="controls_if">
             <mutation else="1"></mutation>
@@ -79,14 +80,14 @@
           </block>
         </category>
 
-        <category name="Functies" custom="PROCEDURE" colour="%{BKY_FLOW_RGB}">
+        <category name="%{BKY_FUNCTIONS}" custom="PROCEDURE" colour="%{BKY_FLOW_RGB}">
         </category>
 
       </category>
 
-      <category name="Data" colour="%{BKY_DATA_RGB}" expanded="true">
+      <category name="%{BKY_DATA}" colour="%{BKY_DATA_RGB}" expanded="true">
 
-        <category name="Logica" colour="%{BKY_DATA_RGB}">
+        <category name="%{BKY_LOGIC}" colour="%{BKY_DATA_RGB}">
           <block type="logic_compare"></block>
           <block type="logic_operation"></block>
           <block type="logic_negate"></block>
@@ -95,7 +96,7 @@
           <block type="logic_ternary"></block>
         </category>
 
-        <category name="Rekenen" colour="%{BKY_DATA_RGB}">
+        <category name="%{BKY_MATH}" colour="%{BKY_DATA_RGB}">
           <block type="math_number">
             <field name="NUM">123</field>
           </block>
@@ -135,7 +136,7 @@
           <block type="math_atan2"></block>
         </category>
 
-        <category name="Lijsten" colour="%{BKY_DATA_RGB}">
+        <category name="%{BKY_LISTS}" colour="%{BKY_DATA_RGB}">
           <block type="lists_create_empty"></block>
           <block type="lists_create_with"></block>
           <block type="lists_repeat">
@@ -152,14 +153,14 @@
           <block type="lists_setIndex"></block>
         </category>
 
-        <category name="Variabelen" custom="VARIABLE" colour="%{BKY_DATA_RGB}">
+        <category name="%{BKY_VARIABLES}" custom="VARIABLE" colour="%{BKY_DATA_RGB}">
         </category>
 
       </category>
 
-      <category name="Acties" colour="%{BKY_ACTIONS_RGB}">
+      <category name="%{BKY_ACTIONS}" colour="%{BKY_ACTIONS_RGB}" expanded=true>
 
-         <category name="Robot" colour="%{BKY_ACTIONS_RGB}">
+         <category name="%{BKY_ROBOT}" colour="%{BKY_ACTIONS_RGB}">
 
             <block type="text_print">
               <value name="TEXT">
@@ -171,7 +172,7 @@
 
          </category>
 
-        <category v-for="actuator in getPByKind('Actuators')" v-bind:name="peripherals[actuator].text"
+        <category v-for="actuator in getPByKind('Actuators')" :name="$t('peripherals.' + peripherals[actuator].text)"
                   colour="%{BKY_ACTIONS_RGB}">
           <block v-for="func in peripherals[actuator].functions"
                  :type="func.concat('_').concat(actuator)">
@@ -189,9 +190,14 @@ import Blockly from 'blockly'
 import 'blockly/python'
 import EventBus from '../event-bus'
 import * as NL from 'blockly/msg/nl'
+import CustomNL from "../../locales/nl.json"
 import * as EN from 'blockly/msg/en'
+import CustomEN from "../../locales/en.json"
 
-var locales = { "nl": NL, "en": EN};
+var CombinedNL = { ...(JSON.parse(JSON.stringify(CustomNL.blockly))),  ...NL} ;
+var CombinedEN = { ...(JSON.parse(JSON.stringify(CustomEN.blockly))),  ...EN} ;
+
+var locales = { "nl": CombinedNL, "en": CombinedEN};
 
 import properties_ph from "../assets/json/properties_ph.json"
 

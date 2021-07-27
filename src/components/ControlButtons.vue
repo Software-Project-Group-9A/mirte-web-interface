@@ -2,7 +2,7 @@
     <div>
         <button :disabled="isUndoDisabled" class="btn btn-outline-light mr-2"
             v-b-tooltip.hover
-            title="undo"
+            :title="$t('programming.undo')"
             @click="control('undo')"
         >
             <i class="fas fa-undo"></i>
@@ -10,7 +10,7 @@
 
         <button :disabled="isRedoDisabled" class="btn btn-outline-light mr-2"
             v-b-tooltip.hover 
-            title="redo"
+            :title="$t('programming.redo')"
             @click="control('redo')"
         >
             <i class="fa fa-redo"></i>
@@ -18,28 +18,28 @@
 
         <span class="nav-spacer"></span>
 
-        <span v-b-tooltip title="play" style="display: inline-block;">
+        <span v-b-tooltip :title="$t('programming.start')" style="display: inline-block;">
         <button :disabled="isPlayDisabled" class="btn btn-outline-light mx-2" 
             @click="control('play')">
             <i class="fas fa-play"></i>
         </button>
         </span>
 
-        <span v-b-tooltip title="pause" style="display: inline-block;">
+        <span v-b-tooltip :title="$t('programming.pause')" style="display: inline-block;">
         <button :disabled="isPauseDisabled" 
             @click="control('pause')" class="btn btn-outline-light mr-2">
             <i class="fa fa-pause"></i>
         </button>
         </span>
 
-        <span v-b-tooltip title="step" style="display: inline-block;">
+        <span v-b-tooltip :title="$t('programming.step')" style="display: inline-block;">
         <button :disabled="isStepDisabled" class="btn btn-outline-light mr-2" 
             @click="control('step')">
             <i class="fa fa-step-forward"></i>
         </button>
         </span>
 
-        <span v-b-tooltip title="stop" style="display: inline-block;">
+        <span v-b-tooltip :title="$t('programming.stop')" style="display: inline-block;">
 	<button :disabled="isStopDisabled" class="btn btn-outline-light mr-2" 
             @click="control('stop')">
             <i class="fa fa-stop"></i>
@@ -50,7 +50,7 @@
 
         <button href="#" class="btn btn-outline-light mx-2" 
             v-b-tooltip.hover 
-            title="download" 
+            :title="$t('programming.download')" 
             @click="download"
         >
             <i class="fa fa-download"></i>
@@ -58,7 +58,7 @@
 
         <button class="btn btn-outline-light mr-2" 
             v-b-tooltip.hover 
-            title="upload" 
+            :title="$t('programming.upload')" 
             @click="openFileWindow"
         >
             <i class="fa fa-upload"></i>

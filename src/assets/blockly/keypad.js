@@ -4,21 +4,34 @@ export function load (Blockly, instances) {
         instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
     }
 
+    Blockly.Extensions.register('dynamic_instances_extension_keypad',
+    function() {
+      this.getInput('INSTANCE')
+      .appendField(new Blockly.FieldDropdown(instances), 'INSTANCE');
+    });
+
     Blockly.Blocks['get_button_keypad'] = {
-        init: function() {
-          this.appendDummyInput()
-              .appendField("ingedrukte knop van ")
-              .appendField(new Blockly.FieldDropdown(instances), 'instance');
-          this.setOutput(true, null);
-          this.setColour("%{BKY_SENSORS_RGB}");
-          this.setTooltip("");
-          this.setHelpUrl("");
+        init: function () {
+            this.jsonInit({
+                  "type": "block_type",
+                  "message0": "%{BKY_KEYPAD}",
+                  "args0": [
+                    {
+                      "type": "input_dummy",
+                      "name": "INSTANCE"
+                    }
+                  ],
+                  "inputsInline": true,
+                  "colour": "%{BKY_SENSORS_RGB}",
+                  "output": "String",
+                  "extensions": ["dynamic_instances_extension_keypad"]
+             });
         }
     };
 
     Blockly.Python['get_button_keypad'] = function (block) {
       Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
-      let instance = block.getFieldValue('instance');
+      let instance = block.getFieldValue('INSTANCE');
       let code = `mirte.getKeypad('${instance}')`;
       return [code, Blockly.Python.ORDER_NONE]
     };

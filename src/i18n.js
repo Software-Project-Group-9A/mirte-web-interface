@@ -16,8 +16,42 @@ function loadLocaleMessages () {
   return messages
 }
 
+// Based on https://blog.logrocket.com/advanced-localization-techniques-vue-js/
+function checkDefaultLanguage() {
+  let matched = null
+  let languages = Object.getOwnPropertyNames(loadLocaleMessages())
+  languages.forEach(lang => {
+    if (lang === navigator.language) {
+      matched = lang
+    }
+  })
+  if (!matched) {
+    languages.forEach(lang => {
+      let languagePartials = navigator.language.split('-')[0]
+      if (lang === languagePartials) {
+        matched = lang
+      }
+    })
+  }
+  if (!matched) {
+    languages.forEach(lang => {
+      let languagePartials = navigator.language.split('-')[0]
+      if (lang.split('-')[0] === languagePartials) {
+        matched = lang
+      }
+    })
+  }
+  return matched
+}
+
+// We need another way to get the store sata
+var vuex_storage = localStorage.getItem('vuex');
+var savedLocale = JSON.parse(vuex_storage).locale;
+export const selectedLocale = savedLocale || checkDefaultLanguage() || process.env.VUE_APP_I18N_LOCALE || 'en'
+export const languages = Object.getOwnPropertyNames(loadLocaleMessages())
+
 export default new VueI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en',
+  locale: selectedLocale,
   fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
   messages: loadLocaleMessages()
 })

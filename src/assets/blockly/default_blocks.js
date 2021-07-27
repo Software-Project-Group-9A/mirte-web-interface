@@ -2,46 +2,77 @@ export function load(Blockly) {
 
     Blockly.Blocks['set_analog_pin_value'] = {
         init: function () {
-            this.appendValueInput("value")
-                .setCheck(['Number'])
-                .appendField("zet waarde van analoge pin ")
-                .appendField(new Blockly.FieldTextInput("A0"), "pin")
-                .appendField("op")
-            this.setPreviousStatement(true, null);
-            this.setNextStatement(true, null);
-            this.setColour("%{BKY_ACTIONS_RGB}");
-            this.setTooltip("");
-            this.setHelpUrl("");
+            this.jsonInit({
+		"type": "block_type",
+		  "message0": "%{BKY_SET_ANALOG_PIN}",
+		  "args0": [
+		    {
+		      "type": "field_input",
+		      "name": "PIN",
+		      "text": "A0"
+		    },
+		    {
+		      "type": "input_value",
+		      "name": "VALUE"
+		    }
+		  ],
+		  "inputsInline": true,
+		  "previousStatement": null,
+		  "nextStatement": null,
+		  "colour": "%{BKY_ACTIONS_RGB}"
+            });
         }
     };
 
     Blockly.Python['set_analog_pin_value'] = function (block) {
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
-        let pin = block.getFieldValue('pin');
-        let value = Blockly.JavaScript.valueToCode(block, 'value', Blockly.JavaScript.ORDER_ATOMIC);
+        var pin = block.getFieldValue('PIN');
+        var value = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_ATOMIC);
         return `zoef.setAnalogPinValue('${pin}', ${value})\n`;
     };
 
+
+
     Blockly.Blocks['get_pin_value'] = {
         init: function () {
-            this.appendDummyInput()
-                .appendField(new Blockly.FieldDropdown([['analoge', 'analog'], ['digitale', 'digital']]), 'type')
-                .appendField("waarde van pin")
-                .appendField(new Blockly.FieldNumber(1), "pin");
-            this.setOutput(true, null);
-            this.setColour("%{BKY_SENSORS_RGB}");
-            this.setTooltip("");
-            this.setHelpUrl("");
+            this.jsonInit({
+		  "type": "block_type",
+		  "message0": "%{BKY_GET_PIN_VALUE}",
+		  "args0": [
+		    {
+		      "type": "field_dropdown",
+		      "name": "TYPE",
+		      "options": [
+		        [
+		          "%{BKY_ANALOG}",
+		          "ANALOG"
+		        ],
+		        [
+		          "%{BKY_DIGITAL}",
+		          "DIGITAL"
+		        ]
+		      ]
+		    },
+		    {
+                      "type": "field_input",
+                      "name": "PIN",
+                      "text": "A0"
+		    }
+		  ],
+		  "inputsInline": true,
+                  "output": "Number",
+                  "colour": "%{BKY_SENSORS_RGB}"
+             });
         }
     };
 
     Blockly.Python['get_pin_value'] = function (block) {
         // TODO: Assemble JavaScript into code letiable.
         Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
-        let pin = block.getFieldValue('pin');
-        let type = block.getFieldValue('type');
+        let pin = block.getFieldValue('PIN');
+        let type = block.getFieldValue('TYPE');
         let code = "";
-        if (type === "analog") {
+        if (type === "ANALOG") {
             code = `zoef.getAnalogPinValue(${pin})`;
         } else {
             code = `zoef.getDigitalPinValue(${pin})`;

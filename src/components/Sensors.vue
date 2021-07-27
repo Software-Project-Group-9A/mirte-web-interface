@@ -3,7 +3,8 @@
   
      <div class="layoutbox-content">
         <div v-for="sensor in getSensors()"  class="rounded background-green-light p-3 mb-2">
-              <h5>{{ peripherals[sensor].text }}</h5>
+
+              <h5>{{ $t('peripherals.' + peripherals[sensor].text) }}</h5>
               <div class="row">
  
                 <div class="col-4">

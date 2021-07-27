@@ -1,7 +1,7 @@
 <template>
   <div class="container">
 
-    <h1 class="mb-5">Hardware Instellingen</h1>
+    <h1 class="mb-5">{{ $t('settings.hardware_settings') }}</h1>
 
     <div class="row">
       <div class="col-6">
@@ -30,9 +30,9 @@
         <div class="layoutbox rounded">
 
           <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-            Microcontroller
+            {{ $t('settings.microcontroller') }}
             <button @click="uploadMCU" type="button" class="btn btn-danger float-right">
-              <span v-if="!busy">upload</span>
+              <span v-if="!busy">{{ $t('settings.upload') }}</span>
               <i v-else class="fa fa-spin fa-stroopwafel"></i>
             </button>
           </div>
@@ -70,9 +70,9 @@
       <div class="col-6">
         <div class="layoutbox rounded mt-5">
           <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-            Bedrading
+            {{ $t('settings.wiring') }}
             <button @click="uploadYAML" type="button" class="btn btn-danger float-right">
-              <span v-if="!busy">save</span>
+              <span v-if="!busy">{{ $t('settings.save') }}</span>
               <i v-else class="fa fa-spin fa-stroopwafel"></i>
             </button>
           </div>
@@ -93,9 +93,9 @@
 
               <template #head(type)="data">
                 <div>
-                  <b-dropdown id="dropdown-1" text="add" class="m-md-2">
+                  <b-dropdown id="dropdown-1" :text="$t('settings.add')" class="m-md-2">
                     <b-dropdown-item v-for="i in Object.keys(peripherals)" ref="i" @click="add_item(i)">
-                      {{ peripherals[i].text }}
+                      {{ $t('peripherals.' + peripherals[i].text) }}
                     </b-dropdown-item>
                   </b-dropdown>
                 </div>
@@ -105,11 +105,11 @@
                 <button @click="delete_item(data.index)" type="button" class="btn float-left">
                   <span class="fa fa-trash"> </span>
                 </button>
-                {{ peripherals[data.item.type].text }}
+                {{ $t('peripherals.' + peripherals[data.item.type].text) }}
               </template>
 
               <template #cell(name)="data">
-                <b-form-input v-model="data.item.name" placeholder="variable name"></b-form-input>
+                <b-form-input v-model="data.item.name" :placeholder="$t('settings.placeholder')"></b-form-input>
               </template>
 
               <template #cell(pins)="data">
@@ -301,7 +301,7 @@ export default {
     },
     // Requests from the server to update the ROS params with the generated YAML file of the configured Peripherals
     uploadYAML() {
-      if (confirm('Weet je zeker dat je de hardware instellingen wilt updaten?')) {
+      if (confirm(this.$i18n.t('settings.save_confirm'))) {
         this.busy = true
         var yaml = this.saveConfiguration();
        
@@ -329,7 +329,7 @@ export default {
 
     //Old out of scope server request functions
     uploadMCU() {
-      if (confirm('Weet je zeker dat je de microcontroller wilt updaten?')) {
+      if (confirm(this.$i18n.t('settings.upload_confirm'))) {
         this.busy = true
         var body = {};
         body["mcu"] = this.mcu;

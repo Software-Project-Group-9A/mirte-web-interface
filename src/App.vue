@@ -135,7 +135,8 @@ export default {
       }
    },
    mounted() {   //TODO: could this be beforeMount?
-	   axios.get("/api/self")    
+
+      axios.get("/api/self")    
       .then((response) => {
 		   this.$store.dispatch('setUser', response.data)
       })

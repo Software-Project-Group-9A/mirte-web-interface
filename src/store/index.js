@@ -1,4 +1,6 @@
 
+import createPersistedState from 'vuex-persistedstate'
+import i18n, { selectedLocale } from '../i18n'
 
 export default {
 
@@ -9,7 +11,8 @@ export default {
         linenumber: 0,
         execution: "stopped",   // TODO: enum?
         user: "none",           // TODO: at the moment it can not be empty on start
-        PConfig: localStorage.getItem("PConfig")
+        PConfig: localStorage.getItem("PConfig"),
+        locale: selectedLocale
     },
 
     getters: {
@@ -35,17 +38,18 @@ export default {
             let PC = JSON.parse(state.PConfig)
             if (PC !== null) return PC
             return []
+        },
+        getLocal(state){
+            return state.locale;
         }
     },
     actions: {
         setCode({commit, getters}, code){
             commit('code', code)
         },
-
         setTutorial({commit, getters}, tutorial){
             commit('tutorial', tutorial)
         },
-
         setBlockly({commit, getters}, blockly){
             commit('blockly', blockly)
         },
@@ -60,6 +64,10 @@ export default {
         },
         setPConfig({commit, getters}, PConfig) {
             commit('PConfig', PConfig)
+        },
+        setLocale({commit, getters}, locale){
+            i18n.locale = locale;
+            commit('locale', locale);
         }
     },
     mutations: {
@@ -85,6 +93,10 @@ export default {
             PConfig = JSON.stringify(PConfig)
             localStorage.setItem("PConfig", PConfig)
             return state.PConfig = PConfig
+        },
+        locale(state, locale){
+            return state.locale = locale;
         }
-    }
+    },
+    plugins: [createPersistedState()]
 }
