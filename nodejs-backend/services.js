@@ -61,7 +61,7 @@ server.once('error', function(err) {
 server.once('listening', function() {
   // port is not in use, so close server and 
   server.close();
-  app.use(express.static('dist'))
+  app.use(express.static('../vue-frontend/dist'))
 });
 
 
