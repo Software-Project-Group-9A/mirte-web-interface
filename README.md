@@ -1,24 +1,47 @@
-# zoef_interface
+# zoef-web-interface
 
-## Project setup
+This repository contains both the backend (NodeJS) and frontend (Vue) of the robot. 
+
+## Preparations
+
+In order to build and run both the frontend and backend one needs an installation of NodeJS. We
+prefer using nodeenv.
+
 ```
-npm install
+sudo apt install -y python3-pip python3-setuptools python3-wheel
+sudo -H pip install nodeenv
+nodeenv --node=16.2.0 node_env
+source node_env/bin/activate
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Build and run the frontend
 
-### Compiles and minifies for production
 ```
+cd vue-frontend
+npm install .
 npm run build
 ```
 
-### Runs server host
+This will build a dist folder which will be served by the backend.
+
+
+## Build and run the backend
+
 ```
-serve -s dist
+cd nodejs-backend
+npm install .
+npm run backend
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Develop for the frontend
+
+The orange pi might not have enough power to build the backend. In order to develop on your own machine
+you could also serve the frontend on your local machine (without the backend). 
+
+```
+cd vue-frontend
+npm install .
+npm run serve
+```
+
+

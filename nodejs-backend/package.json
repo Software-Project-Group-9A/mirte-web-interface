@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "shell": "node services.js"
+    "backend": "node services.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
