@@ -25,10 +25,10 @@ export function load(Blockly) {
     };
 
     Blockly.Python['set_analog_pin_value'] = function (block) {
-        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         var pin = block.getFieldValue('PIN');
         var value = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_ATOMIC);
-        return `zoef.setAnalogPinValue('${pin}', ${value})\n`;
+        return `mirte.setAnalogPinValue('${pin}', ${value})\n`;
     };
 
 
@@ -68,14 +68,14 @@ export function load(Blockly) {
 
     Blockly.Python['get_pin_value'] = function (block) {
         // TODO: Assemble JavaScript into code letiable.
-        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let pin = block.getFieldValue('PIN');
         let type = block.getFieldValue('TYPE');
         let code = "";
         if (type === "ANALOG") {
-            code = `zoef.getAnalogPinValue(${pin})`;
+            code = `mirte.getAnalogPinValue(${pin})`;
         } else {
-            code = `zoef.getDigitalPinValue(${pin})`;
+            code = `mirte.getDigitalPinValue(${pin})`;
         }
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
@@ -137,11 +137,11 @@ export function load(Blockly) {
     };
 
     Blockly.Python['get_timestamp'] = function (block) {
-        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nzoef=robot.createRobot()';
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let version = block.getFieldValue('version');
-        let code = `zoef.getTimestamp()`;
+        let code = `mirte.getTimestamp()`;
         if (version.localeCompare("start") !== 0) {
-            code = `zoef.getTimeSinceLastCall()`;
+            code = `mirte.getTimeSinceLastCall()`;
         }
         return [code, Blockly.Python.ORDER_NONE];
     };

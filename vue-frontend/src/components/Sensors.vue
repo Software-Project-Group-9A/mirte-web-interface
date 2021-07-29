@@ -78,7 +78,7 @@ export default {
           Vue.set(this.sensor_values[sensors[sensor]], instances[instance], -1);
           var topic = new ROSLIB.Topic({
              ros : ros,
-             name : '/zoef/' + sensors[sensor] + '/' + instances[instance],
+             name : '/mirte/' + sensors[sensor] + '/' + instances[instance],
              messageType : this.peripherals[sensors[sensor]].message_type
           });
           topic.subscribe((message) => {

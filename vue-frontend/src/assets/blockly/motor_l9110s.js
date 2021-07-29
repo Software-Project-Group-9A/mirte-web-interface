@@ -37,7 +37,7 @@ export function load (Blockly, instances) {
     };
 
     Blockly.Python['set_speed_motor_l9110s'] = function (block) {
-        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let instance = block.getFieldValue('INSTANCE');
         let speed = Blockly.Python.valueToCode(block, 'SPEED', Blockly.Python.ORDER_ATOMIC)
         return `mirte.setMotorSpeed('${instance}', ${speed})\n`;
@@ -69,7 +69,7 @@ export function load (Blockly, instances) {
     };
 
     Blockly.Python['stop_motor_l9110s'] = function (block) {
-        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let instance = block.getFieldValue('INSTANCE');
         return `mirte.setMotorSpeed('${instance}', 0)\n`;
     };

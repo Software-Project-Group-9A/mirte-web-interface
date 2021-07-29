@@ -26,8 +26,8 @@ function getLocalIP(){
   return address;
 }
 
-var zoef_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
-var zoef_password = fs.readFileSync('/home/zoef/.wifi_pwd', 'utf8').trim();
+var mirte_name = fs.readFileSync('/etc/hostname', 'utf8').trim();
+var mirte_password = fs.readFileSync('/home/mirte/.wifi_pwd', 'utf8').trim();
 
 app.use(bodyParser.json())
 app.use(cookieSession({
@@ -81,8 +81,8 @@ const authMiddleware = (req, res, next) => {
 let users = [
   {
     id: 1,
-    username: zoef_name,
-    password: zoef_password
+    username: mirte_name,
+    password: mirte_password
   }
 ]
 
@@ -120,10 +120,10 @@ passport.use('local-login',
   )
 )
 
-// When only one zoef in the network, forward zoef.local to zoef_xxxxxx.local.
+// When only one mirte in the network, forward mirte.local to mirte_xxxxxx.local.
 app.disable('etag'); // Disable 304 to make sure it will not alway redirect
 app.get('/',function(req,res,next){
-    if (req.headers.host == "zoef.local" && browser.services.length == 1){
+    if (req.headers.host == "mirte.local" && browser.services.length == 1){
        res.redirect('http://' + browser.services[0].host.toLowerCase() + "/")
     } else {
        next()
@@ -137,7 +137,7 @@ app.get('/api/self', (req, res) => {
   if (req.user){
     return res.json(req.user.username);
   } else if (getLocalIP() == "192.168.42.1" || getLocalIP() == "192.168.43.1" || getLocalIP() == "192.168.44.1"){
-    return res.json(zoef_name);
+    return res.json(mirte_name);
   } else {
     return res.send("")
   }
@@ -189,7 +189,7 @@ expressWs.app.ws('/shell', (ws, req) => {
 const exec = require('child_process').exec;
 function upload_telemetrix (res, mcu) {
    return new Promise((resolve, reject) => {
-     exec('/usr/local/src/zoef/zoef_arduino/run.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
+     exec('/usr/local/src/mirte/mirte_arduino/run.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
        if (error) {
          reject(stderr);
        } else {
@@ -224,7 +224,7 @@ app.post('/api/python', (req, res) => {
     var source = req.body
 
     const fs = require('fs');
-    fs.writeFile("/home/zoef/workdir/zoef.py", source, (err) => {
+    fs.writeFile("/home/mirte/workdir/mirte.py", source, (err) => {
         if(err) {
             console.log(err);
             res.end("something went wrong writing the file");
@@ -239,13 +239,13 @@ app.post('/api/settings', (req, res) => {
     var source = req.body
 
     const fs = require('fs');
-    fs.writeFile("/home/zoef/zoef_ws/src/zoef_ros_package/config/zoef_user_config.yaml", source, (err) => {
+    fs.writeFile("/home/mirte/mirte_ws/src/mirte_ros_package/config/mirte_user_config.yaml", source, (err) => {
         if(err) {
             console.log(err);
             res.end("something went wrong writing the file");
         }
         const exec = require('child_process').execFile;
-        const stdout = exec("/usr/local/src/zoef/web_interface/reload_params.sh");
+        const stdout = exec("/usr/local/src/mirte/web_interface/reload_params.sh");
         res.end("done");
     });
 });
@@ -253,10 +253,10 @@ app.post('/api/settings', (req, res) => {
 
 // catch robot settings (ROS params) from the web interface and save them
 app.get('/api/settings', (req, res) => {
-    res.download("/home/zoef/zoef_ws/src/zoef_ros_package/config/zoef_user_settings.yaml");
+    res.download("/home/mirte/mirte_ws/src/mirte_ros_package/config/mirte_user_settings.yaml");
 /*
     const fs = require('fs');
-    fs.readFile("/home/zoef/zoef_ws/src/zoef_ros_package/config/zoef_user_settings.yaml", function read(err, data) {
+    fs.readFile("/home/mirte/mirte_ws/src/mirte_ros_package/config/mirte_user_settings.yaml", function read(err, data) {
         if(err) {
             console.log(err);
             res.end("something went wrong reading the file");
@@ -273,7 +273,7 @@ app.post('/api/passwd', (req, res) => {
   var pass = req.body
 
   const fs = require('fs');
-  fs.writeFile("/home/zoef/.wifi_pwd", pass, (err) => {
+  fs.writeFile("/home/mirte/.wifi_pwd", pass, (err) => {
       if(err) {
           console.log(err);
           res.end("something went wrong changing the password");
@@ -289,7 +289,7 @@ app.post('/api/passwd', (req, res) => {
 app.listen(3000 , () => console.log("services have started"));
 
 
-// send new list of zoefs to websocket
+// send new list of mirtes to websocket
 function update(){
   console.log(browser.services);
   wss.clients.forEach(function each(client) {
@@ -299,13 +299,13 @@ function update(){
   });
 }
 
-// browse for all zoef services and update on up and down
-browser = bonjour.find({ type: 'zoef' }, function (service) {
+// browse for all mirte services and update on up and down
+browser = bonjour.find({ type: 'mirte' }, function (service) {
   update();
 })
 browser.on('down', update);
 
-// send list of zoefs on new connection
+// send list of mirtes on new connection
 wss.on('connection', function connection(ws) {
   ws.send(JSON.stringify(browser.services));
 });

@@ -1,4 +1,4 @@
-# zoef-web-interface
+# mirte-web-interface
 
 This repository contains both the backend (NodeJS) and frontend (Vue) of the robot. 
 

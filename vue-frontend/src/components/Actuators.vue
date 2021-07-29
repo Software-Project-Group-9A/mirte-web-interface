@@ -315,7 +315,7 @@ export default {
           Vue.set(this.actuator_services[actuators[actuator]], instances[instance], {});
           this.actuator_services[actuators[actuator]][instances[instance]] = new ROSLIB.Service({
               ros : this.ros,
-              name : '/zoef/set_' + instances[instance] + '_' + this.peripherals[actuators[actuator]].service_name,
+              name : '/mirte/set_' + instances[instance] + '_' + this.peripherals[actuators[actuator]].service_name,
               serviceType : this.peripherals[actuators[actuator]].service_type
           });
        }

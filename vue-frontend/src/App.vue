@@ -148,7 +148,7 @@ export default {
          var data = JSON.parse(event.data);
          var names = []
          if (data.length > 1){
-            names.push({ value: null, text: 'Please select your Zoef' });
+            names.push({ value: null, text: 'Please select your Mirte' });
          }
          var selected = null
          for (var i in data){

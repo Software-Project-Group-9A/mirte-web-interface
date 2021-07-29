@@ -7,7 +7,7 @@
     },
     "functions": ["set_speed", "stop"],
     "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py",
-    "service_type": "zoef_msgs/SetMotorSpeed",
+    "service_type": "mirte_msgs/SetMotorSpeed",
     "service_value": "speed",
     "service_name": "speed"
   },
@@ -20,7 +20,7 @@
     },
     "functions": ["set_speed", "stop"],
     "rel_path": "Actuators\\Motor\\pwm_motor\\pwm_motor.py",
-    "service_type": "zoef_msgs/SetMotorSpeed",
+    "service_type": "mirte_msgs/SetMotorSpeed",
     "service_value": "speed",
     "sercice_name": "speed"
   },
@@ -32,7 +32,7 @@
     },
     "functions": ["get_value"],
     "rel_path": "Sensors\\IR_sensor\\digital_ir_sensor\\digital_ir_sensor.py",
-    "message_type": "zoef_msgs/Intensity",
+    "message_type": "mirte_msgs/Intensity",
     "message_value": "value"
   },
   "distance": {
@@ -53,7 +53,7 @@
     },
     "functions": ["set_angle"],
     "rel_path": "Actuators\\Servo\\servo\\servo.py",
-    "service_type": "zoef_msgs/SetServoAngle",
+    "service_type": "mirte_msgs/SetServoAngle",
     "service_value": "angle",
     "service_name": "servo_angle"
   },
@@ -65,7 +65,7 @@
     },
     "functions": ["set_oled"],
     "rel_path": "Actuators\\OLED\\oled\\oled.py",
-    "service_type": "zoef_msgs/SetOLEDImage",
+    "service_type": "mirte_msgs/SetOLEDImage",
     "service_name": "image"
   },
   "keypad": {
@@ -75,7 +75,7 @@
     },
     "functions": ["get_button"],
     "rel_path": "Sensors\\Keypad\\keypad\\keypad.py",
-    "message_type": "zoef_msgs/Keypad",
+    "message_type": "mirte_msgs/Keypad",
     "message_value": "key"
   },
   "encoder": {
@@ -85,7 +85,7 @@
     },
     "functions": ["get_ticks"],
     "rel_path": "Sensors\\Encoder\\encoder\\encoder.py",
-    "message_type": "zoef_msgs/Encoder",
+    "message_type": "mirte_msgs/Encoder",
     "message_value": "value"
   }
 }

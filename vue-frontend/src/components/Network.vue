@@ -49,7 +49,7 @@
 					</div>
 					<div class="row hidden" id='submit-message'>
 						<div class="col-lg-8 col-lg-offset-2">
-							<p>Tijdens het verwisselen van het netwerk gata zoef even offline. Als het verbinden mislukt zal het verbindingspunt van Zoef vanzelf weer online komen. Als zoef niet meer online komt dat is het verbinden gelukt.</p>
+							<p>Tijdens het verwisselen van het netwerk gata mirte even offline. Als het verbinden mislukt zal het verbindingspunt van Mirte vanzelf weer online komen. Als mirte niet meer online komt dat is het verbinden gelukt.</p>
 						</div>
 					</div>
 

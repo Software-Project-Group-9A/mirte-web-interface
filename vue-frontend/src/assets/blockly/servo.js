@@ -36,7 +36,7 @@ export function load (Blockly, instances) {
     };
 
     Blockly.Python['set_angle_servo'] = function (block) {
-      Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
+      Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
       let instance = block.getFieldValue('INSTANCE');
       let angle = Blockly.JavaScript.valueToCode(block, 'ANGLE', Blockly.JavaScript.ORDER_ATOMIC);
       return `mirte.setServoAngle('${instance}', ${angle})\n`;

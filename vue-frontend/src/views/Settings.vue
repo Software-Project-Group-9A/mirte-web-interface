@@ -16,7 +16,7 @@
               <b-form-radio v-model="board" name="board" value="breadboard">Breadboard</b-form-radio>
             </div>
             <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="zoef" disabled>Zoef PCB</b-form-radio>
+              <b-form-radio v-model="board" name="board" value="mirte" disabled>Mirte PCB</b-form-radio>
             </div>
             <!--            <div class="col-4">-->
             <!--              <b-form-radio v-model="board" name="board" value="LEGO" disabled>LEGO</b-form-radio>-->
@@ -234,11 +234,11 @@ export default {
        var tthis = this
        tthis.params_busy = true;
        var restructured = {device: {}};
-       restructured['device']['zoef'] = {type: this.board, mcu: this.mcu };
+       restructured['device']['mirte'] = {type: this.board, mcu: this.mcu };
        for (var j in this.items){
           var i = Object.assign({}, this.items[j]);
           var type = i['type'];
-          i['device'] = 'zoef';
+          i['device'] = 'mirte';
           delete i['type'];
           var newtype = type;
           if (type == 'motor_l9110s'){
@@ -249,7 +249,7 @@ export default {
              i['type'] = "l298n"
              newtype = "motor"
           }
-          if (this.board == "zoef_pcb"){
+          if (this.board == "mirte_pcb"){
              delete i['pins']
           } else {
              delete i['connector']
@@ -275,7 +275,7 @@ export default {
     // Constructs the YAML file to be used and uploaded to ROS as its params
     generateYAML() {
       const yaml = {
-        name: 'Zoef',
+        name: 'Mirte',
         type: this.board,
         mcu: {
           type: this.mcu,
@@ -381,7 +381,7 @@ export default {
     //
     // var params = new ROSLIB.Param({
     //   ros: ros,
-    //   name: '/zoef'
+    //   name: '/mirte'
     // })
     //
     // params.get((res) => {

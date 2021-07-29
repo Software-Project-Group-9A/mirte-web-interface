@@ -55,7 +55,7 @@ export function load (Blockly, instances) {
 
 
     Blockly.Python['set_oled_oled'] = function (block) {
-        Blockly.Python.definitions_['import_zoef'] = 'from zoef_robot import robot\nmirte=robot.createRobot()';
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let value = Blockly.Python.valueToCode(block, 'VALUE', Blockly.Python.ORDER_ATOMIC);
         let type = block.getFieldValue('TYPE');
         let instance = block.getFieldValue('INSTANCE');
