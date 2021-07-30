@@ -47,7 +47,7 @@ function checkDefaultLanguage() {
 // We need another way to get the store sata
 var vuex_storage = localStorage.getItem('vuex');
 var savedLocale = "";
-if (vues_storage){
+if (vuex_storage){
   savedLocale = JSON.parse(vuex_storage).locale;
 }
 export const selectedLocale = savedLocale || checkDefaultLanguage() || process.env.VUE_APP_I18N_LOCALE || 'en'
