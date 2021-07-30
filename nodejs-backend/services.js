@@ -245,7 +245,7 @@ app.post('/api/settings', (req, res) => {
             res.end("something went wrong writing the file");
         }
         const exec = require('child_process').execFile;
-        const stdout = exec("/usr/local/src/mirte/web_interface/nodejs-backend/reload_params.sh");
+        const stdout = exec("/usr/local/src/mirte/mirte_web_interface/nodejs-backend/reload_params.sh");
         res.end("done");
     });
 });

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/ros/melodic/setup.bash
+source /opt/ros/noetic/setup.bash
 source /home/mirte/mirte_ws/devel/setup.bash
 rosnode kill /mirte_telemetrix_mirte
 rosparam delete /mirte
