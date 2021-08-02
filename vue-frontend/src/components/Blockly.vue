@@ -11,7 +11,8 @@
       <category name="%{BKY_SENSORS}" colour="%{BKY_SENSORS_RGB}" expanded=true>
 
          <category name="%{BKY_ROBOT}" colour="%{BKY_SENSORS_RGB}">
-            <block type="get_pin_value"></block>
+            <block type="get_analog_pin_value"></block>
+            <block type="get_digital_pin_value"></block>
          </category>
 
 
@@ -169,6 +170,8 @@
             </block> 
 
             <block type="set_analog_pin_value"></block>
+
+            <block type="set_digital_pin_value"></block>
 
          </category>
 

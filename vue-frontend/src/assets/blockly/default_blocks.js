@@ -13,7 +13,8 @@ export function load(Blockly) {
 		    },
 		    {
 		      "type": "input_value",
-		      "name": "VALUE"
+		      "name": "VALUE",
+                      "check": "Number"
 		    }
 		  ],
 		  "inputsInline": true,
@@ -31,28 +32,54 @@ export function load(Blockly) {
         return `mirte.setAnalogPinValue('${pin}', ${value})\n`;
     };
 
+    Blockly.Blocks['set_digital_pin_value'] = {
+        init: function () {
+            this.jsonInit({
+                "type": "block_type",
+                  "message0": "%{BKY_SET_DIGITAL_PIN}",
+                  "args0": [
+                    {
+                      "type": "field_input",
+                      "name": "PIN",
+                      "text": "D0"
+                    },
+		    {
+    		      "type": "field_dropdown",
+     		      "name": "VALUE",
+     	 	      "options": [
+       			 [
+         		   "%{BKY_TRUE}",
+          		   "True"
+        		 ],
+       			 [
+          		   "%{BKY_FALSE}",
+         		   "False"
+        		 ]
+      		      ]
+                    },
+                  ],
+                  "inputsInline": true,
+                  "previousStatement": null,
+                  "nextStatement": null,
+                  "colour": "%{BKY_ACTIONS_RGB}"
+            });
+        }
+    };
+
+    Blockly.Python['set_digital_pin_value'] = function (block) {
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
+        var pin = block.getFieldValue('PIN');
+        var value = block.getFieldValue('VALUE');
+        return `mirte.setDigitalPinValue('${pin}', ${value})\n`;
+    };
 
 
-    Blockly.Blocks['get_pin_value'] = {
+    Blockly.Blocks['get_analog_pin_value'] = {
         init: function () {
             this.jsonInit({
 		  "type": "block_type",
-		  "message0": "%{BKY_GET_PIN_VALUE}",
-		  "args0": [
-		    {
-		      "type": "field_dropdown",
-		      "name": "TYPE",
-		      "options": [
-		        [
-		          "%{BKY_ANALOG}",
-		          "ANALOG"
-		        ],
-		        [
-		          "%{BKY_DIGITAL}",
-		          "DIGITAL"
-		        ]
-		      ]
-		    },
+		  "message0": "%{BKY_GET_ANALOG_PIN_VALUE}",
+         	  "args0": [
 		    {
                       "type": "field_input",
                       "name": "PIN",
@@ -66,20 +93,47 @@ export function load(Blockly) {
         }
     };
 
-    Blockly.Python['get_pin_value'] = function (block) {
+    Blockly.Python['get_analog_pin_value'] = function (block) {
         // TODO: Assemble JavaScript into code letiable.
         Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let pin = block.getFieldValue('PIN');
-        let type = block.getFieldValue('TYPE');
-        let code = "";
-        if (type === "ANALOG") {
-            code = `mirte.getAnalogPinValue(${pin})`;
-        } else {
-            code = `mirte.getDigitalPinValue(${pin})`;
-        }
+        let code = `mirte.getAnalogPinValue(${pin})`;
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
     };
+
+
+
+    Blockly.Blocks['get_digital_pin_value'] = {
+        init: function () {
+            this.jsonInit({
+                  "type": "block_type",
+                  "message0": "%{BKY_GET_DIGITAL_PIN_VALUE}",
+                  "args0": [
+                    {
+                      "type": "field_input",
+                      "name": "PIN",
+                      "text": "D0"
+                    }
+                  ],
+                  "inputsInline": true,
+                  "output": "Boolean",
+                  "colour": "%{BKY_SENSORS_RGB}"
+             });
+        }
+    };
+
+    Blockly.Python['get_digital_pin_value'] = function (block) {
+        // TODO: Assemble JavaScript into code letiable.
+        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
+        let pin = block.getFieldValue('PIN');
+        let code = `mirte.getDigitalPinValue(${pin})`;
+        // TODO: Change ORDER_NONE to the correct strength.
+        return [code, Blockly.Python.ORDER_NONE];
+    };
+
+
+
 
     Blockly.Blocks['wait'] = {
         init: function () {

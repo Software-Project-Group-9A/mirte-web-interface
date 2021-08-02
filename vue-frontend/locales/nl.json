@@ -58,9 +58,12 @@
     "oled_animation": "animatie"
   },
   "blockly": {
+    "TRUE": "waar",
+    "FALSE": "onwaar",
     "SENSORS": "Sensoren",
     "ROBOT": "Robot",
     "SET_ANALOG_PIN": "zet analoge pin %1 op waarde %2",
+    "SET_DIGITAL_PIN": "zet digitale pin %1 op waarde %2",
     "FLOW": "Flow",
     "LOOPS": "Lussen",
     "TIME": "Tijd",
@@ -85,6 +88,7 @@
     "STOP_MOTOR": "stop motor %1",
     "SET_SERVO_ANGLE": "zet servo %1 op hoek %2",
     "SET_OLED": "laat de %2 %3 op scherm %1 zien",
-    "GET_PIN_VALUE": "%1 waarde van pin %2"
+    "GET_ANALOG_PIN_VALUE": "analoge waarde van pin %1",
+    "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1"
   }
 }
