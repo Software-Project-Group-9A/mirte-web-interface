@@ -224,7 +224,6 @@ export default {
            this.actuator_services[actuator][instance].callService(request, function(result) {});
         },
         control(command) {
-            console.log(command);
             var linear = 0.0;
             var angular = 0.0;
             switch(command) {
@@ -248,16 +247,17 @@ export default {
 
             var twist = new ROSLIB.Message({
               linear : {
-                x : linear,
+                x : parseFloat(linear),
                 y : 0.0,
                 z : 0.0
               },
               angular : {
                 x : 0.0,
                 y : 0.0,
-                z : angular
+                z : parseFloat(angular)
               }
             });
+
             this.cmd_vel.publish(twist);
         },
   },
