@@ -61,6 +61,18 @@ export default {
       return images('./' + 'encoder' + ".jpg")
     }
   },
+  beforeMount(){
+     // Instansiate all sensors in this.sensor_values
+
+     const sensors = this.getSensors();
+     for (var sensor in sensors){
+        Vue.set(this.sensor_values, sensors[sensor], {});
+        const instances = this.getInstancesOfSensor(sensors[sensor]);
+        for (var instance in instances){
+           Vue.set(this.sensor_values[sensors[sensor]], instances[instance], -1);
+        }
+     }
+  },
   mounted(){
 
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
@@ -72,10 +84,8 @@ export default {
 
     var sensors = this.getSensors();
     for (let sensor in sensors){
-       Vue.set(this.sensor_values, sensors[sensor], {});
        var instances = this.getInstancesOfSensor(sensors[sensor]);
        for (let instance in instances){
-          Vue.set(this.sensor_values[sensors[sensor]], instances[instance], -1);
           var topic = new ROSLIB.Topic({
              ros : ros,
              name : '/mirte/' + sensors[sensor] + '/' + instances[instance],
