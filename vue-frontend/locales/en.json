@@ -21,7 +21,14 @@
     "name": "name",
     "pin": "pin",
     "add": "add",
-    "placeholder": "variable name"
+    "placeholder": "variable name",
+    "wifi_header": "Wireless network (experimental)",
+    "wifi_network": "Network",
+    "wifi_user": "User",
+    "wifi_password": "Password",
+    "wifi_connect": "Connect",
+    "wifi_connected": "Will try to connect to network. If this fails, the current network Mirte_XXXXXX will come up again",
+    "wifi_message": "EXPERIMENTAL: Connecting to the wireless network might fail on the OrangePi. Please reconnect to the Mirte_XXXXXX network again and try again. When the connection did work the Mirte_XXXXXX network will not show up again. You can connect to http://mirte.local/"
   },
   "actuators": {
     "output": "Output",

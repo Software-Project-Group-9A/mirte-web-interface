@@ -1,74 +1,10 @@
 <template>
-  <div class="container">
 
-    <h1 class="mb-5">{{ $t('settings.hardware_settings') }}</h1>
-
-    <div class="row">
-      <div class="col-6">
-        <div class="layoutbox rounded">
-
-          <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-            Board
-          </div>
-
-          <div class="row">
-            <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="breadboard">Breadboard</b-form-radio>
-            </div>
-            <div class="col-6">
-              <b-form-radio v-model="board" name="board" value="mirte" disabled>Mirte PCB</b-form-radio>
-            </div>
-            <!--            <div class="col-4">-->
-            <!--              <b-form-radio v-model="board" name="board" value="LEGO" disabled>LEGO</b-form-radio>-->
-            <!--            </div>-->
-          </div>
-
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="layoutbox rounded">
-
-          <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-            {{ $t('settings.microcontroller') }}
-            <button @click="uploadMCU" type="button" class="btn btn-danger float-right">
-              <span v-if="!busy">{{ $t('settings.upload') }}</span>
-              <i v-else class="fa fa-spin fa-stroopwafel"></i>
-            </button>
-          </div>
-
-
-          <div class="row">
-              <b-form-radio v-model="mcu" value="stm32" data-label="STM32">
-                Robotdyn STM32 Black Pill (arduino bootloader)
-              </b-form-radio>
-          </div>
-          <div class="row">
-              <b-form-radio v-model="mcu" value="nano" data-label="Arduino Nano">
-                Arduino Nano
-              </b-form-radio>
-          </div>
-          <div class="row">
-              <b-form-radio v-model="mcu" value="nano_old" data-label="Arduino Nano (old bootloader)">
-                Arduino Nano (old bootloader)
-              </b-form-radio>
-          </div>
-          <div class="row">
-              <b-form-radio v-model="mcu" value="uno" data-label="Arduino Uno)">
-                Arduino Uno
-              </b-form-radio>
-          </div>
-
-       </div>
-        
-      </div>
-
-    </div>
-
-
-    <div class="row">
-      <div class="col-6">
-        <div class="layoutbox rounded mt-5">
+   <div class="row p-4 h-100">
+    <div class="col-4 h-100 p-2 offset-2">
+      <div class="row h-100">
+       <div class="col-12 h-100" style="overflow: hidden;">
+        <div class="layoutbox rounded h-100" style="overflow: hidden; display: flex; flex-flow: column;">
           <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
             {{ $t('settings.wiring') }}
             <button @click="uploadYAML" type="button" class="btn btn-danger float-right">
@@ -88,7 +24,8 @@
   button, the second row is a field where a name has to be entered, and the third row is where
   pins (and later maybe additional properties) can be set.
           -->
-          <div>
+
+          <div class="h-100" style="overflow-y: auto;">
             <b-table striped hover :fields="fields" :items="items">
 
               <template #head(type)="data">
@@ -127,48 +64,67 @@
 
           </div>
 
-        </div>
+       </div>
       </div>
 
-      <div class="col-6">
-        <div class="layoutbox rounded mt-5 h-100">
+
+      </div>
+
+    </div>
+
+
+    <div class="col-4 h-100 p-2">
+      <div class="row">
+        
+        <div class="col-12">
+
+          <div class="layoutbox rounded">
+
           <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-            Informatie types
+            {{ $t('settings.microcontroller') }}
+            <button @click="uploadMCU" type="button" class="btn btn-danger float-right">
+              <span v-if="!busy">{{ $t('settings.upload') }}</span>
+              <i v-else class="fa fa-spin fa-stroopwafel"></i>
+            </button>
           </div>
 
-        </div>
+        <div class="layoutbox-content">
+          <div class="row">
+              <b-form-radio v-model="mcu" value="stm32" data-label="STM32">
+                Robotdyn STM32 Black Pill (arduino bootloader)
+              </b-form-radio>
+          </div>
+          <div class="row">
+              <b-form-radio v-model="mcu" value="nano" data-label="Arduino Nano">
+                Arduino Nano
+              </b-form-radio>
+          </div>
+          <div class="row">
+              <b-form-radio v-model="mcu" value="nano_old" data-label="Arduino Nano (old bootloader)">
+                Arduino Nano (old bootloader)
+              </b-form-radio>
+          </div>
+          <div class="row">
+              <b-form-radio v-model="mcu" value="uno" data-label="Arduino Uno)">
+               Arduino Uno
+              </b-form-radio>
+          </div>
+         </div>
+
+         </div>
+       </div>
+
+
+
+      </div>
+
+      <div class="row">
+         <Network/>
       </div>
     </div>
 
 
-    <Network/>
-
-
-    <div class="layoutbox rounded mt-5">
-      <div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-        Geavanceerde instellingen
-      </div>
-
-      <div class="layoutbox-content">
-
-        <div class="row">
-
-          <div class="col-6">
-            <div class="rounded background-green-light p-3">
-              <h5>verander wachtwoord</h5>
-              <div class="input-group">
-                <input v-model="password" type="text" class="form-control mr-3" placeholder="nieuw wachtwoord">
-                <button @click="setPassword" type="button" class="btn btn-danger">verander</button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-
-  </div>
+</div>
 </template>
 
 <script>
@@ -296,7 +252,6 @@ export default {
         }
       }
       // In memory of Henk. He shall always be in our memory. Persistent through and through, until the end.
-      console.log(YAML.dump(YAML.load(JSON.stringify(yaml))))
       return YAML.load(JSON.stringify(yaml))
     },
     // Requests from the server to update the ROS params with the generated YAML file of the configured Peripherals

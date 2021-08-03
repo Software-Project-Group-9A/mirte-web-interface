@@ -1,35 +1,35 @@
 <template>
 	<div>
-    	<div class="container">
+        <div class="container">
 
 
 			<div class="layoutbox rounded">
 				<div class="text-white p-2 h3 layoutbox-title w-100 background-primary">
-					Kies een netwerk
+					{{ $t('settings.wifi_header') }}
 				</div>
 
 				<div class="layoutbox-content">
 
 					<div class="row before-submit">
-						<div class="col-lg-8 col-lg-offset-2">
+						<div class="col">
 							<form class="form form-horizontal" id='connect-form' :action="`http://${hostname}:8080/connect`" method='post'>
 								<div class="form-group">
-									<label for="ssid-select" class="control-label col-lg-2">Netwerk naam</label>
-									<div class="col-lg-6">
+									<label for="ssid-select" class="control-label col">{{ $t('settings.wifi_network') }}</label>
+									<div class="col">
 										<select id='ssid-select' class="form-control" name='ssid' @change="onChange($event)" v-model="selected.ssid">
 											<option v-for="n of networks" v-bind:key="n.ssid" :value="n.ssid" :data-security="n.security">{{n.ssid}}</option>
 										</select>
 									</div>
 								</div>
 								<div v-show="security == 'enterprise'" class="form-group" id="identity-group">
-									<label for="identity" class="control-label col-lg-2">user</label>
-									<div class="col-lg-6">
+									<label for="identity" class="control-label col">{{ $t('settings.wifi_user') }}</label>
+									<div class="col">
 										<input class="form-control" name="identity" v-model="selected.identity"/>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="passphrase" class="control-label col-lg-2">wachtwoord</label>
-									<div class="col-lg-6">
+									<label for="passphrase" class="control-label col">{{ $t('settings.wifi_password') }}</label>
+									<div class="col">
 
 					
 									<input :type="passwordFieldType" class="form-control" name="passphrase" v-model="selected.password">
@@ -40,16 +40,16 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-lg-6 col-lg-offset-2">
-										<button @click="connect" type="button" class="btn btn-success">connect</button>
+									<div class="col">
+										<button @click="connect" type="button" class="btn btn-success">{{ $t('settings.wifi_connect') }}</button>
 									</div>
 								</div>
 							</form>
 						</div>
 					</div>
 					<div class="row hidden" id='submit-message'>
-						<div class="col-lg-8 col-lg-offset-2">
-							<p>Tijdens het verwisselen van het netwerk gata mirte even offline. Als het verbinden mislukt zal het verbindingspunt van Mirte vanzelf weer online komen. Als mirte niet meer online komt dat is het verbinden gelukt.</p>
+						<div class="col">
+                                                     {{ $t('settings.wifi_message') }}
 						</div>
 					</div>
 
@@ -94,7 +94,7 @@ export default {
 						"body": data})
 						.then(console.log("send"))
 						.then(data => {
-									console.log('received');
+                                                       alert( this.$i18n.t('settings.wifi_connected') );
 						});
 
 		}
@@ -103,8 +103,8 @@ export default {
   mounted(){
     
     fetch(`http://${location.hostname}:8080/networks`, {
-    	"method": "GET",
-    	"mode": "cors"})
+        "method": "GET",
+        "mode": "cors"})
     .then(res => res.json())
     .then(data => {
 		this.networks = data.filter(v=>v.ssid!="");

@@ -21,7 +21,14 @@
     "name": "naam",
     "pin": "pin",
     "add": "toevoegen",
-    "placeholder": "variabele naam"
+    "placeholder": "variabele naam",
+    "wifi_header": "Draadloos netwerk (experimenteel)",
+    "wifi_network": "Netwerk",
+    "wifi_user": "Gebruikersnaam",
+    "wifi_password": "Wachtwoord",
+    "wifi_connect": "Verbinden",
+    "wifi_connected": "Er wordt geprobeerd verbinding te maken. Als dit niet lukt komt Mirte_XXXXXX weer online",
+    "wifi_message": "EXPERIMENTEEL: Op de OrangePi kan het zijn dat het verbinden niet (goed) lukt. In dat geval zal het wifi netwerk Mirte_XXXXXX weer beschikbaar komen. Verbind daar weer mee en probeer opnieuw. Als de verbinding wel gelukt is zal het Mirte_XXXXXX netwerk niet meer opnieuw online komen en kan je verbinden met http://mirte.local/"
   },
   "actuators": {
     "output": "Output",
