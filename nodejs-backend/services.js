@@ -189,7 +189,7 @@ expressWs.app.ws('/shell', (ws, req) => {
 const exec = require('child_process').exec;
 function upload_telemetrix (res, mcu) {
    return new Promise((resolve, reject) => {
-     exec('/usr/local/src/mirte/mirte_arduino/run.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
+     exec('/usr/local/src/mirte/mirte_install_scripts/run_arduino.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
        if (error) {
          reject(stderr);
        } else {
