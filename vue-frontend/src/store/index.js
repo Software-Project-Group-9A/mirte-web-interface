@@ -11,7 +11,7 @@ export default {
         linenumber: 0,
         execution: "stopped",   // TODO: enum?
         user: "none",           // TODO: at the moment it can not be empty on start
-        PConfig: localStorage.getItem("PConfig"),
+        PConfig: "[]",          // For some reason this needs to be a string (persistent?)
         locale: selectedLocale
     },
 
@@ -35,9 +35,7 @@ export default {
             return state.user
         },
         getPConfig(state) {
-            let PC = JSON.parse(state.PConfig)
-            if (PC !== null) return PC
-            return []
+            return JSON.parse(state.PConfig)
         },
         getLocal(state){
             return state.locale;
@@ -90,9 +88,7 @@ export default {
             return state.user = user
         },
         PConfig(state, PConfig) {
-            PConfig = JSON.stringify(PConfig)
-            localStorage.setItem("PConfig", PConfig)
-            return state.PConfig = PConfig
+            return state.PConfig = JSON.stringify(PConfig)
         },
         locale(state, locale){
             return state.locale = locale;

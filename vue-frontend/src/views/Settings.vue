@@ -269,16 +269,8 @@ export default {
             .then(data => {
               console.log(data)
               this.busy = false
-
-/*              if (data.toLowerCase().includes("download done")) {
-                alert("Uploaden is succesvol afgerond")
-              } else {
-                alert("Er is een fout opgetreden:\n\n" + data)
-              }
-*/
+              this.$store.dispatch('setPConfig', this.items)
             })
-        this.$store.dispatch('setPConfig', this.items)
-        this.busy = false
       }
     },
 
