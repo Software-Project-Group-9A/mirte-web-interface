@@ -1,4 +1,3 @@
-
 <template>
   
      <div class="layoutbox-content">
@@ -58,7 +57,7 @@ export default {
     },
     getSensorImage(type){
       var images = require.context('../assets/images/', false, /\.jpg$/)
-      return images('./' + 'encoder' + ".jpg")
+      return images('./' + type + ".jpg")
     }
   },
   beforeMount(){
@@ -84,9 +83,9 @@ export default {
 
     var sensors = this.getSensors();
     for (let sensor in sensors){
-       var instances = this.getInstancesOfSensor(sensors[sensor]);
+       let instances = this.getInstancesOfSensor(sensors[sensor]);
        for (let instance in instances){
-          var topic = new ROSLIB.Topic({
+          let topic = new ROSLIB.Topic({
              ros : ros,
              name : '/mirte/' + sensors[sensor] + '/' + instances[instance],
              messageType : this.peripherals[sensors[sensor]].message_type
