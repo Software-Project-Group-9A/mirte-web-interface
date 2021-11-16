@@ -189,7 +189,7 @@ expressWs.app.ws('/shell', (ws, req) => {
 const exec = require('child_process').exec;
 function upload_telemetrix (res, mcu) {
    return new Promise((resolve, reject) => {
-     exec('/usr/local/src/mirte/mirte_install_scripts/run_arduino.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
+     exec('/usr/local/src/mirte/mirte-install-scripts/run_arduino.sh upload_' + mcu + ' Telemetrix4Arduino', (error, stdout, stderr) => {
        if (error) {
          reject(stderr);
        } else {
@@ -239,13 +239,13 @@ app.post('/api/settings', (req, res) => {
     var source = req.body
 
     const fs = require('fs');
-    fs.writeFile("/home/mirte/mirte_ws/src/mirte_ros_package/mirte_telemetrix/config/mirte_user_config.yaml", source, (err) => {
+    fs.writeFile("/home/mirte/mirte_ws/src/mirte-ros-packages/mirte_telemetrix/config/mirte_user_config.yaml", source, (err) => {
         if(err) {
             console.log(err);
             res.end("something went wrong writing the file");
         }
         const exec = require('child_process').execFile;
-        const stdout = exec("/usr/local/src/mirte/mirte_web_interface/nodejs-backend/reload_params.sh");
+        const stdout = exec("/usr/local/src/mirte/mirte-web-interface/nodejs-backend/reload_params.sh");
         res.end("done");
     });
 });
@@ -253,7 +253,7 @@ app.post('/api/settings', (req, res) => {
 
 // catch robot settings (ROS params) from the web interface and save them
 app.get('/api/settings', (req, res) => {
-    res.download("/home/mirte/mirte_ws/src/mirte_ros_package/mirte_telemetrix/config/mirte_user_settings.yaml");
+    res.download("/home/mirte/mirte_ws/src/mirte-ros-packages/mirte_telemetrix/config/mirte_user_settings.yaml");
 /*
     const fs = require('fs');
     fs.readFile("/home/mirte/mirte_ws/src/mirte_ros_package/config/mirte_user_settings.yaml", function read(err, data) {
