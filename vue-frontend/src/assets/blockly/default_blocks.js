@@ -97,7 +97,7 @@ export function load(Blockly) {
         // TODO: Assemble JavaScript into code letiable.
         Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let pin = block.getFieldValue('PIN');
-        let code = `mirte.getAnalogPinValue(${pin})`;
+        let code = `mirte.getAnalogPinValue('${pin}')`;
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
     };
@@ -127,7 +127,7 @@ export function load(Blockly) {
         // TODO: Assemble JavaScript into code letiable.
         Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
         let pin = block.getFieldValue('PIN');
-        let code = `mirte.getDigitalPinValue(${pin})`;
+        let code = `mirte.getDigitalPinValue('${pin}')`;
         // TODO: Change ORDER_NONE to the correct strength.
         return [code, Blockly.Python.ORDER_NONE];
     };
