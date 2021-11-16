@@ -129,7 +129,7 @@
 
 <script>
 
-// import ROSLIB from 'roslib'
+import ROSLIB from 'roslib'
 import YAML from 'js-yaml'
 import properties_ph from "../assets/json/properties_ph.json"
 import properties_mc from "../assets/json/properties_mc.json"
@@ -158,14 +158,19 @@ export default {
 
   methods: {
     // To add and delete items (delete_item() see below) from the peripheral configuration table
-    add_item(type) {
-      const binds = {...this.peripherals[type].pins}
-      Object.keys(binds).forEach(function (key) {
-        binds[key] = null
-      })
+    add_item(type, name, pins) {
+      var binds = {}
+      if (pins){
+         binds = pins;
+      } else {
+         binds = {...this.peripherals[type].pins}
+         Object.keys(binds).forEach(function (key) {
+           binds[key] = null
+         })
+      }
       this.items.push(Object.assign({
             type: type,
-            name: '',
+            name: name,
             rel_path: this.peripherals[type].rel_path,
             functions: this.peripherals[type].functions
           },
@@ -184,6 +189,23 @@ export default {
       const options = []
       for (let p of pinMap) options.push({value: p[0], text: p[0]})
       return options
+    },
+    // Load the configuarion from ROS params to Vue object items
+    loadConfiguration(rosparams){
+      this.items = []
+      for (var j in rosparams){
+	 if (j == "device"){
+            this.mcu = rosparams['device']['mirte']['mcu'];
+         } else {
+	    for (var k in rosparams[j]){
+               if(j == "motor"){
+                 this.add_item("motor_" + rosparams[j][k]['type'], k, rosparams[j][k]['pins']);
+               } else {
+                 this.add_item(j, k, rosparams[j][k]['pins']);
+               }
+            }
+         }
+      }
     },
     // Should be using generateYAML() as soon as we move to the plugin manager
     saveConfiguration(){
@@ -319,21 +341,21 @@ export default {
   mounted() {
     console.log(this.items)
 
-    // const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
-    // const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
-    //
-    // var ros = new ROSLIB.Ros({
-    //   url: ros_socketUrl
-    // })
-    //
-    // var params = new ROSLIB.Param({
-    //   ros: ros,
-    //   name: '/mirte'
-    // })
-    //
-    // params.get((res) => {
-    //   this.params = res
-    // })
+     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
+     const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
+    
+     var ros = new ROSLIB.Ros({
+       url: ros_socketUrl
+     })
+    
+     var params = new ROSLIB.Param({
+       ros: ros,
+       name: '/mirte'
+     })
+    
+     params.get((res) => {
+       this.loadConfiguration(res);
+     })
   }
 }
 </script>
