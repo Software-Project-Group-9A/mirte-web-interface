@@ -1,0 +1,14 @@
+{
+    "title": "Fibbonachi",
+    "description": "Leer met recursieve functies werken door een fibbonachi reeks te printen.",
+    "steps": [
+        {
+            "media": "/tutorials/fibbonachi/fibbonachi-1.png",
+            "text": "dit is wat je moet doen"
+        },
+        {
+            "media": "/tutorials/fibbonachi/fibbonachi-2.png",
+            "text": "dit komt er uit"
+        }
+    ]
+}

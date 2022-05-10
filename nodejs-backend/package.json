@@ -1,0 +1,27 @@
+{
+  "name": "mirte-web-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "backend": "node services.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bonjour": "^3.5.0",
+    "connect-flash": "^0.1.1",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "http-proxy-middleware": "^1.0.4",
+    "net": "^1.0.2",
+    "node-pty-prebuilt-multiarch": "^0.10.1-pre.4",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "ws": "^7.2.3"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

@@ -1,0 +1,9 @@
+
+.CodeMirror {
+    height: auto !important;
+    width: 100%;
+}
+
+.CodeMirror-scroll{
+    height: calc(70vh - 55px) !important;
+}

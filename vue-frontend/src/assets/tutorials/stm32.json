@@ -1,0 +1,10 @@
+{
+    "title": "Upload naar de stm32",
+    "description": "Om de robot aan te kunnen sturen moet het stuurprogramma naar de stm32 geupload worden.",
+    "steps": [
+        {
+            "media": "/tutorials/stm32/stm32.png",
+            "text": "Ga naar het instellingen menu en druk op de aangegeven knop. Wacht totdat de animatie klaar is. Hierna kan je robot gebruiken."
+        }
+    ]
+}
