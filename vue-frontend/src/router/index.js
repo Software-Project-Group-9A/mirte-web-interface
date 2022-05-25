@@ -5,6 +5,7 @@ import Programming from '../views/Programming.vue'
 import Settings from '../views/Settings.vue'
 import Control from '../views/Control.vue'
 import Tutorials from '../views/Tutorials.vue'
+import WebsiteEditor from '../views/WebsiteEditor.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/Tutorials',
     name: 'Tutorials',
     component: Tutorials
+  },
+  {
+    path: '/WebsiteEditor',
+    name: 'WebsiteEditor',
+    component: WebsiteEditor
   },
 ]
 
