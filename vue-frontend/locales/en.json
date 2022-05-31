@@ -5,7 +5,7 @@
     "actuators": "Actuators",
     "settings": "Settings",
     "control": "Control",
-    "programming": "Programming",
+    "website_editor": "Website Editor",
     "shutdown": "shutdown",
     "shutdown_confirm": "Are you sure you want to shutdown?",
     "shutdown_success": "Wait until the LED on the computer turns off. Only after that you can switch off the PCB"

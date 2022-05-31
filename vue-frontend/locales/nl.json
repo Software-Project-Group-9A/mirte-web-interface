@@ -5,7 +5,7 @@
     "actuators": "Actuatoren",
     "settings": "Instellingen",
     "control": "Besturen",
-    "programming": "Programmeren",
+    "website_editor": "Website Maken",
     "shutdown": "afsluiten",
     "shutdown_confirm": "Weet je zeker dat je wilt afsluiten?",
     "shutdown_succes": "Wacht nu totdat de lampjes op de computer van de robot uit is. Daarna kan je de schakelaar op de PCB uitzetten."
