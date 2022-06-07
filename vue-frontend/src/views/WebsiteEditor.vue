@@ -47,8 +47,8 @@ export default {
          }).then(res => {
                this.waitForSocketConnection();
          }).catch(err => {
-               console.log("sending failed")
-               console.log(err)
+               console.error("sending failed");
+               console.error(err);
          })
       }
    }
