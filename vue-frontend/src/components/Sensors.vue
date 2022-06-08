@@ -90,7 +90,6 @@ export default {
              name : '/mirte/' + sensors[sensor] + '/' + instances[instance],
              messageType : this.peripherals[sensors[sensor]].message_type
           });
-          console.log(topic);
           topic.subscribe((message) => {
              this.sensor_values[sensors[sensor]][instances[instance]] = message[this.peripherals[sensors[sensor]].message_value];
           });

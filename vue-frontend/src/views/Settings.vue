@@ -339,8 +339,6 @@ export default {
   },
 
   mounted() {
-    console.log(this.items)
-
      const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
      const ros_socketUrl = `${ros_protocol}${location.hostname}/ws/ros`
     
