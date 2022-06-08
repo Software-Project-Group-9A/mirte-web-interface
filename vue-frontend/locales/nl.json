@@ -51,6 +51,9 @@
     "download": "download",
     "upload": "upload"
   },
+  "website_editor": {
+    "save": "opslaan"
+  },
   "peripherals": {
     "ultrasonic_sensor": "Afstand sensor",
     "ir_sensor": "IR Sensor",

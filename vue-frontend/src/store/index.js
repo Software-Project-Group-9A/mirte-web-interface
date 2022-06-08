@@ -6,6 +6,7 @@ export default {
 
     state: {
         code: "",
+        html: "",
         tutorial: null,
         blockly: "",
         linenumber: 0,
@@ -18,6 +19,9 @@ export default {
     getters: {
         getCode(state) {
             return state.code
+        },
+        getHTML(state) {
+            return state.html
         },
         getTutorial(state) {
             return state.tutorial
@@ -45,6 +49,9 @@ export default {
         setCode({commit, getters}, code){
             commit('code', code)
         },
+        setHTML({commit, getters}, html){
+            commit('html', html)
+        },
         setTutorial({commit, getters}, tutorial){
             commit('tutorial', tutorial)
         },
@@ -71,6 +78,9 @@ export default {
     mutations: {
         code(state, code) {
             return state.code = code
+        },
+        html(state, html) {
+            return state.html = html
         },
         tutorial(state, tutorial) {
             return state.tutorial = tutorial

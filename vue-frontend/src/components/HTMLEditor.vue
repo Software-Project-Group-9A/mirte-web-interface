@@ -21,6 +21,9 @@ export default {
       autoRefresh: true,
       viewportMargin: Infinity
     });
+    this.editor.on('change', editor => {
+      this.$store.dispatch('setHTML', editor.getValue())
+    });
   },
   watch: { 
   }
