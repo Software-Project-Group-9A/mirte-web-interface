@@ -1,7 +1,7 @@
 <template>
       <div class="row p-4 h-100">
          <div class="col-6 p-2 h-100 offset-3" style="overflow: hidden;"> 
-             <div class="layoutbox rounded h-100" style="overflow: hidden; display: flex; flex-flow: column;">
+             <div class="layoutbox rounded h-25" style="overflow: hidden; display: flex; flex-flow: column;">
                 <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
                   Status
                 </div>
@@ -9,12 +9,11 @@
                   Connecting to Mirte...
                 </div>
              </div>
-             <div class="layoutbox rounded h-100" style="overflow: hidden; display: flex; flex-flow: column;">
+             <div class="layoutbox rounded h-75" style="overflow: hidden; display: flex; flex-flow: column;">
                 <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
                   Expose Sensors
                 </div>
-                <div class="h-40" style="min-height: 40%; overflow: auto;" >
-                  Hello There
+                <div id='dynamic_ui' class="h-40" style="min-height: 40%; overflow: auto;" >
                 </div>
              </div>
          </div> 
@@ -28,7 +27,6 @@ import ROSLIB from 'roslib'
 import '@/assets/sensorlib/RosSensorLib.min.js';
 
 global.ROSLIB = ROSLIB;
-
     // connect to Mirte
     const ros = new ROSLIB.Ros();
 
@@ -57,5 +55,14 @@ global.ROSLIB = ROSLIB;
       const map = SENSORLIB.readSensorsFromConfig(config, ros);
     });
 
-export default {}
+export default {
+  mounted() {
+    const button = document.createElement('button');
+    button.innerHTML = 'Button A'
+    const bounding = button.getBoundingClientRect();
+    const dynamicUI = document.getElementById('dynamic_ui');
+    dynamicUI.appendChild(button);
+    console.dir(bounding);
+  }
+}
 </script>
