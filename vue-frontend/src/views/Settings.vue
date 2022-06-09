@@ -339,10 +339,8 @@ export default {
   },
 
   mounted() {
-    console.log(this.items)
-
      const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://'
-     const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`
+     const ros_socketUrl = `${ros_protocol}${location.hostname}/ws/ros`
     
      var ros = new ROSLIB.Ros({
        url: ros_socketUrl

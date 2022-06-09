@@ -87,5 +87,14 @@
     "rel_path": "Sensors\\Encoder\\encoder\\encoder.py",
     "message_type": "mirte_msgs/Encoder",
     "message_value": "value"
+  },
+  "phone_slider": {
+    "text": "phone_slider",
+    "pins": {
+    },
+    "functions": ["get_value"],
+    "rel_path": "Sensors\\Phone\\phone_slider\\phone_slider.py",
+    "message_type": "std_msgs/Int32",
+    "message_value": "data"
   }
 }

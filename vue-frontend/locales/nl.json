@@ -65,7 +65,8 @@
     "oled": "OLED Scherm",
     "oled_text": "tekst",
     "oled_image": "afbeelding",
-    "oled_animation": "animatie"
+    "oled_animation": "animatie",
+    "phone_slider": "Slider"
   },
   "blockly": {
     "TRUE": "waar",
@@ -99,6 +100,7 @@
     "SET_SERVO_ANGLE": "zet servo %1 op hoek %2",
     "SET_OLED": "laat de %2 %3 op scherm %1 zien",
     "GET_ANALOG_PIN_VALUE": "analoge waarde van pin %1",
-    "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1"
+    "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1",
+    "PHONE_SLIDER": "waarde van slider %1"
   }
 }
