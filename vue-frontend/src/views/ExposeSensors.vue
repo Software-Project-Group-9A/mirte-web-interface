@@ -9,7 +9,7 @@
                   Connecting to Mirte...
                 </div>
              </div>
-             <div class="layoutbox rounded h-75" style="overflow: hidden; display: flex; flex-flow: column;">
+             <div class="layoutbox rounded h-75" style="overflow: hidden; display: flex; flex-flow: column; ">
                 <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
                   Expose Sensors
                 </div>
@@ -42,7 +42,7 @@ global.ROSLIB = ROSLIB;
     });
 
     /* replace by ws(s?)://mirte.local/ros/ws in future */
-    ros.connect('ws://192.168.20.174:9090');
+    ros.connect('ws://192.168.178.42:9090');
 
     // receive user config from parameter server
     const userConfig = new ROSLIB.Param({
@@ -52,17 +52,12 @@ global.ROSLIB = ROSLIB;
 
     userConfig.get((config) => {
       // read needed sensors from parameters
-      const map = SENSORLIB.readSensorsFromConfig(config, ros);
+      try{
+        const map = SENSORLIB.readSensorsFromConfig(config, ros, document.getElementById('dynamic_ui'));
+      } catch (error) {
+        document.getElementById("connection_info").innerHTML = error.name + ": " + error.message;
+      }
     });
 
-export default {
-  mounted() {
-    const button = document.createElement('button');
-    button.innerHTML = 'Button A'
-    const bounding = button.getBoundingClientRect();
-    const dynamicUI = document.getElementById('dynamic_ui');
-    dynamicUI.appendChild(button);
-    console.dir(bounding);
-  }
-}
+export default {}
 </script>
