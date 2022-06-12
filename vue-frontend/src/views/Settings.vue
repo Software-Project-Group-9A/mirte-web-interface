@@ -57,7 +57,10 @@
                     <b-form-select-option :value="null" disabled>{{ p }}</b-form-select-option>
                   </template>
                 </b-form-select>
-
+                <div v-if="peripherals[data.item.type].has_frequency">
+                  <p>Frequency</p>
+                  <b-form-input v-model="data.item.frequency" type="number" placeholder="10"></b-form-input>
+                </div>
               </template>
 
             </b-table>
@@ -236,7 +239,7 @@ export default {
           // Add pins to pins sub
           i['pins'] = {}
           for (var k in i){
-             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type"){
+             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type" && k!="frequency"){
                 i['pins'][k] = i[k]
                 delete i[k]
              }
@@ -281,7 +284,7 @@ export default {
       if (confirm(this.$i18n.t('settings.save_confirm'))) {
         this.busy = true
         var yaml = this.saveConfiguration();
-       
+        console.log(yaml);
 
         fetch(`http://${location.hostname}:3000/api/settings`, {
           method: 'POST',

@@ -90,6 +90,7 @@
   },
   "phone_slider": {
     "text": "phone_slider",
+    "has_frequency": true,
     "pins": {
     },
     "functions": ["get_value"],
