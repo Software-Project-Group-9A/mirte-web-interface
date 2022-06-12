@@ -91,6 +91,7 @@
   "phone_slider": {
     "text": "phone_slider",
     "has_frequency": true,
+    "positionable": true,
     "pins": {
     },
     "functions": ["get_value"],
