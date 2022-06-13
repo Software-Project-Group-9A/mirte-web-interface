@@ -1,6 +1,6 @@
 <template>
       <div class="row p-4 h-100">
-         <div class="col-6 p-2 h-100 offset-3" style="overflow: hidden;"> 
+         <div class="center-div w-100" style="overflow: hidden;"> 
              <div class="layoutbox rounded h-25" style="overflow: hidden; display: flex; flex-flow: column;">
                 <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
                   Status
@@ -41,8 +41,10 @@ global.ROSLIB = ROSLIB;
       document.getElementById("connection_info").innerHTML = 'Connection to websocket server closed.';
     });
 
-    /* replace by ws(s?)://mirte.local/ros/ws in future */
-    ros.connect('ws://192.168.178.42:9090');
+    const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+    const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`;
+
+    ros.connect(ros_socketUrl);
 
     // receive user config from parameter server
     const userConfig = new ROSLIB.Param({
