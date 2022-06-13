@@ -4,6 +4,7 @@ export function load (Blockly, instances) {
         instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
     }
 
+    // ROTATION BLOCK
     Blockly.Blocks['get_rotation_imu'] = {
         init: function () {
             this.jsonInit({
