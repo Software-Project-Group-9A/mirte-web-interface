@@ -4,6 +4,8 @@ export function load (Blockly, instances) {
         instances = [["NO PERIPHERAL CONFIGURED","NO PERIPHERAL CONFIGURED"]]
     }
 
+    // Takes care of inserting instance names in "instance-choosing" field
+    // such that users can choose between sliders 
     Blockly.Extensions.register('dynamic_instances_extension_phone_slider',
     function() {
       this.getInput('INSTANCE')
