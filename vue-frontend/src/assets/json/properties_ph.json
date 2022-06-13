@@ -96,5 +96,13 @@
     "rel_path": "Sensors\\Phone\\phone_slider\\phone_slider.py",
     "message_type": "std_msgs/Int32",
     "message_value": "data"
+  },
+  "imu": {
+    "text": "imu",
+    "pins": {},
+    "functions": ["get_rotation", "get_linear_acceleration", "get_angular_velocity"],
+    "rel_path": "Sensors\\Phone\\imu\\imu.py",
+    "message_type": "sensor_msgs/Imu",
+    "message_value": "data"
   }
 }

@@ -66,7 +66,8 @@
     "oled_text": "text",
     "oled_image": "image",
     "oled_animation": "animation",
-    "phone_slider": "Slider"
+    "phone_slider": "Slider",
+    "imu": "IMU"
   },
   "blockly": {
     "TRUE": "true",
@@ -101,6 +102,12 @@
     "SET_OLED": "show the %2 %3 on screen %1",
     "GET_ANALOG_PIN_VALUE": "analog value of pin %1",
     "GET_DIGITAL_PIN_VALUE": "digital value of pin %1",
-    "PHONE_SLIDER": "value of slider %1"
+    "PHONE_SLIDER": "value of slider %1",
+    "IMU_ORIENTATION": "phone: rotation over %1", 
+    "IMU_LINEAR_ACCELERATION": "phone: linear acceleration of %1", 
+    "IMU_ANGULAR_VELOCITY": "phone: angular velocity of %1", 
+    "X_AXIS": "x-axis",
+    "Y_AXIS": "y-axis",
+    "Z_AXIS": "z-axis"
   }
 }
