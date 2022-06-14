@@ -67,7 +67,8 @@
     "oled_image": "afbeelding",
     "oled_animation": "animatie",
     "phone_slider": "Slider",
-    "phone_button": "Knop"
+    "phone_button": "Knop",
+    "phone_image_output": "Afbeelding Output"
   },
   "blockly": {
     "TRUE": "waar",

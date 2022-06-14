@@ -67,7 +67,8 @@
     "oled_image": "image",
     "oled_animation": "animation",
     "phone_slider": "Slider",
-    "phone_button": "Button"
+    "phone_button": "Button",
+    "phone_image_output": "Image Output"
   },
   "blockly": {
     "TRUE": "true",
