@@ -31,7 +31,7 @@ export function load (Blockly, instances) {
     Blockly.Python['get_rotation_imu'] = function (block) {
       Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
       let axis = block.getFieldValue('AXIS');
-      let code = `mirte.getRotation('${axis}')`;
+      let code = `mirte.getImuRotation('${axis}')`;
       return [code, Blockly.Python.ORDER_NONE]
     };
 
@@ -62,7 +62,7 @@ export function load (Blockly, instances) {
     Blockly.Python['get_linear_acceleration_imu'] = function (block) {
       Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
       let axis = block.getFieldValue('AXIS');
-      let code = `mirte.getLinearAcceleration('${axis}')`;
+      let code = `mirte.getImuLinearAcceleration('${axis}')`;
       return [code, Blockly.Python.ORDER_NONE]
     };
 
@@ -93,7 +93,7 @@ export function load (Blockly, instances) {
     Blockly.Python['get_angular_velocity_imu'] = function (block) {
       Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
       let instance = block.getFieldValue('AXIS');
-      let code = `mirte.getAngularVelocity('${instance}')`;
+      let code = `mirte.getImuAngularVelocity('${instance}')`;
       return [code, Blockly.Python.ORDER_NONE]
     };
 }
