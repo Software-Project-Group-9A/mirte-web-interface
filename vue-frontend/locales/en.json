@@ -103,6 +103,7 @@
     "GET_ANALOG_PIN_VALUE": "analog value of pin %1",
     "GET_DIGITAL_PIN_VALUE": "digital value of pin %1",
     "PHONE_SLIDER": "value of slider %1",
-    "PHONE_BUTTON": "value of button %1"
+    "PHONE_BUTTON": "value of button %1",
+    "PHONE_IMAGE_OUTPUT": "display image %1 on output %2"
   }
 }

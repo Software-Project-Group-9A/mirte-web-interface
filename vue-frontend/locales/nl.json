@@ -103,6 +103,7 @@
     "GET_ANALOG_PIN_VALUE": "analoge waarde van pin %1",
     "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1",
     "PHONE_SLIDER": "waarde van slider %1",
-    "PHONE_BUTTON": "waarde van knop %1"
+    "PHONE_BUTTON": "waarde van knop %1",
+    "PHONE_IMAGE_OUTPUT": "laat afbeelding %1 zien op output %2"
   }
 }
