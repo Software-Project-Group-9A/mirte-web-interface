@@ -67,7 +67,9 @@
     "oled_image": "image",
     "oled_animation": "animation",
     "phone_slider": "Slider",
-    "phone_button": "Button"
+    "phone_button": "Button",
+    "phone_flashlight": "Flashlight",
+    "phone_text_subscriber": "Text Subscriber"
   },
   "blockly": {
     "TRUE": "true",
@@ -103,6 +105,8 @@
     "GET_ANALOG_PIN_VALUE": "analog value of pin %1",
     "GET_DIGITAL_PIN_VALUE": "digital value of pin %1",
     "PHONE_SLIDER": "value of slider %1",
-    "PHONE_BUTTON": "value of button %1"
+    "PHONE_BUTTON": "value of button %1",
+    "PHONE_FLASHLIGHT": "turn flashlight %1 to %2",
+    "PHONE_TEXT_SUBSCRIBER": "print text of %1"
   }
 }
