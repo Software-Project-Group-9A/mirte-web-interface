@@ -104,6 +104,7 @@
     "rel_path": "Sensors\\Phone\\imu\\imu.py",
     "message_type": "sensor_msgs/Imu",
     "message_value": "orientation.x",
+    "messgae_valuex": "orientation.x",
     "messgae_valuey": "orientation.y",
     "message_valuez": "orientation.z"
   }
