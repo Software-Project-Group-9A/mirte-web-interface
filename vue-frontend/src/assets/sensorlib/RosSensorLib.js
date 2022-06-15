@@ -1874,7 +1874,7 @@ Object.assign(SENSORLIB, require('./util'));
 global.SENSORLIB = SENSORLIB;
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./actuators":7,"./error":10,"./sensors":21,"./util":24}],3:[function(require,module,exports){
+},{"./actuators":7,"./error":10,"./sensors":24,"./util":27}],3:[function(require,module,exports){
 const Subscriber = require('./Subscriber.js');
 const NotSupportedError = require('../error/NotSupportedError');
 
@@ -1889,7 +1889,7 @@ class FlashlightSubscriber extends Subscriber {
   /**
    * Creates a new TextSubscriber.
     * @param {ROSLIB.Ros} ros ROS instance to publish to
-    * @param {ROSLIB.Topic} topicName topic from which to subscribe to
+    * @param {ROSLIB.Topic} topicName name for the topic to subscribe to
    */
   constructor(ros, topicName) {
     super(ros, topicName);
@@ -1968,7 +1968,7 @@ class ImageSubscriber extends Subscriber {
     * to the provided topic on the provided canvas.
     * Both compressed (sensor_msgs/CompressedImage) and non-compressed images (sensor_msgs/Image) are supported.
     * @param {ROSLIB.Ros} ros ROS instance to publish to
-    * @param {ROSLIB.Topic} topicName topic from which to subscribe to
+    * @param {ROSLIB.Topic} topicName name for the topic to subscribe to
     * @param {HTMLCanvasElement} canvas canvas to draw published images on
     * @param {boolean} [compressed=true]  whether compressed images are published to the topic. True by default.
     */
@@ -2102,7 +2102,7 @@ class Subscriber {
   /**
    * Creates a new subscriber that subscribes to the provided topic.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName a Topic from RosLibJS
+   * @param {ROSLIB.Topic} topicName name for the topic to subscribe to
    * @throws TypeError if topic argument is not of type ROSLIB.Topic
    */
   constructor(ros, topicName) {
@@ -2186,7 +2186,7 @@ class TextSubscriber extends Subscriber {
   /**
    * Creates a new TextSubscriber.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName topic to which to subscribe to
+   * @param {ROSLIB.Topic} topicName name for the topic to subscribe to
    * @param {HTMLElement} HTMLElement HTML element in which the messages will be displayed.
    */
   constructor(ros, topicName, HTMLElement) {
@@ -2270,7 +2270,84 @@ module.exports = {
 };
 
 },{"./NotSupportedError":8}],11:[function(require,module,exports){
+// Dependencies
+const IntervalPublisher = require('./IntervalPublisher.js');
+const NotSupportedError = require('../error/NotSupportedError');
+
+/**
+ * AmbientLightPublisher publishes the amount of lux the
+ * camera receives
+ * By default it publishes data at the interval rate
+ * from parrent class IntervalPublisher
+ *
+ * VERY IMPORTANT: This feature is not fully suported over all browsers
+ * To enable in Chrome, go to: chrome://flags/
+ * There enable: "Generic Sensor Extra Classes"
+ *
+ * The data resulting from the interactions is published as a
+ * ROS std_msgs/Int32 message.
+ */
+class AmbientLightPublisher extends IntervalPublisher {
+  /**
+   * Creates a new sensor publisher that publishes the amount of lux
+   * the camera receives
+   * @param {ROSLIB.Ros} ros a ROS instance to publish to
+   * @param {String} topicName name for the topic to publish data to
+   * @param {Number} hz frequency for the publishing interval
+   */
+  constructor(ros, topicName, hz = 1) {
+    // check support for API
+    if (!(window.AmbientLightSensor)) {
+      throw new NotSupportedError('Unable to create AmbientLightSensor, ' +
+          'AmbientLight API not supported');
+    }
+    super(ros, topicName, hz);
+    this.topic.messageType = 'std_msgs/Int32';
+
+    this.sensor = new AmbientLightSensor();
+  }
+
+  /**
+   * Start the publishing of data to ROS with frequency of <freq> Hz.
+   */
+  start() {
+    super.start();
+
+    this.sensor.addEventListener('reading', (event) => {
+      this.light = this.sensor.illuminance;
+    });
+    this.sensor.start();
+  }
+
+  /**
+   * Stops the publishing of data to ROS.
+   */
+  stop() {
+    super.stop();
+
+    this.sensor.stop();
+
+    this.sensor.removeEventListener('reading');
+  }
+
+  /**
+   * Puts the light level detected by the ambient light sensor
+   * in a ROS message and publishes it. The light level is given in lux.
+   */
+  createSnapshot() {
+    const AmbientLightMessage = new ROSLIB.Message({
+      data: this.light,
+    });
+    this.msg = AmbientLightMessage;
+    super.createSnapshot();
+  }
+}
+
+module.exports = AmbientLightPublisher;
+
+},{"../error/NotSupportedError":8,"./IntervalPublisher.js":19}],12:[function(require,module,exports){
 const SensorPublisher = require('./SensorPublisher.js');
+const {positionElement} = require('../util/styleUtils');
 
 /**
  * ButtonPublisher publishes the state of an HTML button element.
@@ -2285,7 +2362,7 @@ class ButtonPublisher extends SensorPublisher {
   /**
    * Creates a new ButtonPublisher.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName topic to which to publish button data
+   * @param {String} topicName name for the topic to publish data to
    * @param {HTMLButtonElement} button button of which to publish data
    */
   constructor(ros, topicName, button) {
@@ -2372,7 +2449,7 @@ class ButtonPublisher extends SensorPublisher {
   }
 
   /**
-   * Deserializes a Slider stored in a config object, and returns the resulting publisher instance.
+   * Deserializes a Button stored in a config object, and returns the resulting publisher instance.
    * The returned instance is already started.
    * @param {ROSLIB.Ros} ros ros instance to which to resulting publisher will publish
    * @param {Object} config object with the following keys:
@@ -2382,12 +2459,11 @@ class ButtonPublisher extends SensorPublisher {
    * @return {GPSDeclinationPublisher} GPSDeclinationPublisher described in the provided config parameter
    */
   static readFromConfig(ros, config, targetElement) {
+    // initialize button
     const button = window.document.createElement('button');
+    button.innerHTML = config.name;
 
-    // TODO: positioning
-    // button.style = `position: absolute; left: ${config.x}%; top: ${config.y}%;`;
-
-    targetElement.appendChild(button);
+    positionElement(button, targetElement, config.x, config.y, config.name);
 
     const publisher = new ButtonPublisher(ros, '/mirte/phone_button/' + config.name, button, config.frequency);
     publisher.start();
@@ -2398,7 +2474,7 @@ class ButtonPublisher extends SensorPublisher {
 
 module.exports = ButtonPublisher;
 
-},{"./SensorPublisher.js":18}],12:[function(require,module,exports){
+},{"../util/styleUtils":29,"./SensorPublisher.js":21}],13:[function(require,module,exports){
 const IntervalPublisher = require('./IntervalPublisher');
 
 /**
@@ -2412,7 +2488,7 @@ class CameraPublisher extends IntervalPublisher {
   /**
      * Creates a new Camera publisher that publishes to the provided topic.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-     * @param {ROSLIB.Topic} topicName a Topic from RosLibJS
+     * @param {String} topicName name for the topic to publish data to
      * @param {HTMLVideoElement} camera the video element of which to publish the data from.
      * @param {HTMLCanvasElement} canvas a canvas element for making publishing video data possible
      * @param {Number} hz a standard frequency for this type of object.
@@ -2459,7 +2535,7 @@ class CameraPublisher extends IntervalPublisher {
   start() {
     // If there is no videostream available yet, do not publish data.
     if (!this.camera.srcObject) {
-      throw new Error('No video source found.');
+      console.warn('No video source found.');
     }
     super.start();
   }
@@ -2491,7 +2567,113 @@ class CameraPublisher extends IntervalPublisher {
 
 module.exports = CameraPublisher;
 
-},{"./IntervalPublisher":16}],13:[function(require,module,exports){
+},{"./IntervalPublisher":19}],14:[function(require,module,exports){
+const SensorPublisher = require('./SensorPublisher.js');
+const {positionElement} = require('../util/styleUtils.js');
+
+/**
+ * CheckboxPublisher publishes the state of an HTML checkbox.
+ * This state is published every time the checkbox changes state,
+ * from checked to unchecked, and vice versa.
+ *
+ * The data resulting from the checkbox interactions is published as a
+ * ROS std_msgs/Bool message. The boolean contained within this message
+ * is set to true when the checkbox is checked, and false otherwise.
+ */
+class CheckboxPublisher extends SensorPublisher {
+  /**
+   * Creates a new checkboxPublisher.
+   * @param {ROSLIB.Ros} ros a ROS instance to publish to
+   * @param {String} topicName topic to which to publish checkbox data
+   * @param {HTMLElement} checkbox checkbox of which to publish data
+   */
+  constructor(ros, topicName, checkbox) {
+    super(ros, topicName);
+
+    if (!(checkbox instanceof window.HTMLElement && checkbox.type && checkbox.type === 'checkbox')) {
+      throw new TypeError('checkbox argument was not a HTML checkbox');
+    }
+
+    this.topic.messageType = 'std_msgs/Bool';
+
+    /**
+     * checkbox of which to publish data
+     */
+    this.checkbox = checkbox;
+
+    /**
+     * Callback for when checkbox state changes.
+     * @param {Event} event event from callback
+     */
+    this.change = function(event) {
+      if (event.target.checked) {
+        this.publishBoolMsg(true);
+      } else {
+        this.publishBoolMsg(false);
+      }
+    }.bind(this);
+  }
+
+
+  /**
+   * Creates and publishes a new ROS std_msgs/Bool message, containing the supplied boolean value.
+   * @param {boolean} bool boolean to include in message
+   */
+  publishBoolMsg(bool) {
+    const msg = new ROSLIB.Message({
+      data: bool,
+    });
+    this.topic.publish(msg);
+  }
+
+  /**
+   * Start the publishing of data to ROS.
+   */
+  start() {
+    super.start();
+
+    this.checkbox.addEventListener('change', this.change);
+  }
+
+  /**
+   * Stop the publishing of data to ROS.
+   */
+  stop() {
+    super.stop();
+
+    this.checkbox.removeEventListener('change', this.change);
+  }
+
+  /**
+   * Deserializes a Checkbox stored in a config object, and returns the resulting publisher instance.
+   * The returned instance is already started.
+   * @param {ROSLIB.Ros} ros ros instance to which to resulting publisher will publish
+   * @param {Object} config object with the following keys:
+   * @param {string} config.name name of the publisher to create
+   * @param {number} config.x distance from right side of container
+   * @param {number} config.y distance from top side of container
+   * @param {HTMLElement} targetElement HTML element in which to generate necessary sensor UI elements
+   * @return {GPSDeclinationPublisher} GPSDeclinationPublisher described in the provided config parameter
+   */
+  static readFromConfig(ros, config, targetElement) {
+    // initialize checkbox
+    const checkbox = window.document.createElement('input');
+    checkbox.type = 'checkbox';
+
+    positionElement(checkbox, targetElement, config.x, config.y, config.name);
+
+    const publisher = new CheckboxPublisher(ros, '/mirte/phone_checkbox/' + config.name, checkbox);
+    publisher.start();
+
+    return publisher;
+  }
+}
+
+module.exports = CheckboxPublisher;
+
+},{"../util/styleUtils.js":29,"./SensorPublisher.js":21}],15:[function(require,module,exports){
+arguments[4][14][0].apply(exports,arguments)
+},{"../util/styleUtils.js":29,"./SensorPublisher.js":21,"dup":14}],16:[function(require,module,exports){
 /*
  Used sources:
     https://dev.to/orkhanjafarovr/real-compass-on-mobile-browsers-with-javascript-3emi
@@ -2518,7 +2700,7 @@ class GPSDeclinationPublisher extends IntervalPublisher {
    * between the device and the provided Coordinates to the provided topic.
    * Will point to the North Pole (latitude 90, longitude 0) if not coordinates are specified.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName a Topic from RosLibJS
+   * @param {String} topicName name for the topic to publish data to
    * @param {Number} latitude float that gives the latitude of point where to aim for
    * @param {Number} longitude float that gives the longitude of point where to aim for
    * @param {Number} hz a standard frequency for this type of object.
@@ -2746,7 +2928,7 @@ class GPSDeclinationPublisher extends IntervalPublisher {
 
 module.exports = GPSDeclinationPublisher;
 
-},{"../error/NotSupportedError":8,"../error/PermissionDeniedError.js":9,"./IntervalPublisher.js":16}],14:[function(require,module,exports){
+},{"../error/NotSupportedError":8,"../error/PermissionDeniedError.js":9,"./IntervalPublisher.js":19}],17:[function(require,module,exports){
 const IntervalPublisher = require('./IntervalPublisher');
 const NotSupportedError = require('../error/NotSupportedError');
 
@@ -2762,7 +2944,7 @@ class GPSPublisher extends IntervalPublisher {
    * Creates a new GPSPublisher, which will publish the longitude and latitude
    * of the current device in the form of a sensor_msgs/NavSatFix message.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName topic to which to publish geolocation data.
+   * @param {String} topicName name for the topic to publish data to
    * @param {number} hz frequency at which to publish GPS data, in Hertz.
    * If no frequency is specified, this will default to 1 Hz.
    * @throws {NotSupportedError} if the Geolocation API is not supported
@@ -2885,7 +3067,7 @@ class GPSPublisher extends IntervalPublisher {
 
 module.exports = GPSPublisher;
 
-},{"../error/NotSupportedError":8,"./IntervalPublisher":16}],15:[function(require,module,exports){
+},{"../error/NotSupportedError":8,"./IntervalPublisher":19}],18:[function(require,module,exports){
 // Assumptions:
 // A non-set timer is no problem.
 
@@ -2906,7 +3088,7 @@ class IMUPublisher extends IntervalPublisher {
   /**
      * Creates a new sensor publisher that publishes to the provided topic.
      * @param {ROSLIB.Ros} ros a ROS instance to publish to
-     * @param {ROSLIB.Topic} topicName a Topic from RosLibJS
+     * @param {String} topicName name for the topic to publish data to
      * @param {Number} hz a standard frequency for this type of object.
      */
   constructor(ros, topicName, hz = 5) {
@@ -3087,7 +3269,7 @@ class IMUPublisher extends IntervalPublisher {
 
 module.exports = IMUPublisher;
 
-},{"../error/PermissionDeniedError.js":9,"../util/MathUtils.js":22,"./IntervalPublisher.js":16}],16:[function(require,module,exports){
+},{"../error/PermissionDeniedError.js":9,"../util/MathUtils.js":25,"./IntervalPublisher.js":19}],19:[function(require,module,exports){
 // Assumptions:
 // A non-set timer is no problem.
 
@@ -3106,7 +3288,7 @@ class IntervalPublisher extends SensorPublisher {
      * Creates a new sensor publisher that publishes to
      * the provided topic with a Regular interval.
      * @param {ROSLIB.Ros} ros a ROS instance to publish to
-     * @param {ROSLIB.Topic} topicName a Topic from RosLibJS on which to publish.
+     * @param {String} topicName name for the topic from ROS on which to publish data to
      * @param {Number} hz a standard frequency for this type of object.
      */
   constructor(ros, topicName, hz = 10) {
@@ -3175,7 +3357,7 @@ class IntervalPublisher extends SensorPublisher {
 
 module.exports = IntervalPublisher;
 
-},{"./SensorPublisher":18,"lodash.isequal":1}],17:[function(require,module,exports){
+},{"./SensorPublisher":21,"lodash.isequal":1}],20:[function(require,module,exports){
 /*
  Used sources:
     https://dev.to/orkhanjafarovr/real-compass-on-mobile-browsers-with-javascript-3emi
@@ -3198,7 +3380,7 @@ class MagneticDeclinationPublisher extends IntervalPublisher {
   /**
    * Creates a new sensor publisher that publishes to the provided topic.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName a Topic from RosLibJS
+   * @param {String} topicName name for the topic to publish data to
    * @param {Number} hz a standard frequency for this type of object.
    */
   constructor(ros, topicName, hz = 10) {
@@ -3319,7 +3501,7 @@ class MagneticDeclinationPublisher extends IntervalPublisher {
 
 module.exports = MagneticDeclinationPublisher;
 
-},{"../error/PermissionDeniedError.js":9,"./IntervalPublisher.js":16}],18:[function(require,module,exports){
+},{"../error/PermissionDeniedError.js":9,"./IntervalPublisher.js":19}],21:[function(require,module,exports){
 /**
  * Template for object that publishes sensor data to the provided ROS topic.
  */
@@ -3327,8 +3509,8 @@ class SensorPublisher {
   /**
    * Creates a new sensor publisher that publishes to the provided topic.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName a Topic from RosLibJS
-   * @throws TypeError if topic argument is not of type ROSLIB.Topic
+   * @param {String} topicName name for the topic to publish data to
+   * @throws TypeError if topic argument is not of type String
    */
   constructor(ros, topicName) {
     if (!(ros instanceof ROSLIB.Ros)) {
@@ -3396,8 +3578,9 @@ class SensorPublisher {
 
 module.exports = SensorPublisher;
 
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 const IntervalPublisher = require('./IntervalPublisher.js');
+const {positionElement} = require('../util/styleUtils');
 
 /**
  * SliderPublisher publishes the state of an HTML slider element.
@@ -3411,7 +3594,7 @@ class SliderPublisher extends IntervalPublisher {
   /**
    * Creates a new ButtonPublisher.
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName topic to which to publish slider data
+   * @param {String} topicName name for the topic to publish data to
    * @param {HTMLInputElement} slider slider of which to publish data, must have type 'range'
    * @param {Number} hz a standard frequency for this type of object.
    */
@@ -3469,14 +3652,12 @@ class SliderPublisher extends IntervalPublisher {
    */
   static readFromConfig(ros, config, targetElement) {
     const slider = window.document.createElement('input');
+    slider.id = config.name;
     slider.type = 'range';
     slider.min = 0;
     slider.max = 100;
 
-    // TODO: positioning
-    // slider.style = `position: absolute; left: ${config.x}%; top: ${config.y}%;`;
-
-    targetElement.appendChild(slider);
+    positionElement(slider, targetElement, config.x, config.y, config.name);
 
     const publisher = new SliderPublisher(ros, '/mirte/phone_slider/' + config.name, slider, config.frequency);
     publisher.start();
@@ -3487,7 +3668,8 @@ class SliderPublisher extends IntervalPublisher {
 
 module.exports = SliderPublisher;
 
-},{"./IntervalPublisher.js":16}],20:[function(require,module,exports){
+},{"../util/styleUtils":29,"./IntervalPublisher.js":19}],23:[function(require,module,exports){
+const {positionElement} = require('../util/styleUtils.js');
 const SensorPublisher = require('./SensorPublisher.js');
 
 /**
@@ -3503,7 +3685,7 @@ class TextPublisher extends SensorPublisher {
    * Creates a new TextPublisher.
    *
    * @param {ROSLIB.Ros} ros a ROS instance to publish to
-   * @param {ROSLIB.Topic} topicName topic to which to publish text data
+   * @param {String} topicName name for the topic to publish data to
    * @param {HTMLInputElement} inputElement input element from which to publish data.
    * @param {Object} [options] configuration options.
    * @param {boolean} [options.onEnter=true] if true publishes on enter, else publishes every key press.
@@ -3609,10 +3791,7 @@ class TextPublisher extends SensorPublisher {
     const textInput = window.document.createElement('input');
     textInput.type = 'text';
 
-    // TODO: positioning
-    // textInput.style = `position: absolute; left: ${config.x}%; top: ${config.y}%;`;
-
-    targetElement.appendChild(textInput);
+    positionElement(textInput, targetElement, config.x, config.y, config.name);
 
     const publisher = new TextPublisher(ros, '/mirte/phone_text_input/' + config.name, textInput);
     publisher.start();
@@ -3623,14 +3802,16 @@ class TextPublisher extends SensorPublisher {
 
 module.exports = TextPublisher;
 
-},{"./SensorPublisher.js":18}],21:[function(require,module,exports){
+},{"../util/styleUtils.js":29,"./SensorPublisher.js":21}],24:[function(require,module,exports){
 /**
  * This file tells @function require what to import when requiring the entire sensors folder.
  *
  * Any module to be exported to the library should have an entry in the object below.
  */
 module.exports = {
+  AmbientLightPublisher: require('./AmbientLightPublisher'),
   ButtonPublisher: require('./ButtonPublisher'),
+  CheckboxPublisher: require('./CheckboxPublisher'),
   IMUPublisher: require('./IMUPublisher'),
   SliderPublisher: require('./SliderPublisher'),
   CameraPublisher: require('./CameraPublisher'),
@@ -3640,7 +3821,7 @@ module.exports = {
   GPSDeclinationPublisher: require('./GPSDeclinationPublisher'),
 };
 
-},{"./ButtonPublisher":11,"./CameraPublisher":12,"./GPSDeclinationPublisher":13,"./GPSPublisher":14,"./IMUPublisher":15,"./MagneticDeclinationPublisher":17,"./SliderPublisher":19,"./TextPublisher":20}],22:[function(require,module,exports){
+},{"./AmbientLightPublisher":11,"./ButtonPublisher":12,"./CameraPublisher":13,"./CheckboxPublisher":15,"./GPSDeclinationPublisher":16,"./GPSPublisher":17,"./IMUPublisher":18,"./MagneticDeclinationPublisher":20,"./SliderPublisher":22,"./TextPublisher":23}],25:[function(require,module,exports){
 /**
  * Convert Euler angle notation rotation to Quaternion notation.
  * @param {number} x the Euler x coordinate
@@ -3680,8 +3861,9 @@ module.exports = {
   quatFromEuler: quatFromEuler,
 };
 
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 const ButtonPublisher = require('../sensors/ButtonPublisher');
+const CheckboxPublisher = require('../sensors/CheckboxPublisher');
 const SliderPublisher = require('../sensors/SliderPublisher');
 const TextPublisher = require('../sensors/TextPublisher');
 const ImageSubscriber = require('../actuators/ImageSubscriber');
@@ -3725,10 +3907,12 @@ function tryPublishElement(element, ros, map) {
       mapEntry = new ButtonPublisher(ros, 'mirte/phone_button/' + instanceName, element);
       break;
     case 'HTMLInputElement':
-      if (element.type === 'range') {
+      if (element.type && element.type === 'range') {
         mapEntry = new SliderPublisher(ros, 'mirte/phone_slider/' + instanceName, element);
-      } else if (element.type === 'text') {
+      } else if (element.type && element.type === 'text') {
         mapEntry = new TextPublisher(ros, 'mirte/phone_text_input/' + instanceName, element);
+      } else if (element.type && element.type === 'checkbox') {
+        mapEntry = new CheckboxPublisher(ros, 'mirte/phone_checkbox/' + instanceName, element);
       }
       break;
     case 'HTMLCanvasElement':
@@ -3796,13 +3980,13 @@ module.exports = {
   tryPublishElement: tryPublishElement,
 };
 
-},{"../actuators/ImageSubscriber":4,"../actuators/TextSubscriber":6,"../sensors/ButtonPublisher":11,"../sensors/SliderPublisher":19,"../sensors/TextPublisher":20}],24:[function(require,module,exports){
+},{"../actuators/ImageSubscriber":4,"../actuators/TextSubscriber":6,"../sensors/ButtonPublisher":12,"../sensors/CheckboxPublisher":15,"../sensors/SliderPublisher":22,"../sensors/TextPublisher":23}],27:[function(require,module,exports){
 // assign all functions exported by util files to exports
 Object.assign(module.exports, require('./mirteUtil'));
 Object.assign(module.exports, require('./documentUtils'));
 Object.assign(module.exports, require('./MathUtils'));
 
-},{"./MathUtils":22,"./documentUtils":23,"./mirteUtil":25}],25:[function(require,module,exports){
+},{"./MathUtils":25,"./documentUtils":26,"./mirteUtil":28}],28:[function(require,module,exports){
 const GPSPublisher = require('../sensors/GPSPublisher');
 const IMUPublisher = require('../sensors/IMUPublisher');
 const MagneticDeclinationPublisher = require('../sensors/MagneticDeclinationPublisher');
@@ -3812,6 +3996,7 @@ const CameraPublisher = require('../sensors/CameraPublisher');
 const SliderPublisher = require('../sensors/SliderPublisher');
 const ButtonPublisher = require('../sensors/ButtonPublisher');
 const TextPublisher = require('../sensors/TextPublisher');
+const CheckboxPublisher = require('../sensors/CheckBoxPublisher');
 /**
  * Array containing deserializers for every type of sensor.
  * An deserializers is a function that takes a ros instance and a properties object,
@@ -3826,6 +4011,7 @@ const sensorDeserializers = {
   'phone_slider': SliderPublisher.readFromConfig,
   'phone_button': ButtonPublisher.readFromConfig,
   'phone_text_input': TextPublisher.readFromConfig,
+  'phone_checkbox': CheckboxPublisher.readFromConfig,
 };
 
 /**
@@ -3864,4 +4050,38 @@ module.exports = {
   readSensorsFromConfig: readSensorsFromConfig,
 };
 
-},{"../sensors/ButtonPublisher":11,"../sensors/CameraPublisher":12,"../sensors/GPSDeclinationPublisher":13,"../sensors/GPSPublisher":14,"../sensors/IMUPublisher":15,"../sensors/MagneticDeclinationPublisher":17,"../sensors/SliderPublisher":19,"../sensors/TextPublisher":20}]},{},[2]);
+},{"../sensors/ButtonPublisher":12,"../sensors/CameraPublisher":13,"../sensors/CheckBoxPublisher":14,"../sensors/GPSDeclinationPublisher":16,"../sensors/GPSPublisher":17,"../sensors/IMUPublisher":18,"../sensors/MagneticDeclinationPublisher":20,"../sensors/SliderPublisher":22,"../sensors/TextPublisher":23}],29:[function(require,module,exports){
+/**
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement} parent
+ * @param {number} x
+ * @param {number} y
+ * @param {string} name
+ */
+function positionElement(element, parent, x, y, name) {
+  // create div to hold element
+  const div = window.document.createElement('div');
+  const style = div.style;
+  style.setProperty('position', 'absolute');
+  style.setProperty('left', x + '%');
+  style.setProperty('top', y + '%');
+
+  // insert label and element into div
+  const label = window.document.createElement('label');
+  label.innerHTML = name;
+
+  const br = window.document.createElement('br');
+
+  div.appendChild(label);
+  div.appendChild(br);
+  div.appendChild(element);
+
+  parent.appendChild(div);
+}
+
+module.exports = {
+  positionElement: positionElement,
+};
+
+},{}]},{},[2]);

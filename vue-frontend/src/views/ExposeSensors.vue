@@ -1,22 +1,20 @@
 <template>
       <div class="row p-4 h-100">
          <div class="center-div w-100" style="overflow: hidden;"> 
-             <div class="layoutbox rounded h-25" style="overflow: hidden; display: flex; flex-flow: column;">
+              <div id='connection_info' class="rounded text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
+                Status
+              </div>
+             <div class="layoutbox rounded" style="height: 90%; overflow: hidden; display: flex; flex-flow: column; ">
                 <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
-                  Status
+                  User Interface
                 </div>
-                <div id='connection_info' class="h-40" style="min-height: 40%; overflow: auto;" >
-                  Connecting to Mirte...
+                <div id='dynamic_ui' class="h-40" style=" overflow: auto; position: relative;" >
                 </div>
              </div>
-             <div class="layoutbox rounded h-75" style="overflow: hidden; display: flex; flex-flow: column; ">
-                <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
-                  Expose Sensors
-                </div>
-                <div id='dynamic_ui' class="h-40" style="min-height: 40%; overflow: auto;" >
-                </div>
-             </div>
-         </div> 
+         </div>
+         <!-- Hidden canvas and video object to allow the sensors page to publish camera data -->
+         <canvas width="640" height="400" id="canvas" hidden="true"></canvas>
+         <video crossorigin="anonymous" autoplay id="camera" hidden="true"></video>
       </div>
 
 </template>
@@ -32,18 +30,18 @@ global.ROSLIB = ROSLIB;
 
     // show connection status in status div
     ros.on('connection', function() {
-      document.getElementById("connection_info").innerHTML = "Connected to webserver.";
+      document.getElementById("connection_info").innerHTML = "Connected to webserver";
     });
     ros.on('error', function(error) { 
-      document.getElementById("connection_info").innerHTML = "Failed to connect to webserver."; 
+      document.getElementById("connection_info").innerHTML = "Failed to connect to webserver"; 
     });
     ros.on('close', function() { 
-      document.getElementById("connection_info").innerHTML = 'Connection to websocket server closed.';
+      document.getElementById("connection_info").innerHTML = "Connection to websocket server closed";
     });
 
+    // connect to rosbridge websocket
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
     const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`;
-
     ros.connect(ros_socketUrl);
 
     // receive user config from parameter server
