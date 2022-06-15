@@ -67,7 +67,8 @@
     "oled_image": "image",
     "oled_animation": "animation",
     "phone_slider": "Slider",
-    "imu": "IMU"
+    "imu": "IMU",
+    "phone_button": "Button"
   },
   "blockly": {
     "TRUE": "true",
@@ -108,6 +109,7 @@
     "IMU_ANGULAR_VELOCITY": "phone: angular velocity of %1", 
     "X_AXIS": "x-axis",
     "Y_AXIS": "y-axis",
-    "Z_AXIS": "z-axis"
+    "Z_AXIS": "z-axis",
+    "PHONE_BUTTON": "value of button %1"
   }
 }
