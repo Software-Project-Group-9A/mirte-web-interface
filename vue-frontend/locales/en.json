@@ -65,7 +65,9 @@
     "oled": "OLED Screen",
     "oled_text": "text",
     "oled_image": "image",
-    "oled_animation": "animation"
+    "oled_animation": "animation",
+    "phone_slider": "Slider",
+    "phone_button": "Button"
   },
   "blockly": {
     "TRUE": "true",
@@ -99,6 +101,8 @@
     "SET_SERVO_ANGLE": "set servo %1 to angle %2",
     "SET_OLED": "show the %2 %3 on screen %1",
     "GET_ANALOG_PIN_VALUE": "analog value of pin %1",
-    "GET_DIGITAL_PIN_VALUE": "digital value of pin %1"
+    "GET_DIGITAL_PIN_VALUE": "digital value of pin %1",
+    "PHONE_SLIDER": "value of slider %1",
+    "PHONE_BUTTON": "value of button %1"
   }
 }
