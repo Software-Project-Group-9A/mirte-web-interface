@@ -40,7 +40,7 @@ export default {
       shutdown(){
         if (confirm(this.$i18n.t('main.shutdown_confirm'))) {
           this.busy = true
-          fetch(`http://${location.hostname}:3000/api/shutdown`)
+          fetch(`${location.protocol}//${location.hostname}/api/shutdown`)
           .then(res => res.text())
           .then(data => {
              alert( this.$i18n.t('main.shutdown_success'))

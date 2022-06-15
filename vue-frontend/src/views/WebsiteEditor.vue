@@ -35,7 +35,7 @@ export default {
    },
    methods: {
       saveFile: function() {
-         const htmlUrl = `http://${location.hostname}:3000/api/html`;
+         const htmlUrl = `${location.protocol}//${location.hostname}/api/html`;
 
          fetch(htmlUrl, {
                method: 'POST',
