@@ -44,8 +44,6 @@ export default {
                   'CORS': 'Access-Control-Allow-Origin'
                },
                body: this.$store.getters.getHTML,
-         }).then(res => {
-               this.waitForSocketConnection();
          }).catch(err => {
                console.error("sending failed");
                console.error(err);
