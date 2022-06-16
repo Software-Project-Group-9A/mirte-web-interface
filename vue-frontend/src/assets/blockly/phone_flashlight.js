@@ -39,9 +39,9 @@ export function load (Blockly, instances) {
 
     Blockly.Python['set_state_phone_flashlight'] = function (block) {
         Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
-        let instance = block.getFieldValue('INSTANCE');
+        let flashlight = block.getFieldValue('INSTANCE');
         let state = block.getFieldValue('FLASH');
-        let code = `mirte.setFlashlight('${instance}', '${state}')`;
+        let code = `mirte.setFlashlight('${flashlight}', '${state}')`;
         return [code, Blockly.Python.ORDER_NONE]
     };
 }
