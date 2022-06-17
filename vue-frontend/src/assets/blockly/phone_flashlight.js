@@ -31,8 +31,6 @@ export function load (Blockly, instances) {
 		  "inputsInline": true,
 		  "colour": "%{BKY_SENSORS_RGB}",
           "output": "Boolean",
-          "previousStatement": null,
-          "nextStatement": null,
 		  "extensions": ["dynamic_instances_extension_phone_flashlight"]
              });
         }
