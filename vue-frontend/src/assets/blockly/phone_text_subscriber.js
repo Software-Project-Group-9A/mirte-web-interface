@@ -16,6 +16,11 @@ export function load (Blockly, instances) {
 		  "type": "block_type",
 		  "message0": "%{BKY_PHONE_TEXT_SUBSCRIBER}",
 		  "args0": [
+        {
+          "type": "field_input",
+          "name": "TEXT",
+          "text": "text"
+        },
 		    {
 		      "type": "input_dummy",
 		      "name": "INSTANCE"
@@ -23,7 +28,7 @@ export function load (Blockly, instances) {
 		  ],
 		  "inputsInline": true,
 		  "colour": "%{BKY_SENSORS_RGB}",
-                  "output": "Number",
+      "output": "Boolean",
 		  "extensions": ["dynamic_instances_extension_phone_text_subscriber"]
              });
         }
@@ -32,7 +37,8 @@ export function load (Blockly, instances) {
     Blockly.Python['print_phone_text_subscriber'] = function (block) {
       Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
       let instance = block.getFieldValue('INSTANCE');
-      let code = `mirte.printText('${instance}')`;
+      let text = block.getFieldValue('TEXT');
+      let code = `mirte.printText('${instance}', '${text}')`;
       return [code, Blockly.Python.ORDER_NONE]
     };
 }

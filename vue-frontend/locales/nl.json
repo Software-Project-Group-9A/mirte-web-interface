@@ -69,7 +69,7 @@
     "phone_slider": "Slider",
     "phone_button": "Knop",
     "phone_flashlight": "Zaklamp",
-    "phone_text_subscriber": "Tekst Subscriber"
+    "phone_text_subscriber": "Tekst Printer"
   },
   "blockly": {
     "TRUE": "waar",
@@ -107,6 +107,6 @@
     "PHONE_SLIDER": "waarde van slider %1",
     "PHONE_BUTTON": "waarde van knop %1",
     "PHONE_FLASHLIGHT": "zet flashlight %1 op %2",
-    "PHONE_TEXT_SUBSCRIBER": "print tekst van %1"
+    "PHONE_TEXT_SUBSCRIBER": "print tekst %1 naar %2"
   }
 }

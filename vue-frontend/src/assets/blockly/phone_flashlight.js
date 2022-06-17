@@ -1,4 +1,4 @@
-const options = [['on', 'true'], ['off', 'false']];
+const options = [['%{BKY_TRUE}', 'true'], ['%{BKY_FALSE}', 'false']];
 
 export function load (Blockly, instances) {
 
@@ -30,6 +30,7 @@ export function load (Blockly, instances) {
 		  ],
 		  "inputsInline": true,
 		  "colour": "%{BKY_SENSORS_RGB}",
+          "output": "Boolean",
           "previousStatement": null,
           "nextStatement": null,
 		  "extensions": ["dynamic_instances_extension_phone_flashlight"]
