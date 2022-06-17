@@ -30,17 +30,18 @@ export function load (Blockly, instances) {
 		  ],
 		  "inputsInline": true,
 		  "colour": "%{BKY_SENSORS_RGB}",
-                  "output": "Boolean",
+          "previousStatement": null,
+          "nextStatement": null,
 		  "extensions": ["dynamic_instances_extension_phone_image_output"]
              });
         }
     };
 
     Blockly.Python['set_image_phone_image_output'] = function (block) {
-        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
+        Blockly.Python.definitions_['import_phone'] = 'from mirte_robot import phone\nphoneAPI=phone.createPhone()';
         let instance = block.getFieldValue('INSTANCE');
         let image = block.getFieldValue('IMAGE');
-        let code = `mirte.setImage('${instance}', '${image}')`;
+        let code = `phoneAPI.setImage('${instance}', '${image}')`;
         return [code, Blockly.Python.ORDER_NONE]
     };
 }
