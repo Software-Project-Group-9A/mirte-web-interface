@@ -74,6 +74,8 @@
   "blockly": {
     "TRUE": "waar",
     "FALSE": "onwaar",
+    "ON": "aan",
+    "OFF": "uit",
     "SENSORS": "Sensoren",
     "ROBOT": "Robot",
     "SET_ANALOG_PIN": "zet analoge pin %1 op waarde %2",
@@ -106,7 +108,7 @@
     "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1",
     "PHONE_SLIDER": "waarde van slider %1",
     "PHONE_BUTTON": "waarde van knop %1",
-    "PHONE_FLASHLIGHT": "zet flashlight %1 op %2",
+    "PHONE_FLASHLIGHT": "zet zaklamp %1 op %2",
     "PHONE_TEXT_OUTPUT": "print tekst %1 naar %2"
   }
 }

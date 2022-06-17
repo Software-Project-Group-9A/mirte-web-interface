@@ -1,4 +1,4 @@
-const options = [['%{BKY_TRUE}', 'true'], ['%{BKY_FALSE}', 'false']];
+const options = [['%{BKY_ON}', 'True'], ['%{BKY_OFF}', 'False']];
 
 export function load (Blockly, instances) {
 
@@ -30,17 +30,19 @@ export function load (Blockly, instances) {
 		  ],
 		  "inputsInline": true,
 		  "colour": "%{BKY_SENSORS_RGB}",
-          "output": "Boolean",
+          "previousStatement": null,
+          "nextStatement": null,
 		  "extensions": ["dynamic_instances_extension_phone_flashlight"]
              });
         }
     };
 
     Blockly.Python['set_state_phone_flashlight'] = function (block) {
-        Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
+        Blockly.Python.definitions_['import_phone'] = 'from mirte_robot import phone\nphoneAPI=phone.createPhone()';
         let flashlight = block.getFieldValue('INSTANCE');
         let state = block.getFieldValue('FLASH');
-        let code = `mirte.setFlashlight('${flashlight}', '${state}')`;
-        return [code, Blockly.Python.ORDER_NONE]
+        let code = `phoneAPI.setFlashlight('${flashlight}', ${state})`;
+        console.log(code);
+        return code
     };
 }

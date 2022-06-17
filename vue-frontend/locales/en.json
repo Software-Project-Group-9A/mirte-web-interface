@@ -74,6 +74,8 @@
   "blockly": {
     "TRUE": "true",
     "FALSE": "false",
+    "ON": "on",
+    "OFF": "off",
     "SENSORS": "Sensors",
     "ROBOT": "Robot",
     "SET_ANALOG_PIN": "set analog pin %1 to value %2",
