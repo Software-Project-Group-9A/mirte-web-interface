@@ -42,6 +42,6 @@ export function load (Blockly, instances) {
         let instance = block.getFieldValue('INSTANCE');
         let image = block.getFieldValue('IMAGE');
         let code = `phoneAPI.setImage('${instance}', '${image}')`;
-        return [code, Blockly.Python.ORDER_NONE]
+        return code
     };
 }
