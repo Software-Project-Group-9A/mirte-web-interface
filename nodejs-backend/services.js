@@ -238,7 +238,7 @@ app.post('/api/html', (req, res) => {
   var source = req.body
 
   const fs = require('fs');
-  fs.writeFile("/home/mirte/workdir/website/index.html", source, (err) => {
+  fs.writeFile("/home/mirte/workdir/website/usercode.html", source, (err) => {
       if(err) {
           console.log(err);
           res.end("something went wrong writing the file");
