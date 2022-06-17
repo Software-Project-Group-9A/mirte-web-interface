@@ -69,7 +69,7 @@
     "phone_slider": "Slider",
     "phone_button": "Button",
     "phone_flashlight": "Flashlight",
-    "phone_text_subscriber": "Text Printer"
+    "phone_text_output": "Text Printer"
   },
   "blockly": {
     "TRUE": "true",
@@ -107,6 +107,6 @@
     "PHONE_SLIDER": "value of slider %1",
     "PHONE_BUTTON": "value of button %1",
     "PHONE_FLASHLIGHT": "turn flashlight %1 to %2",
-    "PHONE_TEXT_SUBSCRIBER": "print text %1 to %2"
+    "PHONE_TEXT_OUTPUT": "print text %1 to %2"
   }
 }

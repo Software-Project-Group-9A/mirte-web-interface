@@ -115,12 +115,12 @@
     "message_type": "std_msgs/Bool",
     "message_value": "data"
   },
-  "phone_text_subscriber": {
-    "text": "phone_text_subscriber",
+  "phone_text_output": {
+    "text": "phone_text_output",
     "pins": {
     },
     "functions": ["print"],
-    "rel_path": "Sensors\\Phone\\phone_button\\phone_text_subscriber.py",
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_text_output.py",
     "message_type": "std_msgs/String",
     "message_value": "data"
   }
