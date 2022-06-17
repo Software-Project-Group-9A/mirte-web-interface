@@ -98,5 +98,14 @@
     "rel_path": "Sensors\\Phone\\phone_slider\\phone_slider.py",
     "message_type": "std_msgs/Int32",
     "message_value": "data"
+  },
+  "phone_button": {
+    "text": "phone_button",
+    "pins": {
+    },
+    "functions": ["get_value"],
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_button.py",
+    "message_type": "std_msgs/Bool",
+    "message_value": "data"
   }
 }
