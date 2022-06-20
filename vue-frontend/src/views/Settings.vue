@@ -289,7 +289,6 @@ export default {
       if (confirm(this.$i18n.t('settings.save_confirm'))) {
         this.busy = true
         var yaml = this.saveConfiguration();
-        console.log(yaml);
 
         fetch(`${location.protocol}//${location.hostname}/api/settings`, {
           method: 'POST',
