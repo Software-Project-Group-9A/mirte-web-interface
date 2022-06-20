@@ -97,6 +97,17 @@
     "message_type": "std_msgs/Int32",
     "message_value": "data"
   },
+  "imu": {
+    "text": "imu",
+    "pins": {},
+    "functions": ["get_rotation", "get_linear_acceleration", "get_angular_velocity"],
+    "rel_path": "Sensors\\Phone\\imu\\imu.py",
+    "message_type": "sensor_msgs/Imu",
+    "message_value": "orientation.x",
+    "message_valuex": "orientation.x",
+    "message_valuey": "orientation.y",
+    "message_valuez": "orientation.z"
+  },
   "phone_button": {
     "text": "phone_button",
     "pins": {
@@ -115,4 +126,5 @@
     "message_type": "sensor_msgs/CompressedImage",
     "message_value": "data"
   }
+
 }
