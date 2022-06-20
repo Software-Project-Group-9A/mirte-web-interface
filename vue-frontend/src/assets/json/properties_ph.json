@@ -119,6 +119,15 @@
     "message_type": "std_msgs/Bool",
     "message_value": "data"
   },
+  "phone_image_output": {
+    "text": "phone_image_output",
+    "pins": {
+    },
+    "functions": ["set_image"],
+    "rel_path": "Sensors\\Phone\\phone_image_output\\phone_image_output.py",
+    "message_type": "sensor_msgs/CompressedImage",
+      "message_value": "data"
+  },
   "phone_flashlight": {
     "text": "phone_flashlight",
     "pins": {
