@@ -233,6 +233,19 @@ app.post('/api/python', (req, res) => {
     });
 });
 
+// catch html files from the web interface and save them
+app.post('/api/html', (req, res) => {
+  var source = req.body
+
+  const fs = require('fs');
+  fs.writeFile("/home/mirte/workdir/website/usercode.html", source, (err) => {
+      if(err) {
+          console.log(err);
+          res.end("something went wrong writing the file");
+      }
+      res.end("the file was saved");
+  });
+});
 
 // catch robot settings (ROS params) from the web interface and save them
 app.post('/api/settings', (req, res) => {

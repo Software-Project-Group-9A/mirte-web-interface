@@ -24,7 +24,7 @@ export default {
     methods: {
         waitForSocketConnection(){
               const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-              const linetrace_socketUrl = `${protocol}${location.hostname}:8001`;
+              const linetrace_socketUrl = `${protocol}${location.hostname}/ws/linetrace`;
               this.linenr_socket = new WebSocket(linetrace_socketUrl);
 
               this.linenr_socket.onerror = (event) => {
@@ -58,7 +58,7 @@ export default {
                this.$store.dispatch('setExecution', 'running');
             } else {
                // Not running, so upload code and start executing
-               const pythonUrl = `http://${location.hostname}:3000/api/python`;
+               const pythonUrl = `${location.protocol}//${location.hostname}/api/python`;
 
                fetch(pythonUrl, {
                    method: 'POST',
@@ -114,9 +114,8 @@ export default {
     mounted()  {
        // Open the websocket connection to the backend
         const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-        const port = ':3000';
-        const shell_socketUrl = `${protocol}${location.hostname}${port}/shell`;
-        const linetrace_socketUrl = `${protocol}${location.hostname}:8001`;
+        const shell_socketUrl = `${protocol}//${location.hostname}/ws/shell`;
+        const linetrace_socketUrl = `${protocol}//${location.hostname}/ws/linetrace`;
         this.shell_socket = new WebSocket(shell_socketUrl);
 
         // The terminal

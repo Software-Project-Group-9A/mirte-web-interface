@@ -5,7 +5,7 @@
     "actuators": "Actuators",
     "settings": "Settings",
     "control": "Control",
-    "programming": "Programming",
+    "website_editor": "Website Editor",
     "shutdown": "shutdown",
     "shutdown_confirm": "Are you sure you want to shutdown?",
     "shutdown_success": "Wait until the LED on the computer turns off. Only after that you can switch off the PCB"
@@ -51,6 +51,9 @@
     "download": "download",
     "upload": "upload"
   },
+  "website_editor": {
+    "save": "save"
+  },
   "peripherals": {
     "ultrasonic_sensor": "Distance sensor",
     "ir_sensor": "IR Sensor",
@@ -62,11 +65,19 @@
     "oled": "OLED Screen",
     "oled_text": "text",
     "oled_image": "image",
-    "oled_animation": "animation"
+    "oled_animation": "animation",
+    "phone_slider": "Slider",
+    "phone_imu": "IMU",
+    "phone_button": "Button",
+    "phone_image_output": "Image Display",
+    "phone_flashlight": "Flashlight",
+    "phone_text_output": "Text Printer"
   },
   "blockly": {
     "TRUE": "true",
     "FALSE": "false",
+    "ON": "on",
+    "OFF": "off",
     "SENSORS": "Sensors",
     "ROBOT": "Robot",
     "SET_ANALOG_PIN": "set analog pin %1 to value %2",
@@ -96,6 +107,17 @@
     "SET_SERVO_ANGLE": "set servo %1 to angle %2",
     "SET_OLED": "show the %2 %3 on screen %1",
     "GET_ANALOG_PIN_VALUE": "analog value of pin %1",
-    "GET_DIGITAL_PIN_VALUE": "digital value of pin %1"
+    "GET_DIGITAL_PIN_VALUE": "digital value of pin %1",
+    "PHONE_SLIDER": "value of slider %1",
+    "PHONE_IMU_ORIENTATION": "phone: rotation over %2 of imu %1", 
+    "PHONE_IMU_LINEAR_ACCELERATION": "phone: linear acceleration of %2 of imu %1", 
+    "PHONE_IMU_ANGULAR_VELOCITY": "phone: angular velocity of %2 of imu %1", 
+    "PHONE_BUTTON": "value of button %1",
+    "PHONE_IMAGE_OUTPUT": "show image %1 on display %2",
+    "PHONE_FLASHLIGHT": "turn flashlight %1 to %2",
+    "PHONE_TEXT_OUTPUT": "print text %1 to %2",
+    "X_AXIS": "x-axis",
+    "Y_AXIS": "y-axis",
+    "Z_AXIS": "z-axis"
   }
 }

@@ -87,5 +87,61 @@
     "rel_path": "Sensors\\Encoder\\encoder\\encoder.py",
     "message_type": "mirte_msgs/Encoder",
     "message_value": "value"
+  },
+  "phone_slider": {
+    "text": "phone_slider",
+    "positionable": true,
+    "pins": {
+    },
+    "functions": ["get_value"],
+    "rel_path": "Sensors\\Phone\\phone_slider\\phone_slider.py",
+    "message_type": "std_msgs/Int32",
+    "message_value": "data"
+  },
+  "phone_imu": {
+    "text": "phone_imu",
+    "pins": {},
+    "functions": ["get_rotation", "get_linear_acceleration", "get_angular_velocity"],
+    "rel_path": "Sensors\\Phone\\imu\\imu.py",
+    "message_type": "sensor_msgs/Imu",
+    "message_value": "orientation"
+  },
+  "phone_button": {
+    "text": "phone_button",
+    "positionable": true,
+    "pins": {
+    },
+    "functions": ["get_value"],
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_button.py",
+    "message_type": "std_msgs/Bool",
+    "message_value": "data"
+  },
+  "phone_image_output": {
+    "text": "phone_image_output",
+    "pins": {
+    },
+    "functions": ["set_image"],
+    "rel_path": "Sensors\\Phone\\phone_image_output\\phone_image_output.py",
+    "message_type": "sensor_msgs/CompressedImage",
+      "message_value": "data"
+  },
+  "phone_flashlight": {
+    "text": "phone_flashlight",
+    "pins": {
+    },
+    "functions": ["set_state"],
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_flashlight.py",
+    "message_type": "std_msgs/Bool",
+    "message_value": "data"
+  },
+  "phone_text_output": {
+    "text": "phone_text_output",
+    "pins": {
+    },
+    "functions": ["print"],
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_text_output.py",
+    "message_type": "std_msgs/String",
+    "message_value": "data"
   }
+
 }
