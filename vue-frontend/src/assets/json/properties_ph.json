@@ -90,6 +90,7 @@
   },
   "phone_slider": {
     "text": "phone_slider",
+    "positionable": true,
     "pins": {
     },
     "functions": ["get_value"],
@@ -110,6 +111,7 @@
   },
   "phone_button": {
     "text": "phone_button",
+    "positionable": true,
     "pins": {
     },
     "functions": ["get_value"],
