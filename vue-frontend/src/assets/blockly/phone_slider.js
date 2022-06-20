@@ -32,9 +32,9 @@ export function load (Blockly, instances) {
     };
 
     Blockly.Python['get_value_phone_slider'] = function (block) {
-      Blockly.Python.definitions_['import_mirte'] = 'from mirte_robot import robot\nmirte=robot.createRobot()';
+      Blockly.Python.definitions_['import_phone'] = 'from mirte_robot import phone\nphoneAPI=phone.createPhone()';
       let instance = block.getFieldValue('INSTANCE');
-      let code = `mirte.getSliderValue('${instance}')`;
+      let code = `phoneAPI.getSliderValue('${instance}')`;
       return [code, Blockly.Python.ORDER_NONE]
     };
 }

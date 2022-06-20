@@ -118,6 +118,7 @@
   },
   "phone_image_output": {
     "text": "phone_image_output",
+    "positionable": true,
     "pins": {
     },
     "functions": ["set_image"],
@@ -136,6 +137,7 @@
   },
   "phone_text_output": {
     "text": "phone_text_output",
+    "positionable": true,
     "pins": {
     },
     "functions": ["print"],
