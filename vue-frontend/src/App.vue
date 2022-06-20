@@ -118,12 +118,13 @@ export default {
 
          
 
-         var url = "" 
+         var url = location.protocol + "//"
          if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(window.location.hostname)){
-            url = "http://" + this.online.find(o => o.value === username)["ip"] + "/api/login"
+            url += this.online.find(o => o.value === username)["ip"]
          } else {
-            url = "http://" + username + ".local/api/login"
+            url += username + ".local"
          }
+         url += "/api/login"
          axios.post(url, {username: username, password: password}, {crossDomain: true, withCredentials: true})    
          .then((response) => {  
 	         if (response.data.message){
@@ -143,7 +144,9 @@ export default {
 
       var vue_this = this // TODO: can we do this in another way?
  
-      let websocket = new WebSocket('ws://' + window.location.hostname + ':4567');
+      const websocket_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+      const websocket_url = `${websocket_protocol}${location.hostname}/ws/clients`;
+      let websocket = new WebSocket(websocket_url);
       websocket.onmessage = function(event){
          var data = JSON.parse(event.data);
          var names = []

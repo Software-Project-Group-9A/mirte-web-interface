@@ -69,7 +69,8 @@
     "phone_slider": "Slider",
     "phone_button": "Knop",
     "phone_flashlight": "Zaklamp",
-    "phone_text_output": "Tekst Printer"
+    "phone_text_output": "Tekst Printer",
+    "imu": "IMU"
   },
   "blockly": {
     "TRUE": "waar",
@@ -109,6 +110,12 @@
     "PHONE_SLIDER": "waarde van slider %1",
     "PHONE_BUTTON": "waarde van knop %1",
     "PHONE_FLASHLIGHT": "zet zaklamp %1 op %2",
-    "PHONE_TEXT_OUTPUT": "print tekst %1 naar %2"
+    "PHONE_TEXT_OUTPUT": "print tekst %1 naar %2",
+    "IMU_ORIENTATION": "telefoon: rotatie van de %1", 
+    "IMU_LINEAR_ACCELERATION": "telefoon: lineaire vesnelling over de %1", 
+    "IMU_ANGULAR_VELOCITY": "telefoon: hoeksnelheid over %1", 
+    "X_AXIS": "x-as",
+    "Y_AXIS": "y-as",
+    "Z_AXIS": "z-as"
   }
 }

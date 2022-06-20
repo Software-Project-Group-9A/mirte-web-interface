@@ -283,7 +283,7 @@ export default {
         var yaml = this.saveConfiguration();
        
 
-        fetch(`http://${location.hostname}:3000/api/settings`, {
+        fetch(`${location.protocol}//${location.hostname}/api/settings`, {
           method: 'POST',
           body: YAML.dump(yaml)
         })
@@ -302,7 +302,7 @@ export default {
         this.busy = true
         var body = {};
         body["mcu"] = this.mcu;
-        fetch(`http://${location.hostname}:3000/api/upload_telemetrix`, {
+        fetch(`${location.protocol}//${location.hostname}/api/upload_telemetrix`, {
            method: 'POST',
            body: JSON.stringify(body) 
         } )
@@ -322,7 +322,7 @@ export default {
     },
     setPassword() {
       if (confirm('Weet je zeker dat je het wachtwoord wilt veranderen?')) {
-        fetch(`http://${location.hostname}:3000/api/passwd`, {
+        fetch(`${location.protocol}//${location.hostname}/api/passwd`, {
           method: 'POST',
           headers: {
             'Content-Type': 'text/plain',
