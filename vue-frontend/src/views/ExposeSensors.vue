@@ -8,7 +8,7 @@
                 <div class="text-white p-2 h3 m-0 layoutbox-title w-100 background-primary">
                   User Interface
                 </div>
-                <div id='dynamic_ui' class="h-40" style=" overflow: auto; position: relative;" >
+                <div id='dynamic_ui' class="h-75" style=" overflow: auto; position: relative;" >
                 </div>
              </div>
          </div>
@@ -41,7 +41,7 @@ global.ROSLIB = ROSLIB;
 
     // connect to rosbridge websocket
     const ros_protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-    const ros_socketUrl = `${ros_protocol}${location.hostname}:9090`;
+    const ros_socketUrl = `${ros_protocol}${location.hostname}/ws/ros`;
     ros.connect(ros_socketUrl);
 
     // receive user config from parameter server
