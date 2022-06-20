@@ -59,11 +59,7 @@
                 </b-form-select>
                 <!---
                   New form elements for configuration of mirtesensorlib peripherals
-                --->
-                <div v-if="peripherals[data.item.type].has_frequency">
-                  <p>Frequency</p>
-                  <b-form-input v-model="data.item.frequency" type="number" placeholder="10"></b-form-input>
-                </div>
+                -->
                 <div v-if="peripherals[data.item.type].positionable">
                   <p>Position</p>
                   <b-form-input v-model="data.item.x" type="number" placeholder="0"></b-form-input>
@@ -248,7 +244,7 @@ export default {
           i['pins'] = {}
           for (var k in i){
             // refactor
-             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type" && k!="frequency" && k!="x" && k!="y"){
+             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type" && k!="x" && k!="y"){
                 i['pins'][k] = i[k]
                 delete i[k]
              }
