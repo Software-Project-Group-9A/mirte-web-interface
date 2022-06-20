@@ -67,12 +67,16 @@
     "oled_image": "afbeelding",
     "oled_animation": "animatie",
     "phone_slider": "Slider",
-    "imu": "IMU" ,
-    "phone_button": "Knop"
+    "phone_button": "Knop",
+    "phone_flashlight": "Zaklamp",
+    "phone_text_output": "Tekst Printer",
+    "imu": "IMU"
   },
   "blockly": {
     "TRUE": "waar",
     "FALSE": "onwaar",
+    "ON": "aan",
+    "OFF": "uit",
     "SENSORS": "Sensoren",
     "ROBOT": "Robot",
     "SET_ANALOG_PIN": "zet analoge pin %1 op waarde %2",
@@ -104,12 +108,14 @@
     "GET_ANALOG_PIN_VALUE": "analoge waarde van pin %1",
     "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1",
     "PHONE_SLIDER": "waarde van slider %1",
+    "PHONE_BUTTON": "waarde van knop %1",
+    "PHONE_FLASHLIGHT": "zet zaklamp %1 op %2",
+    "PHONE_TEXT_OUTPUT": "print tekst %1 naar %2",
     "IMU_ORIENTATION": "telefoon: rotatie van de %1", 
     "IMU_LINEAR_ACCELERATION": "telefoon: lineaire vesnelling over de %1", 
     "IMU_ANGULAR_VELOCITY": "telefoon: hoeksnelheid over %1", 
     "X_AXIS": "x-as",
     "Y_AXIS": "y-as",
-    "Z_AXIS": "z-as",
-    "PHONE_BUTTON": "waarde van knop %1"
+    "Z_AXIS": "z-as"
   }
 }

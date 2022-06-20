@@ -118,6 +118,24 @@
     "rel_path": "Sensors\\Phone\\phone_button\\phone_button.py",
     "message_type": "std_msgs/Bool",
     "message_value": "data"
+  },
+  "phone_flashlight": {
+    "text": "phone_flashlight",
+    "pins": {
+    },
+    "functions": ["set_state"],
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_flashlight.py",
+    "message_type": "std_msgs/Bool",
+    "message_value": "data"
+  },
+  "phone_text_output": {
+    "text": "phone_text_output",
+    "pins": {
+    },
+    "functions": ["print"],
+    "rel_path": "Sensors\\Phone\\phone_button\\phone_text_output.py",
+    "message_type": "std_msgs/String",
+    "message_value": "data"
   }
 
 }
