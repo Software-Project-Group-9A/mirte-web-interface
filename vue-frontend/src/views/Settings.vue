@@ -57,7 +57,14 @@
                     <b-form-select-option :value="null" disabled>{{ p }}</b-form-select-option>
                   </template>
                 </b-form-select>
-
+                <!---
+                  New form elements for configuration of mirtesensorlib peripherals
+                -->
+                <div v-if="peripherals[data.item.type].positionable">
+                  <p>Position</p>
+                  <b-form-input v-model="data.item.x" type="number" placeholder="0"></b-form-input>
+                  <b-form-input v-model="data.item.y" type="number" placeholder="0"></b-form-input>
+                </div>
               </template>
 
             </b-table>
@@ -236,7 +243,8 @@ export default {
           // Add pins to pins sub
           i['pins'] = {}
           for (var k in i){
-             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type"){
+            // refactor
+             if (k != "name" && k != "rel_path" && k != "functions" && k != "device" && k != "pins" && k != "device" && k != "type" && k!="x" && k!="y"){
                 i['pins'][k] = i[k]
                 delete i[k]
              }
@@ -281,7 +289,6 @@ export default {
       if (confirm(this.$i18n.t('settings.save_confirm'))) {
         this.busy = true
         var yaml = this.saveConfiguration();
-       
 
         fetch(`${location.protocol}//${location.hostname}/api/settings`, {
           method: 'POST',
