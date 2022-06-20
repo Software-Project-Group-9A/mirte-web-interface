@@ -68,7 +68,7 @@
     "oled_animation": "animation",
     "phone_slider": "Slider",
     "phone_button": "Button",
-    "phone_image_output": "Image Output",
+    "phone_image_output": "Image Display",
     "imu": "IMU"
   },
   "blockly": {
@@ -106,7 +106,7 @@
     "GET_DIGITAL_PIN_VALUE": "digital value of pin %1",
     "PHONE_SLIDER": "value of slider %1",
     "PHONE_BUTTON": "value of button %1",
-    "PHONE_IMAGE_OUTPUT": "display image %1 on output %2",
+    "PHONE_IMAGE_OUTPUT": "show image %1 on display %2",
     "IMU_ORIENTATION": "phone: rotation over %1", 
     "IMU_LINEAR_ACCELERATION": "phone: linear acceleration of %1", 
     "IMU_ANGULAR_VELOCITY": "phone: angular velocity of %1", 

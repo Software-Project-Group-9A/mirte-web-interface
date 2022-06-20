@@ -67,13 +67,9 @@
     "oled_image": "afbeelding",
     "oled_animation": "animatie",
     "phone_slider": "Slider",
-<<<<<<< HEAD
     "phone_button": "Knop",
-    "phone_image_output": "Afbeelding Output"
-=======
-    "imu": "IMU" ,
-    "phone_button": "Knop"
->>>>>>> af8019bb2dd5a7695bc9be17a5a5d72bdc5ab22f
+    "phone_image_output": "Afbeelding Weergave",
+    "imu": "IMU"
   },
   "blockly": {
     "TRUE": "waar",
@@ -109,17 +105,13 @@
     "GET_ANALOG_PIN_VALUE": "analoge waarde van pin %1",
     "GET_DIGITAL_PIN_VALUE": "digitale waarde van pin %1",
     "PHONE_SLIDER": "waarde van slider %1",
-<<<<<<< HEAD
     "PHONE_BUTTON": "waarde van knop %1",
-    "PHONE_IMAGE_OUTPUT": "laat afbeelding %1 zien op output %2"
-=======
+    "PHONE_IMAGE_OUTPUT": "geef afbeelding %1 weer op %2",
     "IMU_ORIENTATION": "telefoon: rotatie van de %1", 
     "IMU_LINEAR_ACCELERATION": "telefoon: lineaire vesnelling over de %1", 
     "IMU_ANGULAR_VELOCITY": "telefoon: hoeksnelheid over %1", 
     "X_AXIS": "x-as",
     "Y_AXIS": "y-as",
-    "Z_AXIS": "z-as",
-    "PHONE_BUTTON": "waarde van knop %1"
->>>>>>> af8019bb2dd5a7695bc9be17a5a5d72bdc5ab22f
+    "Z_AXIS": "z-as"
   }
 }
